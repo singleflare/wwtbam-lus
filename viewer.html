@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viewer</title>
+</head>
+
+<body>
+  <style>
+    * {
+      font-family: Verdana;
+    }
+
+    @font-face {
+      font-family: CP31C01;
+      src: url('CP31C01.ttf');
+    }
+
+    @font-face {
+      font-family: Copperplate;
+      src: url('Copperplate Bold.ttf');
+    }
+
+    @font-face {
+      font-family: CopperplateVH;
+      src: url('UTM CopperplateB.ttf');
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      position: absolute;
+      background: #381c00;
+    }
+
+    div,
+    video,
+    img {
+      position: absolute;
+    }
+
+    video {
+      top: 50px;
+      z-index: -1;
+    }
+
+    #quesImg,
+    #ansUpImg,
+    #ansDownImg,
+    #prizeAfterQImg {
+      width: 1920px;
+      display: block;
+      position: absolute;
+    }
+
+    #ques {
+      width: 1920px;
+      top: 1200px;
+      scale: 2;
+    }
+
+    #ansUp {
+      width: 1920px;
+      top: 1200px;
+      scale: 2;
+    }
+
+    #ansDown {
+      width: 1920px;
+      top: 1200px;
+      scale: 2;
+    }
+
+    #prizeAfterQuestion {
+      top: 845px;
+    }
+
+    #prizeAfterQuestion>* {
+      opacity: 1;
+    }
+
+    p {
+      color: white;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+
+    #ques>p {
+      height: 129px;
+      left: 240px;
+      width: 1440px;
+      font-size: 32pt;
+    }
+
+    #ansUp>p,
+    #ansDown>p {
+      height: 70px;
+      font-size: 32pt;
+      text-align: left;
+      justify-content: left;
+    }
+
+    .loz {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      z-index: 1;
+    }
+
+    #ques>svg {
+      height: 138px;
+      left: 240px;
+      width: 1440px;
+      position: absolute;
+      font-size: 32pt;
+    }
+
+    .chosen,
+    .correct {
+      position: absolute;
+      z-index: 0;
+      opacity: 0;
+    }
+
+    .ansAText,
+    .ansBText,
+    .ansCText,
+    .ansDText,
+    .ansALetter,
+    .ansBLetter,
+    .ansCLetter,
+    .ansDLetter,
+    .loz {
+      opacity: 0;
+    }
+
+    #quesText,
+    svg {
+      display: none;
+    }
+
+    .copper {
+      font-family: 'CP31C01';
+      font-size: 44pt;
+
+    }
+
+    .copper.highlight {
+      color: black !important;
+      text-shadow: 0 0 !important;
+    }
+
+    #tree,
+    #treeNum,
+    #highlight,
+    #lozTree {
+      display: flex;
+      flex-direction: column-reverse;
+      top: 240px;
+    }
+
+    #tree {
+      left: 1254px;
+    }
+
+    #treeNum {
+      left: 1154px;
+    }
+
+    #highlight {
+      left: 1100px;
+      top: 237px;
+    }
+
+    #lozTree {
+      left: 1221px;
+      height: 687px;
+      top: 265px;
+      justify-content: space-between;
+    }
+
+    #highlight img {
+      position: relative;
+      width: 630px;
+      height: 61px;
+      transform: rotateY(180deg);
+      top: 4px;
+      left: -10px;
+      opacity: 0;
+    }
+
+    #lozTree img {
+      width: 26px;
+      height: 20px;
+      opacity: 0;
+    }
+
+    @keyframes pulse {
+      0% {
+        filter: none;
+      }
+
+      50% {
+        filter: drop-shadow(0 0 5px white) drop-shadow(0 0 5px white) drop-shadow(0 0 5px white);
+      }
+
+      100% {
+        filter: none;
+      }
+    }
+
+    #lozTree img.highlight {
+      animation: pulse 2s forwards infinite;
+      /* filter: drop-shadow(0 0 5px white) drop-shadow(0 0 5px white) drop-shadow(0 0 5px white); */
+    }
+
+    #tree div,
+    #treeNum div {
+      position: relative;
+      width: 1080px;
+      text-shadow: 2px 2px 10px black;
+    }
+
+    .ll {
+      position: absolute;
+      z-index: 1;
+      top: 110px;
+      width: 155px;
+    }
+
+    .llVid {
+      position: absolute;
+      z-index: 1;
+      top: 100px;
+      width: 215px;
+    }
+  </style>
+  <div id='ques'>
+    <img id='quesImg' src='ques lus.png'>
+    <p id='quesText'></p>
+  </div>
+  <div id='ansUp'>
+    <img class='loz ansA' src='Lozenge_Lus.png' style='top: 28px;left: 210px;'>
+    <p class='ansALetter' style='color:#E17C1E;left: 245px;width:0'>A:</p>
+    <p class='ansAText' style='width: 670px;left: 305px;'></p>
+    <img class='loz ansB' src='Lozenge_Lus.png' style='top: 28px;left: 990px;'>
+    <p class='ansBLetter' style='color:#E17C1E;left: 1025px;width:0'>B:</p>
+    <p class='ansBText' style='width: 670px;left: 1085px;'></p>
+    <img id='ansUpImg' src='ans lus.png'>
+    <img src='chosen lus.png' class='chosen' id='chosenA' style='top: 0.5px;width: 960px;'>
+    <img src='chosen lus.png' class='chosen' id='chosenB'
+      style='top: 0.5px;width: 960px;transform: rotateY(180deg);left: 960px;'>
+    <img src='correct lus.png' class='correct' id='correctA' style='top: 0.5px;width: 960px;'>
+    <img src='correct lus.png' class='correct' id='correctB'
+      style='top: 0.5px;width: 960px;transform: rotateY(180deg);left: 960px;'>
+  </div>
+  <div id='ansDown'>
+    <img class='loz ansC' src='Lozenge_Lus.png' style='top: 28px;left: 210px;'>
+    <p class='ansCLetter' style='color:#E17C1E;left: 245px;width:0'>C:</p>
+    <p class='ansCText' style='width: 670px;left: 305px;'></p>
+    <img class='loz ansD' src='Lozenge_Lus.png' style='top: 28px;left: 990px;'>
+    <p class='ansDLetter' style='color:#E17C1E;left: 1025px;width:0'>D:</p>
+    <p class='ansDText' style='width: 670px;left: 1085px;'></p>
+    <img id='ansDownImg' src='ans lus.png'>
+    <img src='chosen lus.png' class='chosen' id='chosenC' style='top: 0.5px;width: 960px;'>
+    <img src='chosen lus.png' class='chosen' id='chosenD'
+      style='top: 0.5px;width: 960px;transform: rotateY(180deg);left: 960px;'>
+    <img src='correct lus.png' class='correct' id='correctC' style='top: 0.5px;width: 960px;'>
+    <img src='correct lus.png' class='correct' id='correctD'
+      style='top: 0.5px;width: 960px;transform: rotateY(180deg);left: 960px;'>
+  </div>
+  <video id='stqMini' src='STQ.webm' style='width: 150px;top: 883px;left: 885px;z-index: 1;scale:0'></video>
+  <img src='ata_graph_graphic_for_altp-lus.png' id='ata' style='width: 300px;left: 1450px;top: 100px;'>
+  <div id='aPercent' style='font-size: 16pt;top: 115px;left: 1472px;color:white;font-family: Verdana;'>
+  </div>
+  <div id='bPercent' style='font-size: 16pt;top: 115px;left: 1538px;color:white;font-family: Verdana;'>
+  </div>
+  <div id='cPercent' style='font-size: 16pt;top: 115px;left: 1604px;color:white;font-family: Verdana;'>
+  </div>
+  <div id='dPercent' style='font-size: 16pt;top: 115px;left: 1670px;color:white;font-family: Verdana;'>
+  </div>
+  <div id='ataBarAContainer' style='width: 50px;top: 144px;left: 1479px;height:318px;overflow: hidden;'>
+    <img src='ata_bar_graphic_for_altp-lus.png' id='ataBarA' style='z-index:1;width: 50px;top: 318px;'>
+  </div>
+  <div id='ataBarBContainer' style='width: 50px;top: 144px;left: 1543px;height:318px;overflow: hidden;'>
+    <img src='ata_bar_graphic_for_altp-lus.png' id='ataBarB' style='z-index:1;width: 50px;top: 318px;'>
+  </div>
+  <div id='ataBarCContainer' style='width: 50px;top: 144px;left: 1607px;height:318px;overflow: hidden;'>
+    <img src='ata_bar_graphic_for_altp-lus.png' id='ataBarC' style='z-index:1;width: 50px;top: 318px;'>
+  </div>
+  <div id='ataBarDContainer' style='width: 50px;top: 144px;left: 1671px;height:318px;overflow: hidden;'>
+    <img src='ata_bar_graphic_for_altp-lus.png' id='ataBarD' style='z-index:1;width: 50px;top: 318px;'>
+  </div>
+  <div id='prizeAfterQuestion' style='opacity: 0;'>
+    <p class='prizeAftQ' style='font-family: CP31C01;height: 159px;font-size: 90pt;color:#E49F12;width:1920px;'>
+    </p>
+    <img src='winning_money_lozeng_for_altp-lus.png' id='prizeAfterQImg'>
+    <img src='Lozenge_Lus.png' style='position: absolute;top: 66px;left: 390px;width: 30px;height:30px;'>
+    <img src='Lozenge_Lus.png' style='position: absolute;top: 66px;left: 1490px;width: 30px;height:30px;'>
+  </div>
+  <div id='totalPrizeMoney' style='opacity: 0;'>
+    <p class='tpmText'
+      style='font-family: CopperplateVH;height: 159px;font-size: 50pt;letter-spacing: 5px;color:white;top: 753px;width: 1920px;text-shadow: 2px 2px 10px black;'>
+      THẮNG CUỘC
+    </p>
+    <p class='tpmPrize'
+      style='font-family: CP31C01;height: 159px;font-size: 90pt;color:#E49F12;top: 893px;width: 1920px;text-shadow: 2px 2px 10px black;'>
+    </p>
+    <img src='winning_money_lozeng_for_altp-lus.png' id='tpmImg'
+      style='width:1920px;width: 1920px;position: absolute;top: 890px;'>
+    <video src=' Total Prize.mp4' id='tpmBg' style='clip-path: inset(768px 0 0 0);
+    position: absolute;top:0' loop muted></video>
+    <img src=' Lozenge_Lus.png'
+      style='position: absolute;top: 956px;left: 390px;width: 30px;height:30px;animation: pulse 2s forwards infinite;'>
+    <img src='Lozenge_Lus.png'
+      style='position: absolute;top: 956px;left: 1483px;width: 30px;height:30px;animation: pulse 2s forwards infinite;'>
+  </div>
+  <div id='moneyTree' style='position: absolute;left:1080px'>
+    <video class='llVid' id='ll1' style='left: 1105px;' src='5050.webm'></video>
+    <video class='llVid' id='ll2' style='left: 1265px;' src='PAF.webm'></video>
+    <video class='llVid' id='ll3' style='left: 1425px;' src='ATA.webm'></video>
+    <video class='llVid' id='ll4' style='left: 1920px;opacity: 0;' src='STQ.webm'></video>
+    <img class='cross' id='cross1' style='left: 1165px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
+      src='cross_for_used_lifelines.png'>
+    <img class='cross' id='cross2' style='left: 1325px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
+      src='cross_for_used_lifelines.png'>
+    <img class='cross' id='cross3' style='left: 1485px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
+      src='cross_for_used_lifelines.png'>
+    <img class='cross' id='cross4' style='left: 1645px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
+      src='cross_for_used_lifelines.png'>
+    <video src='Gpx_MoneyTree.mp4' autoplay muted loop
+      style='clip-path: inset(0 0 0 1080px);position: absolute;top:0'></video>
+    <div id='highlight'>
+      <img src='Money_Tree_Highlight.png' id='highlight1'>
+      <img src='Money_Tree_Highlight.png' id='highlight2'>
+      <img src='Money_Tree_Highlight.png' id='highlight3'>
+      <img src='Money_Tree_Highlight.png' id='highlight4'>
+      <img src='Money_Tree_Highlight.png' id='highlight5'>
+      <img src='Money_Tree_Highlight.png' id='highlight6'>
+      <img src='Money_Tree_Highlight.png' id='highlight7'>
+      <img src='Money_Tree_Highlight.png' id='highlight8'>
+      <img src='Money_Tree_Highlight.png' id='highlight9'>
+      <img src='Money_Tree_Highlight.png' id='highlight10'>
+      <img src='Money_Tree_Highlight.png' id='highlight11'>
+      <img src='Money_Tree_Highlight.png' id='highlight12'>
+    </div>
+    <div id='lozTree'>
+      <img src='Lozenge_Lus.png' id='loz1'>
+      <img src='Lozenge_Lus.png' id='loz2'>
+      <img src='Lozenge_Lus.png' id='loz3'>
+      <img src='Lozenge_Lus.png' id='loz4'>
+      <img src='Lozenge_Lus.png' id='loz5'>
+      <img src='Lozenge_Lus.png' id='loz6'>
+      <img src='Lozenge_Lus.png' id='loz7'>
+      <img src='Lozenge_Lus.png' id='loz8'>
+      <img src='Lozenge_Lus.png' id='loz9'>
+      <img src='Lozenge_Lus.png' id='loz10'>
+      <img src='Lozenge_Lus.png' id='loz11'>
+      <img src='Lozenge_Lus.png' id='loz12'>
+    </div>
+    <div id='treeNum'>
+      <div class='copper' id='num1' style='color: #E49F12;'>1</div>
+      <div class='copper' id='num2' style='color: white;'>2</div>
+      <div class='copper' id='num3' style='color: #E49F12;'>3</div>
+      <div class='copper' id='num4' style='color: #E49F12;'>4</div>
+      <div class='copper' id='num5' style='color: #E49F12;'>5</div>
+      <div class='copper' id='num6' style='color: #E49F12;'>6</div>
+      <div class='copper' id='num7' style='color: white;'>7</div>
+      <div class='copper' id='num8' style='color: #E49F12;'>8</div>
+      <div class='copper' id='num9' style='color: #E49F12;'>9</div>
+      <div class='copper' id='num10' style='color: #E49F12;'>10</div>
+      <div class='copper' id='num11' style='color: #E49F12;letter-spacing: 14px;'>11</div>
+      <div class='copper' id='num12' style='color: white;'>12</div>
+    </div>
+    <div id='tree'>
+      <div class='copper' id='prize1' style='color: #E49F12;'>500 GL</div>
+      <div class='copper' id='prize2' style='color: white;'>1,000 GL</div>
+      <div class='copper' id='prize3' style='color: #E49F12;'>2,000 GL</div>
+      <div class='copper' id='prize4' style='color: #E49F12;'>5,000 GL</div>
+      <div class='copper' id='prize5' style='color: #E49F12;'>10,000 GL</div>
+      <div class='copper' id='prize6' style='color: #E49F12;'>20,000 GL</div>
+      <div class='copper' id='prize7' style='color: white;'>50,000 GL</div>
+      <div class='copper' id='prize8' style='color: #E49F12;'>75,000 GL</div>
+      <div class='copper' id='prize9' style='color: #E49F12;'>150,000 GL</div>
+      <div class='copper' id='prize10' style='color: #E49F12;'>250,000 GL</div>
+      <div class='copper' id='prize11' style='color: #E49F12;'>500,000 GL</div>
+      <div class='copper' id='prize12' style='color: white;'>1,000,000 GL</div>
+    </div>
+  </div>
+  <video src='Timer 15sec countdown.webm' id='15sCountdown' style='opacity: 0;'></video>
+  <video src='Timer 30sec countdown.webm' id='30sCountdown' style='opacity: 0;'></video>
+  <video src='PaF (webm).webm' id='paf' style='scale:0;left: 1100px;top: -200px;' preload='auto'></video>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src='jquery.keyframes.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"
+    integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('/v')
+    let chosenAns = ''
+
+    let pafVideo = document.getElementById('paf')
+    let timer15sVid = document.getElementById("15sCountdown");
+    let timer30sVid = document.getElementById("30sCountdown");
+
+    let tier1Bed = new Howl({
+      src: ['Q1-2 bed.mp3'], loop: true
+    })
+    let timer15s = new Howl({
+      src: ['Sfx_MillionaireUK2010_15s countdown.m4a']
+    })
+    let timer30s = new Howl({
+      src: ['Sfx_MillionaireUK2010_30s countdown.m4a']
+    })
+    let tier1Correct = new Howl({
+      src: ['Q1-4 win.mp3']
+    })
+    let q3Bed = new Howl({
+      src: ['Q3 bed.mp3']
+    })
+    let q4Bed = new Howl({
+      src: ['Q4 bed.mp3']
+    })
+    let q5Bed = new Howl({
+      src: ['Q5 bed.mp3']
+    })
+    let q6Bed = new Howl({
+      src: ['Q6 bed.mp3']
+    })
+    let q7Bed = new Howl({
+      src: ['Q7 bed.mp3']
+    })
+    let q8Bed = new Howl({
+      src: ['Q8 bed.mp3']
+    })
+    let q9Bed = new Howl({
+      src: ['Q9 bed.mp3']
+    })
+    let q10Bed = new Howl({
+      src: ['Q10 bed.mp3']
+    })
+    let q11Bed = new Howl({
+      src: ['Q11 bed.mp3']
+    })
+    let q12Bed = new Howl({
+      src: ['Q12 bed.mp3']
+    })
+    let q38Final = new Howl({
+      src: ['Q611 Final.mp3']
+    })
+    let q49Final = new Howl({
+      src: ['Q712 Final.mp3']
+    })
+    let q510Final = new Howl({
+      src: ['Q813 Final.mp3']
+    })
+    let q611Final = new Howl({
+      src: ['Q914 Final.mp3']
+    })
+    let q712Final = new Howl({
+      src: ['Q1015 Final.mp3']
+    })
+    let pafBed = new Howl({
+      src: ['Phone_a_Friend_Ready.ogg']
+    })
+    let pafTime = new Howl({
+      src: ['Phone_a_Friend_Clock.ogg']
+    })
+    let ataBed = new Howl({
+      src: ['Ask_the_Audience_Ready.ogg']
+    })
+    let ataSound = new Howl({
+      src: ['Ask_the_Audience_Progress_short.mp3.mpeg']
+    })
+    function playSound(url) {
+      let sound = new Howl({
+        src: [url]
+      })
+      sound.play()
+      return sound
+    }
+    let sounds = [q3Bed, q4Bed, q5Bed, q6Bed, q7Bed, q8Bed, q9Bed, q10Bed, q11Bed, q12Bed, q38Final, q49Final, q510Final, q611Final, q712Final]
+    function stopAllSounds() {
+      sounds.forEach(sound => {
+        sound.stop()
+        sound.currentTime = 0
+      })
+    }
+    function fadeAllSounds() {
+      sounds.forEach(sound => {
+        sound.fade(1, 0, 250)
+      })
+    }
+    function digitGroup(dInput) {
+      let inputString = String(dInput)
+      let output = "";
+      let separator = ','
+      for (let i = inputString.length - 1; i > -1; i--) {
+        output = String(dInput).charAt(i) + output;
+        let cnt = String(dInput).length - i;
+        if (cnt % 3 == 0 && i != 0) output = "," + output;
+      }
+      console.log(output)
+      return output;
+    }
+
+    $.keyframe.define([{
+      name: 'zoom',
+      '0%': { 'scale': '1' },
+      '40%': { 'scale': '1.2' },
+      '60%': { 'scale': '1.2' },
+      '100%': { 'scale': '1' }
+    }]);
+
+    socket.on('introMoneyTree', () => {
+      let i = 0, introInterval
+      introInterval = setInterval(() => {
+        $('#highlight' + (i - 1)).css('opacity', 0)
+        $('#num' + (i - 1) + ',#prize' + (i - 1)).removeClass('highlight')
+        $('#loz' + (i - 1)).removeClass('highlight')
+        $('#highlight' + (i)).css('opacity', 1)
+        $('#num' + (i) + ',#prize' + (i)).addClass('highlight')
+        $('#loz' + (i)).css('opacity', 1)
+        $('#loz' + (i)).addClass('highlight')
+        i++
+        if (i > 12) clearInterval(introInterval)
+      }, 125)
+    })
+    socket.on('introSafe1', () => {
+      $('#highlight img').css('opacity', 0)
+      $('#tree div,#treeNum div').removeClass('highlight')
+      $('#lozTree img').css('opacity', 0)
+      $('#lozTree img').removeClass('highlight')
+      $('#highlight2').css('opacity', 1)
+      $('#num2,#prize2').addClass('highlight')
+      $('#moneyTree').animate({ left: '0' }, 1250)
+      $('#loz2').css('opacity', 1)
+      $('#loz2').addClass('highlight')
+      for (let j = 1; j <= 1; j++) {
+        $('#loz' + j).css('opacity', 1)
+      }
+    })
+    socket.on('introSafe2', () => {
+      $('#highlight img').css('opacity', 0)
+      $('#tree div,#treeNum div').removeClass('highlight')
+      $('#lozTree img').css('opacity', 0)
+      $('#lozTree img').removeClass('highlight')
+      $('#highlight7').css('opacity', 1)
+      $('#num7,#prize7').addClass('highlight')
+      $('#moneyTree').animate({ left: '0' }, 1250)
+      $('#loz7').css('opacity', 1)
+      $('#loz7').addClass('highlight')
+      for (let j = 1; j <= 6; j++) {
+        $('#loz' + j).css('opacity', 1)
+      }
+    })
+    socket.on('introSafe3', () => {
+      $('#highlight img').css('opacity', 0)
+      $('#tree div,#treeNum div').removeClass('highlight')
+      $('#lozTree img').css('opacity', 0)
+      $('#lozTree img').removeClass('highlight')
+      $('#highlight12').css('opacity', 1)
+      $('#num12,#prize12').addClass('highlight')
+      $('#moneyTree').animate({ left: '0' }, 1250)
+      $('#loz12').css('opacity', 1)
+      $('#loz12').addClass('highlight')
+      for (let j = 1; j <= 11; j++) {
+        $('#loz' + j).css('opacity', 1)
+      }
+      setTimeout(() => {
+        $('#highlight img').css('opacity', 0)
+        $('#tree div,#treeNum div').removeClass('highlight')
+        $('#lozTree img').css('opacity', 0)
+        $('#lozTree img').removeClass('highlight')
+      }, 2000)
+    })
+    socket.on('introLifeline1', () => {
+      // $('#ll1').playKeyframe('pulse 1.5s linear');
+      // $('#ll1').playKeyframe('zoom .5s linear');
+      document.querySelector('.llVid#ll1').play()
+      document.querySelector('.llVid#ll1').addEventListener('play', () => {
+        setTimeout(() => {
+          playSound('Lifeline_1.mp3')
+        }, 500)
+      })
+    })
+    socket.on('introLifeline2', () => {
+      // $('#ll2').playKeyframe('pulse 1.5s linear');
+      // $('#ll2').playKeyframe('zoom .5s linear');
+      document.querySelector('.llVid#ll2').play()
+      document.querySelector('.llVid#ll2').addEventListener('play', () => {
+        setTimeout(() => {
+          playSound('Lifeline_2.mp3')
+        }, 500)
+      })
+
+    })
+    socket.on('introLifeline3', () => {
+      // $('#ll3').playKeyframe('pulse 1.5s linear');
+      // $('#ll3').playKeyframe('zoom .5s linear');
+      document.querySelector('.llVid#ll3').play()
+      document.querySelector('.llVid#ll3').addEventListener('play', () => {
+        setTimeout(() => {
+          playSound('Lifeline_3.mp3')
+        }, 500)
+      })
+    })
+    socket.on('introLifeline4', () => {
+      $('.llVid#ll4').animate({ 'left': '1585px', 'opacity': '1' }, 1000, function () {
+        // $('#ll4').playKeyframe('pulse 1.5s linear');
+        // $('#ll4').playKeyframe('zoom .5s linear');
+        document.querySelector('.llVid#ll4').play()
+        document.querySelector('.llVid#ll4').addEventListener('play', () => {
+          setTimeout(() => {
+            playSound('Lifeline_low_pitch.mp3')
+          }, 500)
+        })
+      })
+    })
+    socket.on('showMoneyTree', quesNum => {
+      $('#highlight img').css('opacity', 0)
+      $('#tree div,#treeNum div').removeClass('highlight')
+      $('#lozTree img').css('opacity', 0)
+      $('#lozTree img').removeClass('highlight')
+      $('#highlight' + (quesNum)).css('opacity', 1)
+      $('#num' + (quesNum) + ',#prize' + (quesNum)).addClass('highlight')
+      $('#moneyTree').animate({ left: '0' }, 1250)
+      $('#loz' + (quesNum)).css('opacity', 1)
+      $('#loz' + (quesNum)).addClass('highlight')
+      for (let i = 1; i <= quesNum - 1; i++) {
+        $('#loz' + i).css('opacity', 1)
+      }
+    })
+    socket.on('hideMoneyTree', () => {
+      $('#moneyTree').animate({ left: '1080px' }, 1250)
+    })
+    socket.on('showQ', (qna, quesNum) => {
+      $('#quesText,svg').css('display', 'none')
+      console.log(qna, quesNum)
+      //if only 1 line
+      let isHaveBr = false
+      $('#quesText').css('display', 'flex')
+      if (qna.ql2 == '') {
+        $('#quesText').html(qna.ql1)
+      }
+      //if 2 lines
+      else {
+        isHaveBr = true
+        $('#quesText').html(`${qna.ql1}<br>${qna.ql2}`)
+      }
+      console.log(countRenderedLines(document.getElementById('quesText')))
+      if (isHaveBr == true) {
+        if (countRenderedLines(document.getElementById('quesText')) >= 4) {
+          console.log(countRenderedLines(document.getElementById('quesText')))
+          $('#quesText').css('display', 'none')
+          let ql1Length = qna.ql1.length
+          let ql2Length = qna.ql2.length
+          let line1GlyphLength = 1440 / ql1Length
+          let line2GlyphLength = 1440 / ql2Length
+          if (line1GlyphLength < line2GlyphLength) {
+            $('#ques').append(
+              `
+              <svg style='display:initial'>
+                <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="1440"
+                  lengthAdjust="spacingAndGlyphs">${qna.ql1}</text>
+                <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="${line1GlyphLength * ql2Length}"
+                  lengthAdjust="spacingAndGlyphs">${qna.ql2}</text>
+              </svg>
+              `
+            )
+          }
+          else {
+            $('#ques').append(
+              `
+              <svg style='display:initial'>
+                <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="${line2GlyphLength * ql1Length}"
+                  lengthAdjust="spacingAndGlyphs">${qna.ql1}</text>
+                <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="1440"
+                  lengthAdjust="spacingAndGlyphs">${qna.ql2}</text>
+              </svg>
+              `
+            )
+          }
+        }
+      }
+      setTimeout(() => {
+        $('#ques').animate({ 'scale': 1, 'top': '710px' }, 300)
+        setTimeout(() => { $('#ansUp').animate({ 'scale': 1, 'top': '845px' }, 300) }, 250)
+        setTimeout(() => { $('#ansDown').animate({ 'scale': 1, 'top': '928px' }, 300) }, 400)
+        $('.ansAText').text(qna.a)
+        $('.ansBText').text(qna.b)
+        $('.ansCText').text(qna.c)
+        $('.ansDText').text(qna.d)
+        switch (quesNum) {
+          case 0:
+            tier1Bed.play()
+            break;
+          case 1:
+            break;
+          case 2:
+            q3Bed.play()
+            break;
+          case 3:
+            q4Bed.play()
+            break;
+          case 4:
+            q5Bed.play()
+            break;
+          case 5:
+            q6Bed.play()
+            break;
+          case 6:
+            q7Bed.play()
+            break;
+          case 7:
+            q8Bed.play()
+            break;
+          case 8:
+            q9Bed.play()
+            break;
+          case 9:
+            q10Bed.play()
+            break;
+          case 10:
+            q11Bed.play()
+            break;
+          case 11:
+            q12Bed.play()
+            break;
+          default:
+            break;
+        }
+      }, 1000)
+    })
+    timer15sVid.addEventListener('play', (e) => {
+      timer15s.play()
+      timer15s.fade(0, 1, 250)
+      tier1Bed.fade(1, 0, 250)
+      $('#15sCountdown').animate({ top: '-10px' }, 500)
+      $('#15sCountdown').css('opacity', 1)
+    })
+    timer30sVid.addEventListener('play', (e) => {
+      timer30s.play()
+      timer30s.fade(0, 1, 250)
+      $('#30sCountdown').animate({ top: '-10px' }, 500)
+      $('#30sCountdown').css('opacity', 1)
+    })
+    timer15sVid.addEventListener('paused', (e) => {
+      timer15s.pause()
+      timer15s.fade(1, 0, 250)
+      $('#15sCountdown').animate({ top: '-10px' }, 500)
+      $('#15sCountdown').css('opacity', 1)
+    })
+    timer30sVid.addEventListener('paused', (e) => {
+      timer30s.pause()
+      timer30s.fade(1, 0, 250)
+      $('#30sCountdown').animate({ top: '-10px' }, 500)
+      $('#30sCountdown').css('opacity', 1)
+    })
+    socket.on('showAnsTier1', () => {
+      $('.ansAText,.ansBText,.ansCText,.ansDText,.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter,.loz,#timer15sCountdown').css('opacity', 1)
+      timer15sVid.currentTime = 1.2
+      timer15sVid.play()
+    })
+    socket.on('showAnsTier2', (quesNum) => {
+      switch (quesNum) {
+        case 2:
+          q3Bed.fade(1, 0, 250)
+          break;
+        case 3:
+          q4Bed.fade(1, 0, 250)
+          break;
+        case 4:
+          q5Bed.fade(1, 0, 250)
+          break;
+        case 5:
+          q6Bed.fade(1, 0, 250)
+          break;
+        case 6:
+          q7Bed.fade(1, 0, 250)
+          break;
+      }
+      $('.ansAText,.ansBText,.ansCText,.ansDText,.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter,.loz,#timer30sCountdown').css('opacity', 1)
+      timer30sVid.currentTime = 0
+      timer30sVid.play()
+    })
+    socket.on('showA', () => {
+      $('.ansAText,.loz.ansA,.ansALetter').css('opacity', 1)
+    })
+    socket.on('showB', () => {
+      $('.ansBText,.loz.ansB,.ansBLetter').css('opacity', 1)
+    })
+    socket.on('showC', () => {
+      $('.ansCText,.loz.ansC,.ansCLetter').css('opacity', 1)
+    })
+    socket.on('showD', () => {
+      $('.ansDText,.loz.ansD,.ansDLetter').css('opacity', 1)
+    })
+    function countRenderedLines(element) { const range = document.createRange(); range.selectNodeContents(element); const rects = range.getClientRects(); return rects.length; }
+
+    socket.on('choose', (ans, quesNum, isMuted) => {
+      console.log(quesNum)
+      chosenAns = ans
+      $('#chosen' + ans).css('opacity', 1)
+      $('.ans' + ans + 'Text,.ans' + ans + 'Letter').css('color', 'black')
+      if (quesNum == 0 || quesNum == 1) {
+        if (!isMuted) {
+          timer15sVid.pause()
+          timer15s.fade(1, 0, 250)
+          tier1Bed.stop()
+          tier1Bed.play()
+          tier1Bed.fade(0, 1, 250)
+          playSound('final tier 11.mp3')
+        }
+        $('#15sCountdown').animate({ top: '50px' }, 500, () => {
+          $('#15sCountdown').css('opacity', 0)
+        })
+      }
+      else if (quesNum >= 2 && quesNum <= 6) {
+        if (!isMuted) {
+          playSound('final tier 11.mp3')
+        }
+        $('#30sCountdown').animate({ top: '50px' }, 500, () => {
+          $('#30sCountdown').css('opacity', 0)
+        })
+        if (!isMuted) {
+          timer30sVid.pause()
+          timer30s.fade(1, 0, 100)
+          switch (quesNum) {
+            case 2:
+              q38Final.play()
+              break;
+            case 3:
+              q49Final.play()
+              break;
+            case 4:
+              q510Final.play()
+              break;
+            case 5:
+              q611Final.play()
+              break;
+            case 6:
+              q712Final.play()
+              break;
+          }
+        }
+      }
+      else if (quesNum >= 7 && quesNum <= 11) {
+        if (!isMuted) {
+          switch (quesNum) {
+            case 7:
+              q38Final.play()
+              q38Final.on('play', q8Bed.stop())
+              break;
+            case 8:
+              q49Final.play()
+              q49Final.on('play', q9Bed.stop())
+              break;
+            case 9:
+              q510Final.play()
+              q510Final.on('play', q10Bed.stop())
+              break;
+            case 10:
+              q611Final.play()
+              q611Final.on('play', q11Bed.stop())
+              break;
+            case 11:
+              q712Final.play()
+              q712Final.on('play', q12Bed.stop())
+              break;
+          }
+        }
+      }
+    })
+    socket.on('revealCorrect', (correctAns, quesNum, prize, isMuted) => {
+      timer15s.stop()
+      timer30s.stop()
+      if (chosenAns != correctAns) {
+        if (!isMuted) {
+          stopAllSounds()
+          switch (quesNum) {
+            case 0:
+            case 1:
+              let tier1Lose = playSound('Q1-5 Lose.mp3')
+              tier1Lose.on('play', tier1Bed.stop())
+              break;
+            case 2:
+            case 7:
+              let q38Lose = playSound('Q611 Lose.mp3')
+              q38Lose.on('play', q38Final.stop())
+              break;
+            case 3:
+            case 8:
+              let q49Lose = playSound('Q712 Lose.mp3')
+              q49Lose.on('play', q49Final.stop())
+              break;
+            case 4:
+            case 9:
+              let q510Lose = playSound('Q611 Lose.mp3')
+              q510Lose.on('play', q510Final.stop())
+              break;
+            case 5:
+            case 10:
+              let q611Lose = playSound('Q611 Lose.mp3')
+              q611Lose.on('play', q611Final.stop())
+              break;
+            case 6:
+              let q7Lose = playSound('Q10 Lose.mp3')
+              q7Lose.on('play', q712Final.stop())
+              break;
+            case 11:
+              let q12Lose = playSound('Q15 Lose.mp3')
+              q12Lose.on('play', q712Final.stop())
+              break;
+            default:
+              break;
+          }
+        }
+        $('#correct' + correctAns).css('opacity', 1)
+        $('.ans' + correctAns + 'Text,.ans' + correctAns + 'Letter').css('color', 'black')
+        setTimeout(() => {
+          $('#correct' + correctAns).css('opacity', 0)
+          $('.ans' + correctAns + 'Letter').css('color', '#E17C1E')
+          $('.ans' + correctAns + 'Text').css('color', 'white')
+        }, 250)
+        setTimeout(() => {
+          $('#correct' + correctAns).css('opacity', 1)
+          $('.ans' + correctAns + 'Text,.ans' + correctAns + 'Letter').css('color', 'black')
+        }, 500)
+        setTimeout(() => {
+          $('#correct' + correctAns).css('opacity', 0)
+          $('.ans' + correctAns + 'Letter').css('color', '#E17C1E')
+          $('.ans' + correctAns + 'Text').css('color', 'white')
+        }, 750)
+        setTimeout(() => {
+          $('#correct' + correctAns).css('opacity', 1)
+          $('.ans' + correctAns + 'Text,.ans' + correctAns + 'Letter').css('color', 'black')
+        }, 1000)
+      }
+      else {
+        if (!isMuted) {
+          switch (quesNum) {
+            case 0:
+              tier1Correct.play()
+              break;
+            case 1:
+              var tier1Win = playSound('Q1-2 win.mp3')
+              tier1Win.on('play', () => { tier1Bed.fade(1, 0, 100) })
+              break;
+            case 2:
+              let q6Win = playSound('Q6 Win.mp3')
+              q6Win.on('play', q38Final.stop())
+              break;
+            case 3:
+              let q7Win = playSound('Q7 Win.mp3')
+              q7Win.on('play', q49Final.stop())
+              break;
+            case 4:
+              let q8Win = playSound('Q8 Win.mp3')
+              q8Win.on('play', q510Final.stop())
+              break;
+            case 5:
+              let q9Win = playSound('Q9 Win.mp3')
+              q9Win.on('play', q611Final.stop())
+              break;
+            case 6:
+              var tier1Win = playSound('Q1-2 win.mp3')
+              break;
+            case 7:
+              let q11Win = playSound('Q11 Win.mp3')
+              q11Win.on('play', q38Final.stop())
+              break;
+            case 8:
+              let q12Win = playSound('Q12 Win.mp3')
+              q12Win.on('play', q49Final.stop())
+              break;
+            case 9:
+              let q13Win = playSound('Q13 Win.mp3')
+              q13Win.on('play', q510Final.stop())
+              break;
+            case 10:
+              let q14Win = playSound('Q14 Win.mp3')
+              q14Win.on('play', q611Final.stop())
+              break;
+            case 11:
+              let q15Win = playSound('Q15 Win.mp3')
+              q15Win.on('play', q712Final.stop())
+              break;
+            default:
+              break;
+          }
+        }
+        $('#correct' + correctAns).css('opacity', 1)
+        setTimeout(() => {
+          $('#correct' + correctAns).css('opacity', 0)
+        }, 250)
+        setTimeout(() => {
+          $('#correct' + correctAns).css('opacity', 1)
+        }, 500)
+        setTimeout(() => {
+          $('#correct' + correctAns).css('opacity', 0)
+        }, 750)
+        setTimeout(() => {
+          $('#correct' + correctAns).css('opacity', 1)
+        }, 1000)
+        if (!isMuted) {
+          setTimeout(() => {
+            $('#ques,#ansUp,#ansDown').css({ 'top': '1200px', 'scale': 2 })
+            $('#prizeAfterQuestion').css('opacity', 1)
+            $('.prizeAftQ').text(digitGroup(prize) + ' GL')
+          }, 1250)
+        }
+        $('.ans' + correctAns + 'Text').css('color', 'black')
+      }
+    })
+    socket.on('nextQuestion', quesNum => {
+      $('#prizeAfterQuestion,.chosen,.correct,.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter,.ansAText,.ansBText,.ansCText,.ansDText,.loz').css('opacity', 0)
+      $('.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter').css('color', '#E17C1E')
+      $('.ansAText,.ansBText,.ansCText,.ansDText').css('color', 'white')
+      switch (quesNum) {
+        case 1:
+          break;
+        case 2:
+        case 7:
+          playSound('Q611 Start.mp3')
+          break;
+        case 3:
+        case 8:
+          playSound('Q712 Start.mp3')
+          break;
+        case 4:
+        case 9:
+          playSound('Q813 Start.mp3')
+          break;
+        case 5:
+        case 10:
+          playSound('Q914 Start.mp3')
+          break;
+        case 6:
+        case 11:
+          playSound('Q1015 Start.mp3')
+          break;
+      }
+    })
+    socket.on('stopClock', (quesNum) => {
+      playSound('final tier 11.mp3')
+      if (quesNum == 0 || quesNum == 1) {
+        timer15s.pause()
+        timer15sVid.pause()
+        tier1Bed.fade(0, 1, 250)
+        $('#15sCountdown').animate({ top: '50px' }, 500)
+      }
+      else if (quesNum >= 2 && quesNum <= 7) {
+        timer30s.pause()
+        timer30sVid.pause()
+        $('#30sCountdown').animate({ top: '50px' }, 500)
+      }
+    })
+    socket.on('resumeClock', (quesNum) => {
+      playSound('final tier 11.mp3')
+      if (quesNum == 0 || quesNum == 1) {
+        timer15sVid.play()
+        tier1Bed.fade(1, 0, 250)
+        $('#15sCountdown').animate({ top: '-10px' }, 500)
+      }
+      else if (quesNum >= 2 && quesNum <= 7) {
+        console.log(timer30s.currentTime)
+        timer30sVid.play()
+        $('#30sCountdown').animate({ top: '-10px' }, 500)
+      }
+    })
+    socket.on('clearAnim', () => {
+      $('#ques,#ansUp,#ansDown').css({ 'top': '1200px', 'scale': 2 })
+      $('#prizeAfterQuestion,.chosen,.correct,.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter,.ansAText,.ansBText,.ansCText,.ansDText,.loz').css('opacity', 0)
+      $('.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter').css('color', '#E17C1E')
+      $('.ansAText,.ansBText,.ansCText,.ansDText').css('color', 'white')
+    })
+    socket.on('hideGpx', () => {
+      $('#ques,#ansUp,#ansDown').css('opacity', 0)
+    })
+    socket.on('showGpx', () => {
+      $('#ques,#ansUp,#ansDown').css('opacity', 1)
+    })
+    socket.on('showTotalPrize', prize => {
+      playSound('Goodbye_Contestant.ogg')
+      console.log(prize)
+      document.querySelector('#totalPrizeMoney video').play()
+      document.querySelector('#totalPrizeMoney video').addEventListener("play", function () {
+        $('.tpmPrize').text(digitGroup(prize) + ' GL')
+        $('#totalPrizeMoney').css('opacity', 1)
+      });
+    })
+    socket.on('hideTotalPrize', prize => {
+      document.querySelector('#totalPrizeMoney video').currentTime = 0
+      $('#totalPrizeMoney').css('opacity', 0)
+    })
+    socket.on('walkAway', (quesNum) => {
+      if (quesNum == 0 || quesNum == 1) {
+        timer15s.pause()
+        timer15sVid.pause()
+        tier1Bed.fade(0, 1, 250)
+        $('#15sCountdown').animate({ top: '50px' }, 500)
+      }
+      else if (quesNum >= 2 && quesNum <= 6) {
+        timer30s.pause()
+        timer30sVid.pause()
+        $('#30sCountdown').animate({ top: '50px' }, 500)
+      }
+      else if (quesNum == 7) {
+        q8Bed.fade(1, 0, 250)
+      }
+      else if (quesNum == 8) {
+        q9Bed.fade(1, 0, 250)
+      }
+      else if (quesNum == 9) {
+        q10Bed.fade(1, 0, 250)
+      }
+      else if (quesNum == 10) {
+        q11Bed.fade(1, 0, 250)
+      }
+      else if (quesNum == 11) {
+        q12Bed.fade(1, 0, 250)
+      }
+    })
+    socket.on('fifty', ans => {
+      playSound('50-50.mp3')
+      $(`.ans${ans[0]}Text,.loz.ans${ans[0]},.ans${ans[0]}Letter`).css('opacity', 0)
+      $(`.ans${ans[1]}Text,.loz.ans${ans[1]},.ans${ans[1]}Letter`).css('opacity', 0)
+    })
+    socket.on('playAtaBed', () => {
+      ataBed.play()
+    })
+    socket.on('ata', () => {
+      ataBed.stop()
+      ataSound.play()
+      $('#ata').animate({ 'opacity': 1 }, 500)
+    })
+    socket.on('ataEnd', percentages => {
+      console.log(percentages)
+      ataSound.stop()
+      playSound('Ask_the_Audience_Result.ogg')
+      let heightEachPercent = 3.18
+      $('#aPercent').text(percentages[0] + '%')
+      $('#ataBarA').css({ 'top': (318 - 3.18 * percentages[0]) })
+      setTimeout(() => {
+        $('#bPercent').text(percentages[1] + '%')
+        $('#ataBarB').css({ 'top': (318 - 3.18 * percentages[1]) })
+      }, 50)
+      setTimeout(() => {
+        $('#cPercent').text(percentages[2] + '%')
+        $('#ataBarC').css({ 'top': (318 - 3.18 * percentages[2]) })
+      }, 100)
+      setTimeout(() => {
+        $('#dPercent').text(percentages[3] + '%')
+        $('#ataBarD').css({ 'top': (318 - 3.18 * percentages[3]) })
+      }, 150)
+    })
+    socket.on('stqActivate', () => {
+      document.getElementById('stqMini').addEventListener('play', () => {
+        $('#stqMini').animate({ 'scale': 1 }, 500)
+        playSound('Lifeline_low_pitch.mp3')
+      })
+      document.getElementById('stqMini').play()
+    })
+    socket.on('stq', () => {
+      playSound('UK_stq.mp3.mpeg')
+      $('#stqMini').animate({ 'scale': 0 }, 500)
+      $('#ansDown').animate({ 'scale': 2, 'top': '1200px' }, 300)
+      setTimeout(() => { $('#ansUp').animate({ 'scale': 2, 'top': '1200px' }, 300) }, 250)
+      setTimeout(() => { $('#ques').animate({ 'scale': 2, 'top': '1200px' }, 300) }, 400)
+      setTimeout(() => {
+        $('#ques').animate({ 'scale': 1, 'top': '710px' }, 300)
+        setTimeout(() => { $('#ansUp').animate({ 'scale': 1, 'top': '845px' }, 300) }, 250)
+        setTimeout(() => { $('#ansDown').animate({ 'scale': 1, 'top': '928px' }, 300) }, 400)
+      }, 2000)
+    })
+    socket.on('stqQuestion', (qna) => {
+      $('#prizeAfterQuestion,.chosen,.correct,.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter,.ansAText,.ansBText,.ansCText,.ansDText,.loz').css('opacity', 0)
+      $('.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter').css('color', '#E17C1E')
+      $('.ansAText,.ansBText,.ansCText,.ansDText').css('color', 'white')
+      $('#quesText,svg').css('display', 'none')
+      console.log(qna)
+      //if only 1 line
+      let isHaveBr = false
+      $('#quesText').css('display', 'flex')
+      if (qna.ql2 == '') {
+        $('#quesText').html(qna.ql1)
+      }
+      //if 2 lines
+      else {
+        isHaveBr = true
+        $('#quesText').html(`${qna.ql1}<br>${qna.ql2}`)
+      }
+      console.log(countRenderedLines(document.getElementById('quesText')))
+      if (isHaveBr == true) {
+        if (countRenderedLines(document.getElementById('quesText')) >= 4) {
+          console.log(countRenderedLines(document.getElementById('quesText')))
+          $('#quesText').css('display', 'none')
+          let ql1Length = qna.ql1.length
+          let ql2Length = qna.ql2.length
+          let line1GlyphLength = 1440 / ql1Length
+          let line2GlyphLength = 1440 / ql2Length
+          if (line1GlyphLength < line2GlyphLength) {
+            $('#ques').append(
+              `
+              <svg style='display:initial'>
+                <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="1440"
+                  lengthAdjust="spacingAndGlyphs">${qna.ql1}</text>
+                <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="${line1GlyphLength * ql2Length}"
+                  lengthAdjust="spacingAndGlyphs">${qna.ql2}</text>
+              </svg>
+              `
+            )
+          }
+          else {
+            $('#ques').append(
+              `
+              <svg style='display:initial'>
+                <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="${line2GlyphLength * ql1Length}"
+                  lengthAdjust="spacingAndGlyphs">${qna.ql1}</text>
+                <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="1440"
+                  lengthAdjust="spacingAndGlyphs">${qna.ql2}</text>
+              </svg>
+              `
+            )
+          }
+        }
+      }
+      $('.ansAText').text(qna.a)
+      $('.ansBText').text(qna.b)
+      $('.ansCText').text(qna.c)
+      $('.ansDText').text(qna.d)
+    })
+
+    socket.on('playSound', sound => {
+      console.log(sound)
+      playSound(sound)
+    })
+    socket.on('pafBed', () => {
+      pafBed.play()
+    })
+    socket.on('pafTime', () => {
+      pafVideo.currentTime = 1
+      pafVideo.onseeked = function () {
+        pafVideo.play()
+        $('#paf').animate({ scale: .35 }, 500)
+        pafVideo.onseeked = null // Remove listener
+        pafTime.play()
+        pafBed.stop()
+        setTimeout(() => {
+          $('#paf').animate({ scale: 0 }, 500)
+        }, 30000)
+      }
+    })
+    socket.on('pafEnd', () => {
+      pafTime.stop()
+      playSound('Phone-a-Friend_End.ogg')
+      $('#paf').animate({ scale: 0 }, 500)
+    })
+
+    socket.on('disableLifeline', ll => {
+      if (ll == '50:50') $(`#cross1`).css('opacity', 1)
+      else if (ll == 'phone') $(`#cross2`).css('opacity', 1)
+      else if (ll == 'ata') $(`#cross3`).css('opacity', 1)
+      else if (ll == 'swap') $(`#cross4`).css('opacity', 1)
+    })
+    socket.on('enableLifeline', ll => {
+      if (ll == '50:50') $(`#cross1`).css('opacity', 0)
+      else if (ll == 'phone') $(`#cross2`).css('opacity', 0)
+      else if (ll == 'ata') $(`#cross3`).css('opacity', 0)
+      else if (ll == 'swap') $(`#cross4`).css('opacity', 0)
+    })
+  </script>
+</body>
+
+</html>

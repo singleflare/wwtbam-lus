@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player</title>
+</head>
+
+<body>
+  <style>
+    @font-face {
+      font-family: CP31C01;
+      src: url('CP31C01.ttf');
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      width: 1920px;
+      height: 1080px;
+      background: black;
+      overflow: hidden;
+    }
+
+    .flexcon {
+      display: flex;
+    }
+
+    .flexcon>* {
+      width: 100%;
+    }
+
+    #qna,
+    #tree,
+    #info {
+      position: relative;
+    }
+
+    #qna>*,
+    #tree>*,
+    #info>* {
+      position: absolute;
+    }
+
+    .fullWidth {
+      width: 100%
+    }
+
+    #treeMoney {
+      left: 1530px;
+      display: flex;
+      flex-direction: column-reverse;
+      top: 400px;
+    }
+
+    #treeNum {
+      left: 1440px;
+      display: flex;
+      flex-direction: column-reverse;
+      top: 400px;
+    }
+
+    .copper {
+      font-family: 'CP31C01';
+      font-size: 40pt;
+    }
+
+    .chosen.a,
+    .correct.a {
+      opacity: 1;
+      top: 129px;
+    }
+
+    .chosen.c,
+    .correct.c {
+      opacity: 1;
+      top: 206px;
+    }
+
+    .chosen.b,
+    .correct.b {
+      opacity: 1;
+      transform: rotateY(180deg);
+      left: 960px;
+      top: 129px;
+    }
+
+    .chosen.d,
+    .correct.d {
+      opacity: 1;
+      transform: rotateY(180deg);
+      left: 960px;
+      top: 206px;
+    }
+
+    #quesText,
+    #ansLetterA,
+    #ansLetterB,
+    #ansLetterC,
+    #ansLetterD,
+    #ansTextA,
+    #ansTextB,
+    #ansTextC,
+    #ansTextD {
+      font-family: Verdana;
+      font-size: 33pt;
+      color: white;
+      margin: 0;
+    }
+
+    #message,
+    #playerInfo,
+    #explain,
+    #pafTime,
+    #time {
+      border: 5px solid white;
+      border-radius: 15px;
+      padding: 5px;
+    }
+
+    #time p,
+    #pafTime p {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+  </style>
+  <div id='qna'>
+    <img src='ques lus.png' class='fullWidth' style='top:0;'>
+    <img src='ans lus.png' class='fullWidth' style='top:129px;'>
+    <img src='ans lus.png' class='fullWidth' style='top:206px;'>
+    <img class='chosen' src='chosen lus.png' style='width: 960px;opacity: 0;'>
+    <img class='correct' src='correct lus.png' style='width: 960px;opacity: 0;'>
+    <p id='quesText' style='top: 10px;width: 1420px;left: 250px;text-align: center;'>Cau hoi Cau hoi Cau hoi Cau hoi Cau
+      hoi Cau hoi Cau hoi Cau hoi Cau hoi Cau hoi Cau hoi </p>
+    <p id='ansLetterA' style='top: 140px;left: 220px;color:#E17C1E'>A.</p>
+    <p id='ansLetterB' style='top: 140px;left: 1000px;color:#E17C1E'>B.</p>
+    <p id='ansLetterC' style='top: 217px;left: 220px;color:#E17C1E'>C.</p>
+    <p id='ansLetterD' style='top: 217px;left: 1000px;color:#E17C1E'>D.</p>
+  </div>
+  <div id='tree'>
+    <img src='Gpx_MoneyTree_Still.png' style='left: 1400px;top: 282px;width: 620px;'>
+    <div id='treeNum'>
+      <div class='copper' id='num1' style='color: #E49F12;'>1</div>
+      <div class='copper' id='num2' style='color: white;'>2</div>
+      <div class='copper' id='num3' style='color: #E49F12;'>3</div>
+      <div class='copper' id='num4' style='color: #E49F12;'>4</div>
+      <div class='copper' id='num5' style='color: #E49F12;'>5</div>
+      <div class='copper' id='num6' style='color: #E49F12;'>6</div>
+      <div class='copper' id='num7' style='color: white;'>7</div>
+      <div class='copper' id='num8' style='color: #E49F12;'>8</div>
+      <div class='copper' id='num9' style='color: #E49F12;'>9</div>
+      <div class='copper' id='num10' style='color: #E49F12;'>10</div>
+      <div class='copper' id='num11' style='color: #E49F12;'>11</div>
+      <div class='copper' id='num12' style='color: white;'>12</div>
+    </div>
+    <div id='treeMoney'>
+      <div class='copper' id='prize1' style='color: #E49F12;'>500 GL</div>
+      <div class='copper' id='prize2' style='color: white;'>1,000 GL</div>
+      <div class='copper' id='prize3' style='color: #E49F12;'>2,000 GL</div>
+      <div class='copper' id='prize4' style='color: #E49F12;'>5,000 GL</div>
+      <div class='copper' id='prize5' style='color: #E49F12;'>10,000 GL</div>
+      <div class='copper' id='prize6' style='color: #E49F12;'>20,000 GL</div>
+      <div class='copper' id='prize7' style='color: white;'>50,000 GL</div>
+      <div class='copper' id='prize8' style='color: #E49F12;'>75,000 GL</div>
+      <div class='copper' id='prize9' style='color: #E49F12;'>150,000 GL</div>
+      <div class='copper' id='prize10' style='color: #E49F12;'>250,000 GL</div>
+      <div class='copper' id='prize11' style='color: #E49F12;'>500,000 GL</div>
+      <div class='copper' id='prize12' style='color: white;'>1,000,000 GL</div>
+    </div>
+    <img src='Lifeline_50_UK.png' style='width: 120px;
+    top: 300px;
+    left: 1410px;'>
+    <img src='Lifeline_Phone_A_Friend_UK.png' style='width: 120px;
+    top: 300px;
+    left: 1530px;'>
+    <img src='Lifeline_Ask_The_Audience_UK.png' style='width: 120px;
+    top: 300px;
+    left: 1650px;'>
+    <img src='Lifeline_Swap_UK.png' style='width: 120px;
+    top: 300px;
+    left: 1770px;'>
+    <img src='cross_for_used_lifelines.png' id='fiftyUsed' style='width: 70px;top: 304px;left: 1434px;opacity: 0;'>
+    <img src='cross_for_used_lifelines.png' id='phoneUsed' style='width: 70px;top: 304px;left: 1554px;opacity: 0;'>
+    <img src='cross_for_used_lifelines.png' id='ataUsed' style='width: 70px;top: 304px;left:1674px;opacity: 0;'>
+    <img src='cross_for_used_lifelines.png' id='swapUsed' style='width: 70px;top: 304px;left:1794px;opacity: 0;'>
+  </div>
+  <div id='time'
+    style='position: absolute;top: 282px;width: 198px;height: 194px;color: white;font-size: 40px;left: 1147px;border: red 5px solid;'>
+    <p style='font-size:75pt'>30</p>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src='jquery.keyframes.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"
+    integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('/p');
+    socket.on('pafBed', () => {
+    })
+    let pafTime = 30
+    socket.on('pafTime', () => {
+      $('#time').text(pafTime)
+      $('#time').css('opacity', 1)
+      timeInterval = setInterval(() => {
+        $('#time').text(--pafTime)
+        if (pafTime == 0) {
+          clearInterval(timeInterval)
+          $('#time').text('')
+        }
+      }, 1000)
+    })
+    socket.on('pafEnd', () => {
+      clearInterval(timeInterval)
+      $('#time').text('')
+    })
+    socket.on('showQ', qna => {
+      $('#explainText').text('')
+      $('#quesText').css('opacity', 1)
+      $('#quesText').text(qna.ql1 + qna.ql2)
+      $('#ansTextA').text(qna.a)
+      $('#ansTextB').text(qna.b)
+      $('#ansTextC').text(qna.c)
+      $('#ansTextD').text(qna.d)
+    })
+    socket.on('showAnsTier1', () => {
+      $('#ansTextA,#ansTextB,#ansTextC,#ansTextD').css('opacity', 1)
+      time = 15
+      $('#time').text(time)
+      timeInterval = setInterval(() => {
+        $('#time').text(--time)
+      }, 1000)
+    })
+    socket.on('showAnsTier2', () => {
+      $('#ansTextA,#ansTextB,#ansTextC,#ansTextD').css('opacity', 1)
+      time = 30
+      $('#time').text(time)
+      timeInterval = setInterval(() => {
+        $('#time').text(--time)
+      }, 1000)
+    })
+    socket.on('showA', () => {
+      $('#ansTextA').css('opacity', 1)
+    })
+    socket.on('showB', () => {
+      $('#ansTextB').css('opacity', 1)
+    })
+    socket.on('showC', () => {
+      $('#ansTextC').css('opacity', 1)
+    })
+    socket.on('showD', () => {
+      $('#ansTextD').css('opacity', 1)
+    })
+    socket.on('choose', (ans, correctAns, explain) => {
+      clearInterval(timeInterval)
+      if (ans == 'A') $('.chosen').addClass('a')
+      else if (ans == 'B') $('.chosen').addClass('b')
+      else if (ans == 'C') $('.chosen').addClass('c')
+      else if (ans == 'D') $('.chosen').addClass('d')
+    })
+    socket.on('revealCorrect', (correctAns, quesNum) => {
+      if (correctAns == 'A') $('.correct').addClass('a')
+      else if (correctAns == 'B') $('.correct').addClass('b')
+      else if (correctAns == 'C') $('.correct').addClass('c')
+      else if (correctAns == 'D') $('.correct').addClass('d')
+
+      $('#highlight img').css('opacity', 0)
+      $('#highlight' + (quesNum + 1)).css('opacity', 1)
+    })
+    socket.on('nextQuestion', (quesNum) => {
+      $('#quesText,#ansTextA,#ansTextB,#ansTextC,#ansTextD').css('opacity', 0)
+      $('#correctAns').text('')
+      $('.chosen').removeClass('a b c d')
+      $('.correct').removeClass('a b c d')
+    })
+    socket.on('updatePrizeInfo', (prizeInfo, quesNum) => {
+      $('#highlight img').css('opacity', 0)
+      $('#highlight' + (quesNum)).css('opacity', 1)
+    })
+    socket.on('disableLifeline', ll => {
+      if (ll == '50:50') $('#fiftyUsed').css('opacity', 1)
+      else if (ll == 'phone') $('#phoneUsed').css('opacity', 1)
+      else if (ll == 'ata') $('#ataUsed').css('opacity', 1)
+      else if (ll == 'swap') $('#swapUsed').css('opacity', 1)
+    })
+    socket.on('enableLifeline', ll => {
+      if (ll == '50:50') $('#fiftyUsed').css('opacity', 0)
+      else if (ll == 'phone') $('#phoneUsed').css('opacity', 0)
+      else if (ll == 'ata') $('#ataUsed').css('opacity', 0)
+      else if (ll == 'swap') $('#swapUsed').css('opacity', 0)
+    })
+    socket.on('showTotalPrize', totalPrize => {
+      $('#ansTextA,#ansTextB,#ansTextC,#ansTextD,#redWrong,#greenCorrect').css('opacity', 0)
+      $('#correctAns').text('')
+      $('.chosen').removeClass('a b c d')
+      $('.correct').removeClass('a b c d')
+      $('#quesText').html(`THẮNG CUỘC<br>${totalPrize} GL`)
+    })
+    socket.on('hideTotalPrize', () => {
+      $('#quesText').text('')
+    })
+    socket.on('walkAway', () => {
+      clearInterval(timeInterval)
+    })
+  </script>
+</body>
+
+</html>

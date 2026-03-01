@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controller</title>
+</head>
+
+<body>
+  <style>
+    * {
+      color: white;
+      box-sizing: border-box;
+      font-size: 15pt;
+    }
+
+    body {
+      background-color: black;
+      width: 1920px;
+      height: 1080px;
+      margin: auto;
+      overflow-x: hidden;
+    }
+
+    button {
+      border: 1px solid white;
+      background-color: black;
+    }
+
+    .flexcon {
+      display: flex;
+    }
+
+    .flexcon>* {
+      width: 100%;
+    }
+
+    .controlLabel {
+      width: 100%;
+      color: black;
+      background-color: white;
+      text-align: center;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .customFileInput {
+      display: inline-block;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      border: 1px solid white;
+    }
+
+    .singleLine {
+      width: 100%;
+    }
+
+    .purple {
+      background-color: blueviolet;
+    }
+
+    #questionList>* {
+      display: block;
+      width: 640px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-align: left;
+      color: black;
+    }
+
+    input {
+      color: black;
+    }
+  </style>
+  <div class='flexcon'>
+    <div>
+      <div class='controlLabel'>Đề</div>
+      <label for="fileInput" class="customFileInput areaTitle">
+        Nhập đề
+      </label>
+      <input id="fileInput" type="file" class="fileInput" accept='.xlsx' />
+      <button class='singleLine' id='showQ'>Hiện câu hỏi</button>
+      <button id='showAllAns' style='width: 100%;'>Hiện 4 đáp án</button>
+      <div class='flexcon'>
+        <button id='showA'>Hiện A</button>
+        <button id='showB'>Hiện B</button>
+        <button id='showC'>Hiện C</button>
+        <button id='showD'>Hiện D</button>
+      </div>
+      <div class='flexcon'>
+        <div id='quesNum' style='width: 10%;border:1px solid white'>-</div>
+        <div id='ques' class='singleLine purple' style='border:1px solid white;'>-</div>
+      </div>
+      <div style='display: flex;'>
+        <button id='chooseA' style='width: 10%;'>A</button>
+        <div id='ansA' class='purple' style='width: 40%;border:1px solid white;'>-</div>
+        <button id='chooseB' style='width: 10%;'>B</button>
+        <div id='ansB' class='purple' style='width: 40%;border:1px solid white;'>-</div>
+      </div>
+      <div style='display: flex;'>
+        <button id='chooseC' style='width: 10%;'>C</button>
+        <div id='ansC' class='purple' style='width: 40%;border:1px solid white;'>-</div>
+        <button id='chooseD' style='width: 10%;'>D</button>
+        <div id='ansD' class='purple' style='width: 40%;border:1px solid white;'>-</div>
+      </div>
+      <div class='flexcon'>
+        <button id='revealCorrect'>Đáp án đúng</button>
+        <button id='nextQuestion'>Câu tiếp theo</button>
+      </div>
+      <div class='flexcon'>
+        <button id='stopClock'>Dừng thời gian</button>
+        <button id='resumeClock'>Tiếp thời gian</button>
+        <button id='hideGpx'>Ẩn giao diện (cho quảng cáo)</button>
+        <button id='showGpx'>Hiện giao diện</button>
+      </div>
+
+      <div class='flexcon'>
+        <button id='walkAway'>Dừng chơi</button>
+        <button id='clearAnim'>Ẩn giao diện & reset animation giao diện</button>
+        <button id='showTotalPrize'>Hiện tiền thắng cuộc</button>
+        <button id='hideTotalPrize'>Ẩn tiền thắng cuộc</button>
+      </div>
+      <div class='controlLabel'>Danh sách câu hỏi</div>
+      <div id='questionList'>
+
+      </div>
+    </div>
+    <div>
+      <div class='controlLabel'>Thang tiền thưởng</div>
+      <div class='flexcon'>
+        <button id='showMoneyTree'>Hiện thang tiền thưởng</button>
+        <button id='hideMoneyTree'>Ẩn thang tiền thưởng</button>
+      </div>
+      <div class='flexcon'>
+        <button id='introMoneyTree'>Giới thiệu</button>
+        <button id='introSafe1'>Mốc 1</button>
+        <button id='introSafe2'>Mốc 2</button>
+        <button id='introSafe3'>Mốc 3</button>
+        <button id='introLifeline1'>Trợ giúp 1</button>
+        <button id='introLifeline2'>Trợ giúp 2</button>
+        <button id='introLifeline3'>Trợ giúp 3</button>
+        <button id='introLifeline4'>Trợ giúp 4</button>
+      </div>
+      <div class='controlLabel'>50:50</div>
+      <div class='flexcon'>
+        <button id='fifty'>50:50</button>
+        <button id='disable50'>Tắt</button>
+        <button id='enable50'>Bật</button>
+      </div>
+      <div class='controlLabel'>Gọi điện thoại</div>
+      <div class='flexcon'>
+        <button id='pafBed'>Nền</button>
+        <button id='pafTime'>30s</button>
+        <button id='pafEnd'>Kết thúc</button>
+        <button id='disablePaf'>Tắt</button>
+        <button id='enablePaf'>Bật</button>
+      </div>
+      <div class='controlLabel'>Khán giả</div>
+      <div class='flexcon'>
+        <button id='playAtaBed'>Nền</button>
+        <button id='ata'>Bắt đầu</button>
+        <button id='ataEnd'>Kết thúc</button>
+        <input type='number' placeholder='A' id='aPercent'>
+        <input type='number' placeholder='B' id='bPercent'>
+        <input type='number' placeholder='C' id='cPercent'>
+        <input type='number' placeholder='D' id='dPercent'>
+        <button id='disableAta'>Tắt</button>
+        <button id='enableAta'>Bật</button>
+      </div>
+      <div class='controlLabel'>Đổi câu hỏi</div>
+      <div class='flexcon'>
+        <button id='stqActivate'>Kích hoạt</button>
+        <button id='stqA'>A</button>
+        <button id='stqB'>B</button>
+        <button id='stqC'>C</button>
+        <button id='stqD'>D</button>
+        <button id='stqCorrect'>Đúng</button>
+        <button id='stq'>Đổi</button>
+        <button id='disableStq'>Tắt</button>
+        <button id='enableStq'>Bật</button>
+      </div>
+      <div class='controlLabel'>Nhạc</div>
+      <button id='explainRules'>Giải thích luật</button>
+      <div class='flexcon'><input id='playerInfoInput' type='text' placeholder='Thông tin người chơi'></div>
+      <div class='flexcon'><input id='messageInput' type='text' placeholder='Tin nhắn đến MC'></div>
+    </div>
+    <div></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    let quesNum = 0
+    let chosenAns
+    let prizeIdx = 0
+    let prizeInfo = []
+    document.getElementById('fileInput').onchange = function () {
+      var fileName = this.value.split('\\').pop();
+      document.querySelector('.customFileInput').textContent = fileName;
+    };
+    const socket = io('/c');
+    $('#introMoneyTree').click(() => {
+      socket.emit('introMoneyTree')
+    })
+    $('#introSafe1').click(() => {
+      socket.emit('introSafe1')
+    })
+    $('#introSafe2').click(() => {
+      socket.emit('introSafe2')
+    })
+    $('#introSafe3').click(() => {
+      socket.emit('introSafe3')
+    })
+    $('#introLifeline1').click(() => {
+      socket.emit('introLifeline1')
+    })
+    $('#introLifeline2').click(() => {
+      socket.emit('introLifeline2')
+    })
+    $('#introLifeline3').click(() => {
+      socket.emit('introLifeline3')
+    })
+    $('#introLifeline4').click(() => {
+      socket.emit('introLifeline4')
+    })
+
+    $('#showMoneyTree').click(() => {
+      socket.emit('showMoneyTree', quesNum)
+    })
+    $('#hideMoneyTree').click(() => {
+      socket.emit('hideMoneyTree')
+    })
+    $('#showQ').click(() => {
+      console.log(quesNum)
+      socket.emit('showQ', qnas[quesNum], quesNum)
+    })
+    $('#showAllAns').click(() => {
+      if (quesNum == 0 || quesNum == 1) socket.emit('showAnsTier1')
+      else if (quesNum >= 2 && quesNum <= 6) socket.emit('showAnsTier2', quesNum)
+    })
+    $('#showA').click(() => {
+      socket.emit('showA')
+    })
+    $('#showB').click(() => {
+      socket.emit('showB')
+    })
+    $('#showC').click(() => {
+      socket.emit('showC')
+    })
+    $('#showD').click(() => {
+      socket.emit('showD')
+    })
+    $('#revealCorrect').click(() => {
+      socket.emit('revealCorrect', qnas[quesNum].correct, quesNum, prizes[quesNum], false)
+      if (qnas[quesNum].correct == chosenAns) {
+        prizeIdx = quesNum
+        quesNum++
+        prizeInfo[0] = 12 - quesNum
+        prizeInfo[1] = prizes[quesNum - 1]
+        prizeInfo[2] = qnas[quesNum].correct
+        prizeInfo[3] = prizes[quesNum]
+        if (quesNum <= 1) prizeInfo[4] = 0
+        else if (quesNum >= 2 && quesNum <= 6) prizeInfo[4] = prizes[1]
+        else if (quesNum >= 7 && quesNum <= 11) prizeInfo[4] = prizes[6]
+        if (quesNum <= 1) prizeInfo[5] = prizes[quesNum - 1]
+        else if (quesNum >= 2 && quesNum <= 6) prizeInfo[5] = prizes[quesNum - 1] - prizes[1]
+        else if (quesNum >= 7 && quesNum <= 11) prizeInfo[5] = prizes[quesNum - 1] - prizes[6]
+        socket.emit('updatePrizeInfo', prizeInfo, quesNum)
+
+      } else {
+        if (quesNum <= 1) prizeIdx = -1
+        else if (quesNum >= 2 && quesNum <= 6) prizeIdx = 1
+        else if (quesNum >= 7 && quesNum <= 11) prizeIdx = 6
+      }
+    })
+    $('#nextQuestion').click(() => {
+      socket.emit('nextQuestion', quesNum, prizeInfo)
+      $('#ques').text(qnas[quesNum].ql1 + qnas[quesNum].ql2)
+      $('#ansA').text(qnas[quesNum].a)
+      $('#ansB').text(qnas[quesNum].b)
+      $('#ansC').text(qnas[quesNum].c)
+      $('#ansD').text(qnas[quesNum].d)
+      $('#quesNum').text(quesNum + 1)
+    })
+    $('#stopClock').click(() => {
+      socket.emit('stopClock', quesNum)
+    })
+    $('#resumeClock').click(() => {
+      socket.emit('resumeClock', quesNum)
+    })
+    $('#walkAway').click(() => {
+      socket.emit('walkAway', quesNum)
+    })
+    $('#clearAnim').click(() => {
+      socket.emit('clearAnim')
+    })
+    $('#showGpx').click(() => {
+      socket.emit('showGpx')
+    })
+    $('#hideGpx').click(() => {
+      socket.emit('hideGpx')
+    })
+    $('#showTotalPrize').click(() => {
+      socket.emit('showTotalPrize', prizes[prizeIdx] == -1 ? 0 : prizes[prizeIdx])
+    })
+    $('#hideTotalPrize').click(() => {
+      socket.emit('hideTotalPrize')
+    })
+    let ans = ['A', 'B', 'C', 'D']
+    ans.forEach(element => {
+      $('#choose' + element).click(() => {
+        chosenAns = element
+        socket.emit('choose', element, quesNum, false, qnas[quesNum].correct, qnas[quesNum].explain)
+      })
+      $('#stq' + element).click(() => {
+        chosenAns = element
+        socket.emit('choose', element, quesNum, true)
+      })
+    })
+    function randomIntFromInterval(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    $('#fifty').click(() => {
+      let ansArr = ['A', 'B', 'C', 'D']
+      ansArr.splice(ansArr.indexOf(qnas[quesNum].correct))
+      console.log(ansArr)
+      ansArr.splice(randomIntFromInterval(0, 2), 1)
+      console.log(ansArr)
+      socket.emit('fifty', ansArr)
+    })
+    $('#pafBed').click(() => {
+      socket.emit('pafBed')
+    })
+    $('#pafTime').click(() => {
+      socket.emit('pafTime')
+    })
+    $('#pafEnd').click(() => {
+      socket.emit('pafEnd')
+    })
+    $('#playAtaBed').click(() => {
+      socket.emit('playAtaBed')
+    })
+    $('#ata').click(() => {
+      socket.emit('ata')
+      let correctAns = qnas[quesNum].correct
+      let correctAnsIdx = ['A', 'B', 'C', 'D'].indexOf(correctAns)
+      let howManyAns = [0, 0, 0, 0]
+      let ansPercentages = [0, 0, 0, 0]
+      let probabilities = [0, 0, 0, 0]
+      for (let i = 0; i < 4; i++) {
+        probabilities[i] = Math.round((1 - correctRate[quesNum]) / 3 * 100) / 100
+      }
+      probabilities[correctAnsIdx] = correctRate[quesNum]
+      console.log(probabilities)
+
+      let id = 1
+      let ataInterval = setInterval(() => {
+        var num = Math.random();
+        if (num < probabilities[0]) howManyAns[0]++;
+        else if (num < probabilities[0] + probabilities[1]) howManyAns[1]++;
+        else if (num < probabilities[0] + probabilities[1] + probabilities[2]) howManyAns[2]++;
+        else howManyAns[3]++;
+        ansPercentages = howManyAns.map(x => Math.round((x / id) * 100))
+        socket.emit('ataUpdate', howManyAns, ansPercentages)
+        if (id == 100) {
+          clearInterval(ataInterval)
+          socket.emit('ataEnd', ansPercentages)
+        }
+        id++
+      }, 100)
+    })
+    $('#ataEnd').click(() => {
+      socket.emit('ataEnd', [$('#aPercent').val(), $('#bPercent').val(), $('#cPercent').val(), $('#dPercent').val()])
+    })
+    $('#stqActivate').click(() => {
+      socket.emit('stqActivate')
+    })
+    $('#stq').click(() => {
+      socket.emit('stq')
+      setTimeout(() => {
+        socket.emit('stqQuestion', qnas[12])
+        $('#ques').text(qnas[12].ql1 + qnas[12].ql2)
+        $('#ansA').text(qnas[12].a)
+        $('#ansB').text(qnas[12].b)
+        $('#ansC').text(qnas[12].c)
+        $('#ansD').text(qnas[12].d)
+        $('#quesNum').text('Đổi')
+        qnas[quesNum].ql1 = qnas[12].ql1
+        qnas[quesNum].ql2 = qnas[12].ql2
+        qnas[quesNum].a = qnas[12].a
+        qnas[quesNum].b = qnas[12].b
+        qnas[quesNum].c = qnas[12].c
+        qnas[quesNum].d = qnas[12].d
+        qnas[quesNum].correct = qnas[12].correct
+      }, 1000)
+    })
+    $('#stqCorrect').click(() => {
+      socket.emit('revealCorrect', qnas[quesNum].correct, quesNum, prizes[quesNum], true)
+    })
+    let qnas = [
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+    ]
+
+    let correctRate = [.9, .9, .75, .6, .45, .3, .3, .25, .25, .25, .25, .25]
+    let prizes = [500, 1000, 2000, 5000, 10000, 20000, 50000, 75000, 150000, 250000, 500000, 100000]
+    $('#fileInput').on('change', async (e) => {
+      const file = e.target.files[0]
+      const data = await file.arrayBuffer()
+      const workbook = XLSX.read(data)
+      const sheet = workbook.Sheets[workbook.SheetNames[0]]
+      let row
+      // Helper function to safely get cell 
+      const getCellValue = (sheet, col, row) => {
+        const cell = sheet[XLSX.utils.encode_cell({ c: col, r: row })]
+        return cell ? cell.v : ''
+      }
+      for (let i = 2; i <= 26; i += 2) {
+
+        console.log(i, getCellValue(sheet, 1, i), getCellValue(sheet, 1, i + 1))
+
+        if ((i / 2) == 13) $('#questionList').append(`<button>Đổi. ${getCellValue(sheet, 1, i) + getCellValue(sheet, 1, i + 1)}</button>`)
+        else $('#questionList').append(`<button>${i / 2}. ${getCellValue(sheet, 1, i) + getCellValue(sheet, 1, i + 1)}</button>`)
+
+        if ((i / 2) == 1 || (i / 2) == 2) $(`#questionList button:nth-child(${(i / 2)})`).css('background-color', '#00ff00cc')
+        else if ((i / 2) >= 3 && (i / 2) <= 7 || (i / 2) == 13) $(`#questionList button:nth-child(${(i / 2)})`).css('background-color', '#ffff00cc')
+        else if ((i / 2) >= 8 && (i / 2) <= 12) $(`#questionList button:nth-child(${(i / 2)})`).css('background-color', '#ff0000cc')
+        else $(`#questionList button:nth-child(${(i / 2)})`).css('background-color', '#ff0000cc')
+
+        qnas[(i / 2) - 1].ql1 = getCellValue(sheet, 1, i)
+        qnas[(i / 2) - 1].ql2 = getCellValue(sheet, 1, i + 1)
+        qnas[(i / 2) - 1].a = getCellValue(sheet, 2, i)
+        qnas[(i / 2) - 1].b = getCellValue(sheet, 3, i)
+        qnas[(i / 2) - 1].c = getCellValue(sheet, 4, i)
+        qnas[(i / 2) - 1].d = getCellValue(sheet, 5, i)
+        qnas[(i / 2) - 1].correct = getCellValue(sheet, 6, i)
+        qnas[(i / 2) - 1].explain = getCellValue(sheet, 7, i)
+        $(`#questionList button:nth-child(${i / 2})`).click(() => {
+          $('#ques').text(qnas[(i / 2) - 1].ql1 + qnas[(i / 2) - 1].ql2)
+          $('#ansA').text(qnas[(i / 2) - 1].a)
+          $('#ansB').text(qnas[(i / 2) - 1].b)
+          $('#ansC').text(qnas[(i / 2) - 1].c)
+          $('#ansD').text(qnas[(i / 2) - 1].d)
+          $('#quesNum').text(i / 2)
+          if ((i / 2) == 13) $('#quesNum').text('Đổi')
+          quesNum = (i / 2) - 1
+          let prizeInfo = []
+          prizeInfo[0] = 12 - quesNum
+          prizeInfo[1] = prizes[quesNum - 1] == undefined ? 0 : prizes[quesNum - 1]
+          prizeInfo[2] = qnas[quesNum].correct
+          prizeInfo[3] = prizes[quesNum]
+          if (quesNum <= 1) prizeInfo[4] = 0
+          else if (quesNum >= 2 && quesNum <= 6) prizeInfo[4] = prizes[1]
+          else if (quesNum >= 7 && quesNum <= 11) prizeInfo[4] = prizes[6]
+          if (quesNum == 0) prizeInfo[5] = 0
+          else if (quesNum <= 1) prizeInfo[5] = prizes[quesNum - 1]
+          else if (quesNum >= 2 && quesNum <= 6) prizeInfo[5] = prizes[quesNum - 1] - prizes[1]
+          else if (quesNum >= 7 && quesNum <= 11) prizeInfo[5] = prizes[quesNum - 1] - prizes[6]
+
+          socket.emit('updatePrizeInfo', prizeInfo, quesNum)
+        })
+      }
+      console.log(qnas)
+    })
+
+    $('#explainRules').click(() => {
+      socket.emit('playSound', 'Explain_the_Rules_1.mp3')
+    })
+
+    $('#playerInfoInput').on('change', () => {
+      socket.emit('playerInfo', $('#playerInfoInput').val())
+    })
+    $('#messageInput').on('change', () => {
+      socket.emit('message', $('#messageInput').val())
+    })
+
+    $('#disable50').click(() => {
+      socket.emit('disableLifeline', '50:50')
+    })
+    $('#disablePhone').click(() => {
+      socket.emit('disableLifeline', 'phone')
+    })
+    $('#disableAta').click(() => {
+      socket.emit('disableLifeline', 'ata')
+    })
+    $('#disableSwap').click(() => {
+      socket.emit('disableLifeline', 'swap')
+    })
+    $('#enable50').click(() => {
+      socket.emit('enableLifeline', '50:50')
+    })
+    $('#enablePhone').click(() => {
+      socket.emit('enableLifeline', 'phone')
+    })
+    $('#enableAta').click(() => {
+      socket.emit('enableLifeline', 'ata')
+    })
+    $('#enableSwap').click(() => {
+      socket.emit('enableLifeline', 'swap')
+    })
+  </script>
+</body>
+
+</html>

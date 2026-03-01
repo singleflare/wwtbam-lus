@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viewer</title>
+</head>
+
+<body>
+  <style>
+    * {
+      font-family: Arial;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      position: absolute;
+    }
+
+    div,
+    video {
+      position: absolute;
+    }
+
+    video {
+      top: 50px;
+      z-index: -1;
+    }
+
+    #quesImg,
+    #ansUpImg,
+    #ansDownImg {
+      width: 1920px;
+      display: block;
+    }
+
+    #ques {
+      width: 1920px;
+      top: 1200px;
+    }
+
+    #ansUp {
+      width: 1920px;
+      top: 1200px;
+    }
+
+    #ansDown {
+      width: 1920px;
+      top: 1200px;
+    }
+
+    p,
+    text {
+      color: white;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+
+    #ques>svg {
+      height: 138px;
+      left: 290px;
+      width: 1340px;
+      position: absolute;
+      font-size: 32pt;
+    }
+
+    #ansUp>p,
+    #ansDown>p {
+      height: 86px;
+    }
+
+    #ansUp>p,
+    #ansDown>p {
+      text-align: left;
+      justify-content: left;
+      font-size: 30pt;
+    }
+
+    .loz {
+      position: absolute;
+      width: 25px;
+      z-index: 1;
+    }
+
+    @keyframes quesAppear {
+      0% {
+        scale: 2;
+        top: 1200px;
+      }
+
+      100% {
+        scale: 1;
+        top: 700px;
+      }
+    }
+
+    @keyframes ansUpAppear {
+      0% {
+        scale: 2;
+        top: 1200px;
+      }
+
+      100% {
+        scale: 1;
+        top: 845px;
+      }
+    }
+
+    @keyframes ansDownAppear {
+      0% {
+        scale: 2;
+        top: 1200px;
+      }
+
+      100% {
+        scale: 1;
+        top: 940px;
+      }
+    }
+
+    #ques.animated {
+      animation: quesAppear .45s forwards ease-out;
+    }
+
+    #ansUp.animated {
+      animation: ansUpAppear .45s forwards ease-out .25s;
+    }
+
+    #ansDown.animated {
+      animation: ansDownAppear .45s forwards ease-out .5s;
+    }
+
+    text {
+      height: 138px;
+    }
+
+    .chosen,
+    .correct {
+      position: absolute;
+      z-index: 0;
+      opacity: 0;
+    }
+  </style>
+  <div id='ques'>
+    <svg style='top:10px'>
+      <text style='fill:white' x='0' y='40' textLength="1340" lengthAdjust="spacingAndGlyphs">Trong chiến lược phát
+        triển kinh tế - xã hội 10 năm 2021-2030,</text>
+      <text style='fill:white' x='0' y='80' textLength="1340" lengthAdjust="spacingAndGlyphs">nước ta dự định đến năm
+        bao nhiêu sẽ trở thành nước phát triển, thu nhập cao?</text>
+    </svg>
+    <img id='quesImg' src='ques uk.png'>
+  </div>
+  <div id='ansUp'>
+    <img class='loz' src='Lozenge_UK.png' style='top: 34px;left: 295px;'>
+    <img class='loz' src='Lozenge_UK.png' style='top: 34px;left: 1003px;'>
+    <p class='ansAText' style='color:#E17C1E;left: 325px;width:0'>A:</p>
+    <p class='ansBText' style='color:#E17C1E;left: 1034px;width:0'>B:</p>
+    <p class='ansAText' style='width: 530px;left: 370px;font-stretch: condensed;'>11111</p>
+    <p class='ansBText' style='width: 530px;left: 1082px;'>2</p>
+    <img id='ansUpImg' src='ans uk.png'>
+    <img src='chosen uk.png' class='chosen' id='chosenA' style='top: 0;width: 960px;'>
+    <img src='chosen uk.png' class='chosen' id='chosenB'
+      style='top: 0;width: 960px;transform: rotateY(180deg);left: 960px;'>
+    <img src='correct uk.png' class='correct' id='correctA' style='top: 0;width: 960px;'>
+    <img src='correct uk.png' class='correct' id='correctB'
+      style='top: 0;width: 960px;transform: rotateY(180deg);left: 960px;'>
+  </div>
+  <div id='ansDown'>
+    <img class='loz' src='Lozenge_UK.png' style='top: 34px;left: 295px;'>
+    <img class='loz' src='Lozenge_UK.png' style='top: 34px;left: 1003px;'>
+    <p class='ansCText' style='color:#E17C1E;left: 325px;width:0'>C:</p>
+    <p class='ansDText' style='color:#E17C1E;left: 1034px;width:0'>D:</p>
+    <p class='ansCText' style='width: 530px;left: 370px;'>3</p>
+    <p class='ansDText' style='width: 530px;left: 1082px;'>4</p>
+    <img id='ansDownImg' src='ans uk.png'>
+    <img src='chosen uk.png' class='chosen' id='chosenC' style='top: 0;width: 960px;'>
+    <img src='chosen uk.png' class='chosen' id='chosenD'
+      style='top: 0;width: 960px;transform: rotateY(180deg);left: 960px;'>
+    <img src='correct uk.png' class='correct' id='correctC' style='top: 0;width: 960px;'>
+    <img src='correct uk.png' class='correct' id='correctD'
+      style='top: 0;width: 960px;transform: rotateY(180deg);left: 960px;'>
+  </div>
+
+  <video src='Timer 15sec countdown.webm' id='15sCountdown'></video>
+  <video src='Timer 30sec countdown.webm' id='30sCountdown'></video>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('/v');
+    var timer15sVid = document.getElementById("15sCountdown");
+    var timer15sAudio = new Audio('./Sfx_MillionaireUK2010_15s countdown.m4a')
+    var timer30sVid = document.getElementById("30sCountdown");
+    var timer30sAudio = new Audio('./Sfx_MillionaireUK2010_30s countdown.m4a')
+
+    socket.on('showQ', () => {
+      $('#ques,#ansUp,#ansDown').addClass('animated')
+    })
+    socket.on('showAnsTier1', () => {
+      timer15sVid.currentTime = 1.2
+      timer15sVid.play()
+      timer15sAudio.play()
+      $('#15sCountdown').animate({ top: '-10px' }, 500)
+    })
+    socket.on('showAnsTier2', () => {
+      timer30sVid.currentTime = 1.2
+      timer30sVid.play()
+      timer30sAudio.play()
+      $('#30sCountdown').animate({ top: '-10px' }, 500)
+    })
+    socket.on('choose', ans => {
+      $('#chosen' + ans).css('opacity', 1)
+      $('.ans' + ans + 'Text').css('color', 'black')
+    })
+    socket.on('correct', ans => {
+      $('#correct' + ans).css('opacity', 1)
+      setTimeout(() => {
+        $('#correct' + ans).css('opacity', 0)
+      }, 250)
+      setTimeout(() => {
+        $('#correct' + ans).css('opacity', 1)
+      }, 500)
+      setTimeout(() => {
+        $('#correct' + ans).css('opacity', 0)
+      }, 750)
+      setTimeout(() => {
+        $('#correct' + ans).css('opacity', 1)
+      }, 1000)
+      $('.ans' + ans + 'Text').css('color', 'black')
+    })
+  </script>
+</body>
+
+</html>
