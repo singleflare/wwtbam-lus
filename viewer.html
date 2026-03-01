@@ -910,12 +910,12 @@
               break;
             case 4:
             case 9:
-              let q510Lose = playSound('Q611 Lose.mp3')
+              let q510Lose = playSound('Q813 Lose.mp3')
               q510Lose.on('play', q510Final.stop())
               break;
             case 5:
             case 10:
-              let q611Lose = playSound('Q611 Lose.mp3')
+              let q611Lose = playSound('Q914 Lose.mp3')
               q611Lose.on('play', q611Final.stop())
               break;
             case 6:
@@ -1090,10 +1090,10 @@
       $('.ansAText,.ansBText,.ansCText,.ansDText').css('color', 'white')
     })
     socket.on('hideGpx', () => {
-      $('#ques,#ansUp,#ansDown').css('opacity', 0)
+      $('#ques,#ansUp,#ansDown,#15sCountdown,#30sCountdown').css('opacity', 0)
     })
     socket.on('showGpx', () => {
-      $('#ques,#ansUp,#ansDown').css('opacity', 1)
+      $('#ques,#ansUp,#ansDown,#15sCountdown,#30sCountdown').css('opacity', 1)
     })
     socket.on('showTotalPrize', prize => {
       playSound('Goodbye_Contestant.ogg')
