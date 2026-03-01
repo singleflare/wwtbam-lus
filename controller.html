@@ -165,6 +165,7 @@
         <button id='playAtaBed'>Nền</button>
         <button id='ata'>Bắt đầu</button>
         <button id='ataEnd'>Kết thúc</button>
+        <button id='ataHide'>Ẩn đồ họa</button>
         <input type='number' placeholder='A' id='aPercent'>
         <input type='number' placeholder='B' id='bPercent'>
         <input type='number' placeholder='C' id='cPercent'>
@@ -186,6 +187,11 @@
       </div>
       <div class='controlLabel'>Nhạc</div>
       <button id='explainRules'>Giải thích luật</button>
+      <button id='letsPlay'>Bắt đầu đi tìm</button>
+      <button id='commIn'>Commercial in</button>
+      <button id='commOut'>Commercial out</button>
+      <button id='stopBed'>Dừng nền</button>
+      <button id='resumeBed'>Tiếp tục nền</button>
       <div class='flexcon'><input id='playerInfoInput' type='text' placeholder='Thông tin người chơi'></div>
       <div class='flexcon'><input id='messageInput' type='text' placeholder='Tin nhắn đến MC'></div>
     </div>
@@ -328,10 +334,8 @@
     }
     $('#fifty').click(() => {
       let ansArr = ['A', 'B', 'C', 'D']
-      ansArr.splice(ansArr.indexOf(qnas[quesNum].correct))
-      console.log(ansArr)
-      ansArr.splice(randomIntFromInterval(0, 2), 1)
-      console.log(ansArr)
+      ansArr.splice(ansArr.indexOf(qnas[quesNum].correct), 1)
+      ansArr.splice(randomIntFromInterval(0, ansArr.length - 1), 1)
       socket.emit('fifty', ansArr)
     })
     $('#pafBed').click(() => {
@@ -377,6 +381,9 @@
     })
     $('#ataEnd').click(() => {
       socket.emit('ataEnd', [$('#aPercent').val(), $('#bPercent').val(), $('#cPercent').val(), $('#dPercent').val()])
+    })
+    $('#ataHide').click(() => {
+      socket.emit('ataHide')
     })
     $('#stqActivate').click(() => {
       socket.emit('stqActivate')
@@ -483,7 +490,22 @@
     })
 
     $('#explainRules').click(() => {
-      socket.emit('playSound', 'Explain_the_Rules_1.mp3')
+      socket.emit('explainRules')
+    })
+    $('#letsPlay').click(() => {
+      socket.emit('letsPlay')
+    })
+    $('#commIn').click(() => {
+      socket.emit('playSound', 'Into_Commercial_(Rave).ogg')
+    })
+    $('#commOut').click(() => {
+      socket.emit('playSound', 'Out_of_Commercial_(Rave).ogg')
+    })
+    $('#stopBed').click(() => {
+      socket.emit('stopBed', quesNum)
+    })
+    $('#resumeBed').click(() => {
+      socket.emit('resumeBed', quesNum)
     })
 
     $('#playerInfoInput').on('change', () => {
@@ -496,25 +518,25 @@
     $('#disable50').click(() => {
       socket.emit('disableLifeline', '50:50')
     })
-    $('#disablePhone').click(() => {
+    $('#disablePaf').click(() => {
       socket.emit('disableLifeline', 'phone')
     })
     $('#disableAta').click(() => {
       socket.emit('disableLifeline', 'ata')
     })
-    $('#disableSwap').click(() => {
+    $('#disableStq').click(() => {
       socket.emit('disableLifeline', 'swap')
     })
     $('#enable50').click(() => {
       socket.emit('enableLifeline', '50:50')
     })
-    $('#enablePhone').click(() => {
+    $('#enablePaf').click(() => {
       socket.emit('enableLifeline', 'phone')
     })
     $('#enableAta').click(() => {
       socket.emit('enableLifeline', 'ata')
     })
-    $('#enableSwap').click(() => {
+    $('#enableStq').click(() => {
       socket.emit('enableLifeline', 'swap')
     })
   </script>

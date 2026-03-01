@@ -199,6 +199,7 @@
     }
 
     #lozTree img {
+      position: relative;
       width: 26px;
       height: 20px;
       opacity: 0;
@@ -279,7 +280,7 @@
       style='top: 0.5px;width: 960px;transform: rotateY(180deg);left: 960px;'>
   </div>
   <video id='stqMini' src='STQ.webm' style='width: 150px;top: 883px;left: 885px;z-index: 1;scale:0'></video>
-  <img src='ata_graph_graphic_for_altp-lus.png' id='ata' style='width: 300px;left: 1450px;top: 100px;'>
+  <img src='ata_graph_graphic_for_altp-lus.png' id='ata' style='width: 300px;left: 1450px;top: 100px;opacity: 0;'>
   <div id='aPercent' style='font-size: 16pt;top: 115px;left: 1472px;color:white;font-family: Verdana;'>
   </div>
   <div id='bPercent' style='font-size: 16pt;top: 115px;left: 1538px;color:white;font-family: Verdana;'>
@@ -482,6 +483,9 @@
     let ataSound = new Howl({
       src: ['Ask_the_Audience_Progress_short.mp3.mpeg']
     })
+    let rulesSound = new Howl({
+      src: ['Explain_the_Rules_1.mp3']
+    })
     function playSound(url) {
       let sound = new Howl({
         src: [url]
@@ -523,7 +527,7 @@
     }]);
 
     socket.on('introMoneyTree', () => {
-      let i = 0, introInterval
+      let i = 1, introInterval
       introInterval = setInterval(() => {
         $('#highlight' + (i - 1)).css('opacity', 0)
         $('#num' + (i - 1) + ',#prize' + (i - 1)).removeClass('highlight')
@@ -1139,6 +1143,7 @@
     })
     socket.on('playAtaBed', () => {
       ataBed.play()
+      $('#ata').animate({ 'opacity': 1 }, 500)
     })
     socket.on('ata', () => {
       ataBed.stop()
@@ -1164,6 +1169,13 @@
         $('#dPercent').text(percentages[3] + '%')
         $('#ataBarD').css({ 'top': (318 - 3.18 * percentages[3]) })
       }, 150)
+    })
+    socket.on('ataHide', () => {
+      $('#ata,#aPercent,#bPercent,#cPercent,#dPercent,#ataBarA,#ataBarB,#ataBarC,#ataBarD').animate({ 'opacity': 0 }, 500)
+      setTimeout(() => {
+        $('#aPercent,#bPercent,#cPercent,#dPercent').text('')
+        $('#ataBarA,#ataBarB,#ataBarC,#ataBarD').css({ 'top': '318px' })
+      }, 500)
     })
     socket.on('stqActivate', () => {
       document.getElementById('stqMini').addEventListener('play', () => {
@@ -1245,6 +1257,59 @@
     socket.on('playSound', sound => {
       console.log(sound)
       playSound(sound)
+    })
+    socket.on('stopBed', quesNum => {
+      if (quesNum == 7) {
+        q8Bed.fade(1, 0, 250)
+      }
+      else if (quesNum == 8) {
+        q9Bed.fade(1, 0, 250)
+      }
+      else if (quesNum == 9) {
+        q10Bed.fade(1, 0, 250)
+      }
+      else if (quesNum == 10) {
+        q11Bed.fade(1, 0, 250)
+      }
+      else if (quesNum == 11) {
+        q12Bed.fade(1, 0, 250)
+      }
+    })
+    socket.on('resumeBed', quesNum => {
+      if (quesNum == 7) {
+        q8Bed.stop()
+        q8Bed.play()
+        q8Bed.fade(0, 1, 250)
+      }
+      else if (quesNum == 8) {
+        q9Bed.stop()
+        q9Bed.play()
+        q9Bed.fade(0, 1, 250)
+      }
+      else if (quesNum == 9) {
+        q10Bed.stop()
+        q10Bed.play()
+        q10Bed.fade(0, 1, 250)
+      }
+      else if (quesNum == 10) {
+        q11Bed.stop()
+        q11Bed.play()
+        q11Bed.fade(0, 1, 250)
+      }
+      else if (quesNum == 11) {
+        q12Bed.stop()
+        q12Bed.play()
+        q12Bed.fade(0, 1, 250)
+      }
+    })
+    socket.on('explainRules', () => {
+      rulesSound.play()
+    })
+    socket.on('letsPlay', () => {
+      rulesSound.fade(1, 0, 500, () => {
+        rulesSound.stop()
+      })
+      playSound('Q611 Start.mp3')
     })
     socket.on('pafBed', () => {
       pafBed.play()

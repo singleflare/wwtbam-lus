@@ -168,6 +168,9 @@ cNs.on('connection',s=>{
   s.on('ata',()=>{
     vNs.emit('ata')
   })
+  s.on('ataHide',()=>{
+    vNs.emit('ataHide')
+  })
   s.on('ataUpdate',(howManyAns,percentages)=>{
     console.log(howManyAns,percentages)
     hNs.emit('ataUpdate',howManyAns,percentages)
@@ -178,6 +181,18 @@ cNs.on('connection',s=>{
   })
   s.on('playSound',sound=>{
     vNs.emit('playSound',sound)
+  })
+  s.on('stopBed',quesNum=>{
+    vNs.emit('stopBed',quesNum)
+  })
+  s.on('resumeBed',quesNum=>{
+    vNs.emit('resumeBed',quesNum)
+  })
+  s.on('explainRules',()=>{
+    vNs.emit('explainRules')
+  })
+  s.on('letsPlay',()=>{
+    vNs.emit('letsPlay')
   })
   s.on('updatePrizeInfo',(prizeInfo,quesNum)=>{
     hNs.emit('updatePrizeInfo',prizeInfo,quesNum)
