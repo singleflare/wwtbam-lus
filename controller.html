@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controller</title>
+</head>
+
+<body>
+  <style>
+    * {
+      color: white;
+      box-sizing: border-box;
+      font-size: 30px;
+    }
+
+    body {
+      background-color: black;
+      width: 1920px;
+      height: 1080px;
+      margin: auto;
+      top: 0;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+    }
+
+    button {
+      border: 1px solid white;
+      background-color: black;
+      height: 60px;
+    }
+
+    button:disabled {
+      opacity: .5;
+      pointer-events: none;
+    }
+
+    .flexcon {
+      display: flex;
+    }
+
+    .flexcon>* {
+      width: 100%;
+    }
+
+    .controlLabel {
+      width: 100%;
+      color: black;
+      background-color: white;
+      text-align: center;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .customFileInput {
+      display: inline-block;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      border: 1px solid white;
+    }
+
+    .singleLine {
+      width: 100%;
+    }
+
+    .purple {
+      background-color: blueviolet;
+    }
+
+    input {
+      color: black;
+    }
+
+    #questionArea>* {
+      height: 70px;
+    }
+
+    #questionArea textarea {
+      color: black;
+      font-size: 25px;
+      height: 60px;
+      resize: none;
+      vertical-align: top;
+      width: 539px;
+      font-family: Arial;
+    }
+
+    #questionArea button {
+      vertical-align: top;
+    }
+
+    #questionNumList>*,
+    #moneyList>*,
+    #questionList>* {}
+
+    #questionList>* {
+      width: 210px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      color: black
+    }
+
+    #ques,
+    #ansA,
+    #ansB,
+    #ansC,
+    #ansD {
+      background-color: gray;
+    }
+
+    input[type='checkbox'] {
+      height: 30px;
+      width: 30px;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    input[type='checkbox']:checked~.checkmark {
+      background-color: green;
+    }
+
+    input[type='checkbox']~.checkmark {
+      background-color: red;
+    }
+  </style>
+  <div id='questionArea' style='position: absolute;left:0;width: 1500px;height:500px;'>
+    <div>
+      <button id='showQ'>Hiện</button>
+      <textarea id='ques' style='width: 1400px;'></textarea>
+    </div>
+    <button id='showAllAns' style='position: absolute;top: 70px;width: 75px;height: 270px;'>Hiện 4 đáp án</button>
+    <div style='left: 82px;position: relative;'>
+      <button id='showA'>Hiện</button>
+      <textarea id='ansA'></textarea>
+      <button id='chooseA'>Chọn</button>
+    </div>
+    <div style='left: 82px;position: relative;'>
+      <button id='showB'>Hiện</button>
+      <textarea id='ansB'></textarea>
+      <button id='chooseB'>Chọn</button>
+    </div>
+    <div style='left: 82px;position: relative;'>
+      <button id='showC'>Hiện</button>
+      <textarea id='ansC'></textarea>
+      <button id='chooseC'>Chọn</button>
+    </div>
+    <div style='left: 82px;position: relative;'>
+      <button id='showD'>Hiện</button>
+      <textarea id='ansD'></textarea>
+      <button id='chooseD'>Chọn</button>
+    </div>
+
+    <button id='nextQuestion'
+      style='position: absolute;top:70px;left: 984px;width: 80px;height: 130px;font-size: 20px;'>Câu tiếp theo &
+      Lights down</button>
+    <button id='playCurrentLightsDown'
+      style='position: absolute;top:210px;left: 984px;width: 80px;height: 130px;font-size: 20px'>Nhạc
+      lights down câu hiện tại</button>
+    <button id='revealCorrect' style='position: absolute;top: 70px;left: 804px;width: 80px;height: 270px;'>Hiện đáp án
+      đúng</button>
+    <textarea id='explain' style='position: absolute;top: 70px;width: 414px;left: 1071px;height: 270px;'></textarea>
+  </div>
+  <div id='questionAndMoneyArea' style='position: absolute;left: 1500px;width:420px;'>
+    <button id='showMoneyTree'>Hiện thang tiền</button>
+    <button id='hideMoneyTree'>Ẩn thang tiền</button>
+    <br>
+    <button id='introMoneyTree'>Giới thiệu</button>
+    <button id='introSafe1'>Mốc 1</button>
+    <button id='introSafe2'>Mốc 2</button>
+    <button id='introSafe3'>Mốc 3</button>
+    <br>
+    <button id='introLifeline1'>Trợ giúp 1</button>
+    <button id='introLifeline2'>Trợ giúp 2</button>
+    <button id='introLifeline3'>Trợ giúp 3</button>
+    <button id='introLifeline4'>Trợ giúp 4</button>
+    <div style='height: 420px;'>
+      <div id='questionNumList' style='width: 0;position: absolute;'>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>7</div>
+        <div>8</div>
+        <div>9</div>
+        <div>10</div>
+        <div>11</div>
+        <div>12</div>
+      </div>
+      <div id='moneyList' style='width: 0;position: absolute;left:50px'>
+        <div>500</div>
+        <div>1.000</div>
+        <div>2.000</div>
+        <div>5.000</div>
+        <div>10.000</div>
+        <div>20.000</div>
+        <div>50.000</div>
+        <div>75.000</div>
+        <div>150.000</div>
+        <div>250.000</div>
+        <div>500.000</div>
+        <div>1.000.000</div>
+      </div>
+      <div id='questionList' style='width: 0;left:200px;position: absolute;'>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+      </div>
+    </div>
+    <label for="fileInput" class="customFileInput areaTitle">
+      Nhập đề
+    </label>
+    <input id="fileInput" type="file" class="fileInput" accept='.xlsx' />
+    <button id='prevQ'>Câu trước</button>
+    <div id='quesNum' style='display: inline-block;width: 50px;text-align: center;'>-</div>
+    <button id='nextQ'>Câu sau</button>
+  </div>
+  <div id='timeArea' style='top: 360px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
+    <span style='position: absolute;top: -15px;background: black;'>Thời gian</span>
+    <span style='position: absolute;top: -15px;background: black;left:230px;'>15s</span>
+    <button id='stopClock'>Dừng</button>
+    <button id='resumeClock'>Tiếp</button>
+    <button id='reset'>Reset</button>
+  </div>
+  <div id='50Area' style='top: 490px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
+    <span style='position: absolute;top: -15px;background: black;'>50:50</span>
+    <input id='fiftyCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 90px;'>
+    <span class="checkmark" style='position: absolute;top: -16px;left: 90px;width: 30px;height: 30px;'></span>
+    <button id='fifty'>50:50</button>
+  </div>
+  <div id='pafArea'
+    style='top: 490px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;left:200px;'>
+    <span style='position: absolute;top: -15px;background: black;'>Gọi điện</span>
+    <input id='pafCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 250px;'>
+    <span class="checkmark" style='position: absolute;top: -16px;left: 250px;width: 30px;height: 30px;'></span>
+    <button id='pafBed'>Nền</button>
+    <button id='pafTime'>30s</button>
+    <button id='pafEnd'>Kết thúc</button>
+  </div>
+  <div id='ataArea'
+    style='top: 360px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;left:320px;'>
+    <span style='position: absolute;top: -15px;background: black;'>Khán giả</span>
+    <input id='ataCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 700px;'>
+    <span class="checkmark" style='position: absolute;top: -16px;left: 700px;width: 30px;height: 30px;'></span>
+    <button id='playAtaBed'>Nền</button>
+    <button id='ata'>Bắt đầu</button>
+    <button id='ataEnd'>Kết thúc</button>
+    <button id='ataHide'>Ẩn đồ họa</button>
+    <input type='number' placeholder='A' id='aPercent' style='width: 50px;height:60px;'>
+    <input type='number' placeholder='B' id='bPercent' style='width: 50px;height:60px;'>
+    <input type='number' placeholder='C' id='cPercent' style='width: 50px;height:60px;'>
+    <input type='number' placeholder='D' id='dPercent' style='width: 50px;height:60px;'>
+  </div>
+  <div id='stqArea'
+    style='top: 490px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;left:564px;'>
+    <span style='position: absolute;top: -15px;background: black;'>Đổi</span>
+    <input id='stqCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 460px;'>
+    <span class="checkmark" style='position: absolute;top: -16px;left: 460px;width: 30px;height: 30px;'></span>
+    <button id='stqActivate'>Kích hoạt</button>
+    <button id='stqA'>A</button>
+    <button id='stqB'>B</button>
+    <button id='stqC'>C</button>
+    <button id='stqD'>D</button>
+    <button id='stqCorrect'>Đúng</button>
+    <button id='stq'>Đổi</button>
+  </div>
+  <div id='hostArea'
+    style='top: 360px;position: absolute;padding: 40px 10px 10px 10px;border: 1px solid gray;left:1090px;width: 395px;'>
+    <span style='position: absolute;top: -15px;background: black;'>Host</span>
+    <button id='break'>Giải lao</button>
+    <button id='klaxon'>Hết giờ</button>
+    <div class='flexcon' style='height: 60px;'><input id='playerInfoInput' type='text'
+        placeholder='Thông tin người chơi'></div>
+    <div class='flexcon' style='height: 60px;'><input id='messageInput' type='text' placeholder='Tin nhắn đến MC'></div>
+  </div>
+  <div id='viewerArea' style='top: 620px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
+    <span style='position: absolute;top: -15px;background: black;'>Viewer</span>
+    <button id='hideGpx'>Ẩn gpx</button>
+    <button id='showGpx'>Hiện gpx</button>
+    <button id='clearAnim'>Ẩn giao diện & reset animation giao diện</button>
+    <button id='showTotalPrize'>Hiện tiền thắng cuộc</button>
+    <button id='hideTotalPrize'>Ẩn tiền thắng cuộc</button>
+  </div>
+  <div id='soundArea' style='top: 750px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
+    <span style='position: absolute;top: -15px;background: black;'>Âm thanh</span>
+    <button id='intro'>Intro</button>
+    <button id='playerEntrance'>Người chơi vào</button>
+    <br>
+    <button id='explainRules'>Giải thích luật</button>
+    <button id='letsPlay'>Bắt đầu đi tìm</button>
+    <button id='commIn'>Commercial in</button>
+    <button id='commOut'>Commercial out</button>
+    <button id='stopBed'>Dừng nền</button>
+    <button id='resumeBed'>Tiếp tục nền</button>
+    <br>
+    <button id='klaxon'>Hết giờ</button>
+    <button id='preclosing'>Tổng kết</button>
+    <button id='outro'>Outro</button>
+  </div>
+  <!-- <div class='flexcon'>
+    <div>
+      <div class='controlLabel'>Đề</div>
+      <label for="fileInput" class="customFileInput areaTitle">
+        Nhập đề
+      </label>
+        <button id='chooseA' style='height: 50px;vertical-align: top;'>Chọn</button>
+      </div>
+    </div>
+  </div>
+  <div class='flexcon'>
+    <div>
+      <div class='controlLabel'>Đề</div>
+      <label for="fileInput" class="customFileInput areaTitle">
+        Nhập đề
+      </label>
+      <input id="fileInput" type="file" class="fileInput" accept='.xlsx' />
+      <button class='singleLine' id='showQ'>Hiện câu hỏi</button>
+      <button id='showAllAns' style='width: 100%;'>Hiện 4 đáp án</button>
+      <div class='flexcon'>
+        <button id='showA'>Hiện A</button>
+        <button id='showB'>Hiện B</button>
+        <button id='showC'>Hiện C</button>
+        <button id='showD'>Hiện D</button>
+      </div>
+      <div class='flexcon'>
+        <div id='quesNum' style='width: 10%;border:1px solid white'>-</div>
+        <div id='ques' class='singleLine purple' style='border:1px solid white;'>-</div>
+      </div>
+      <div style='display: flex;'>
+        <button id='chooseA' style='width: 10%;'>A</button>
+        <div id='ansA' class='purple' style='width: 40%;border:1px solid white;'>-</div>
+        <button id='chooseB' style='width: 10%;'>B</button>
+        <div id='ansB' class='purple' style='width: 40%;border:1px solid white;'>-</div>
+      </div>
+      <div style='display: flex;'>
+        <button id='chooseC' style='width: 10%;'>C</button>
+        <div id='ansC' class='purple' style='width: 40%;border:1px solid white;'>-</div>
+        <button id='chooseD' style='width: 10%;'>D</button>
+        <div id='ansD' class='purple' style='width: 40%;border:1px solid white;'>-</div>
+      </div>
+      <div class='flexcon'>
+        <button id='revealCorrect'>Đáp án đúng</button>
+        <button id='nextQuestion'>Câu tiếp theo</button>
+      </div>
+      <div class='flexcon'>
+        <button id='stopClock'>Dừng thời gian</button>
+        <button id='resumeClock'>Tiếp thời gian</button>
+        <button id='hideGpx'>Ẩn giao diện (cho quảng cáo)</button>
+        <button id='showGpx'>Hiện giao diện</button>
+      </div>
+
+      <div class='flexcon'>
+        <button id='walkAway'>Dừng chơi</button>
+        <button id='clearAnim'>Ẩn giao diện & reset animation giao diện</button>
+        <button id='showTotalPrize'>Hiện tiền thắng cuộc</button>
+        <button id='hideTotalPrize'>Ẩn tiền thắng cuộc</button>
+      </div>
+      <div class='controlLabel'>Danh sách câu hỏi</div>
+      
+    </div>
+    <div>
+      <div class='controlLabel'>Thang tiền thưởng</div>
+      <div class='flexcon'>
+        <button id='showMoneyTree'>Hiện thang tiền thưởng</button>
+        <button id='hideMoneyTree'>Ẩn thang tiền thưởng</button>
+      </div>
+      <div class='flexcon'>
+        <button id='introMoneyTree'>Giới thiệu</button>
+        <button id='introSafe1'>Mốc 1</button>
+        <button id='introSafe2'>Mốc 2</button>
+        <button id='introSafe3'>Mốc 3</button>
+        <button id='introLifeline1'>Trợ giúp 1</button>
+        <button id='introLifeline2'>Trợ giúp 2</button>
+        <button id='introLifeline3'>Trợ giúp 3</button>
+        <button id='introLifeline4'>Trợ giúp 4</button>
+      </div>
+      <div class='controlLabel'>50:50</div>
+      <div class='flexcon'>
+        <button id='fifty'>50:50</button>
+        <button id='disable50'>Tắt</button>
+        <button id='enable50'>Bật</button>
+      </div>
+      <div class='controlLabel'>Gọi điện thoại</div>
+      <div class='flexcon'>
+        <button id='pafBed'>Nền</button>
+        <button id='pafTime'>30s</button>
+        <button id='pafEnd'>Kết thúc</button>
+        <button id='disablePaf'>Tắt</button>
+        <button id='enablePaf'>Bật</button>
+      </div>
+      <div class='controlLabel'>Khán giả</div>
+      <div class='flexcon'>
+        <button id='playAtaBed'>Nền</button>
+        <button id='ata'>Bắt đầu</button>
+        <button id='ataEnd'>Kết thúc</button>
+        <button id='ataHide'>Ẩn đồ họa</button>
+        <input type='number' placeholder='A' id='aPercent'>
+        <input type='number' placeholder='B' id='bPercent'>
+        <input type='number' placeholder='C' id='cPercent'>
+        <input type='number' placeholder='D' id='dPercent'>
+        <button id='disableAta'>Tắt</button>
+        <button id='enableAta'>Bật</button>
+      </div>
+      <div class='controlLabel'>Đổi câu hỏi</div>
+      <div class='flexcon'>
+        <button id='stqActivate'>Kích hoạt</button>
+        <button id='stqA'>A</button>
+        <button id='stqB'>B</button>
+        <button id='stqC'>C</button>
+        <button id='stqD'>D</button>
+        <button id='stqCorrect'>Đúng</button>
+        <button id='stq'>Đổi</button>
+        <button id='disableStq'>Tắt</button>
+        <button id='enableStq'>Bật</button>
+      </div>
+      <div class='controlLabel'>Nhạc</div>
+      <button id='explainRules'>Giải thích luật</button>
+      <button id='letsPlay'>Bắt đầu đi tìm</button>
+      <button id='commIn'>Commercial in</button>
+      <button id='commOut'>Commercial out</button>
+      <button id='stopBed'>Dừng nền</button>
+      <button id='resumeBed'>Tiếp tục nền</button>
+      <div class='flexcon'><input id='playerInfoInput' type='text' placeholder='Thông tin người chơi'></div>
+      <div class='flexcon'><input id='messageInput' type='text' placeholder='Tin nhắn đến MC'></div>
+    </div>
+    <div></div>
+  </div> -->
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    let quesNum = 0
+    let chosenAns
+    let prizeIdx = 0
+    let prizeInfo = []
+    document.getElementById('fileInput').onchange = function () {
+      var fileName = this.value.split('\\').pop();
+      document.querySelector('.customFileInput').textContent = fileName;
+    };
+    const socket = io('/c');
+    $('#introMoneyTree').click(() => {
+      socket.emit('introMoneyTree')
+    })
+    $('#introSafe1').click(() => {
+      socket.emit('introSafe1')
+    })
+    $('#introSafe2').click(() => {
+      socket.emit('introSafe2')
+    })
+    $('#introSafe3').click(() => {
+      socket.emit('introSafe3')
+    })
+    $('#introLifeline1').click(() => {
+      socket.emit('introLifeline1')
+    })
+    $('#introLifeline2').click(() => {
+      socket.emit('introLifeline2')
+    })
+    $('#introLifeline3').click(() => {
+      socket.emit('introLifeline3')
+    })
+    $('#introLifeline4').click(() => {
+      socket.emit('introLifeline4')
+    })
+
+    $('#showMoneyTree').click(() => {
+      socket.emit('showMoneyTree', quesNum)
+    })
+    $('#hideMoneyTree').click(() => {
+      socket.emit('hideMoneyTree')
+    })
+    $('#showQ').click(() => {
+      $('#ques').css('background-color', 'white')
+      if (quesNum >= 0 && quesNum <= 6) {
+        $('#showA, #showB, #showC, #showD').prop('disabled', true)
+        $('#showAllAns').prop('disabled', false)
+      }
+      else {
+        $('#showA, #showB, #showC, #showD').prop('disabled', false)
+        $('#showAllAns').prop('disabled', true)
+      }
+      console.log(quesNum)
+      socket.emit('showQ', qnas[quesNum], quesNum)
+    })
+    $('#showAllAns').click(() => {
+      $('#ansA, #ansB, #ansC, #ansD').css('background-color', 'white')
+      $('#chooseA, #chooseB, #chooseC, #chooseD').prop('disabled', false)
+      if (quesNum == 0 || quesNum == 1) socket.emit('showAnsTier1')
+      else if (quesNum >= 2 && quesNum <= 6) socket.emit('showAnsTier2', quesNum)
+    })
+    $('#showA').click(() => {
+      $('#ansA').css('background-color', 'white')
+      $('#showA').prop('disabled', true)
+      $('#showB').prop('disabled', false)
+      socket.emit('showA')
+    })
+    $('#showB').click(() => {
+      $('#ansB').css('background-color', 'white')
+      $('#showB').prop('disabled', true)
+      $('#showC').prop('disabled', false)
+      socket.emit('showB')
+    })
+    $('#showC').click(() => {
+      $('#ansC').css('background-color', 'white')
+      $('#showC').prop('disabled', true)
+      $('#showD').prop('disabled', false)
+      socket.emit('showC')
+    })
+    $('#showD').click(() => {
+      $('#ansD').css('background-color', 'white')
+      $('#showD').prop('disabled', true)
+      $('#chooseA,#chooseB,#chooseC,#chooseD').prop('disabled', false)
+      socket.emit('showD')
+    })
+    let ans = ['A', 'B', 'C', 'D']
+    ans.forEach(element => {
+      $('#choose' + element).click(() => {
+        chosenAns = element
+        socket.emit('choose', element, quesNum, false, qnas[quesNum].correct, qnas[quesNum].explain)
+        $('#revealCorrect').prop('disabled', false)
+      })
+      $('#stq' + element).click(() => {
+        chosenAns = element
+        socket.emit('choose', element, quesNum, true, qnas[quesNum].correct, qnas[quesNum].explain)
+      })
+    })
+    $('#revealCorrect').click(() => {
+      socket.emit('revealCorrect', chosenAns, qnas[quesNum].correct, quesNum, prizes[quesNum], false)
+      if (qnas[quesNum].correct == chosenAns) {
+        prizeIdx = quesNum
+        quesNum++
+        prizeInfo[0] = 12 - quesNum
+        prizeInfo[1] = prizes[quesNum - 1]
+        prizeInfo[2] = qnas[quesNum].correct
+        prizeInfo[3] = prizes[quesNum]
+        if (quesNum <= 1) prizeInfo[4] = 0
+        else if (quesNum >= 2 && quesNum <= 6) prizeInfo[4] = prizes[1]
+        else if (quesNum >= 7 && quesNum <= 11) prizeInfo[4] = prizes[6]
+        if (quesNum <= 1) prizeInfo[5] = prizes[quesNum - 1]
+        else if (quesNum >= 2 && quesNum <= 6) prizeInfo[5] = prizes[quesNum - 1] - prizes[1]
+        else if (quesNum >= 7 && quesNum <= 11) prizeInfo[5] = prizes[quesNum - 1] - prizes[6]
+        socket.emit('updatePrizeInfo', prizeInfo, quesNum)
+
+      } else {
+        if (quesNum <= 1) prizeIdx = -1
+        else if (quesNum >= 2 && quesNum <= 6) prizeIdx = 1
+        else if (quesNum >= 7 && quesNum <= 11) prizeIdx = 6
+      }
+    })
+    $('#nextQuestion').click(() => {
+      $('#ques,#ansA, #ansB, #ansC, #ansD').css('background-color', 'gray')
+      $('#showQ').prop('disabled', false)
+      $('#showAllAns,#showA, #showB, #showC, #showD,#chooseA,#chooseB,#chooseC,#chooseD,#revealCorrect').prop('disabled', true)
+      socket.emit('nextQuestion', quesNum, prizeInfo)
+      $('#ques').text(qnas[quesNum].ql1 + qnas[quesNum].ql2)
+      $('#ansA').text(qnas[quesNum].a)
+      $('#ansB').text(qnas[quesNum].b)
+      $('#ansC').text(qnas[quesNum].c)
+      $('#ansD').text(qnas[quesNum].d)
+      $('#quesNum').text(quesNum + 1)
+    })
+    $('#stopClock').click(() => {
+      socket.emit('stopClock', quesNum)
+    })
+    $('#resumeClock').click(() => {
+      socket.emit('resumeClock', quesNum)
+    })
+    $('#walkAway').click(() => {
+      socket.emit('walkAway', quesNum)
+    })
+    $('#clearAnim').click(() => {
+      socket.emit('clearAnim')
+    })
+    $('#showGpx').click(() => {
+      socket.emit('showGpx')
+    })
+    $('#hideGpx').click(() => {
+      socket.emit('hideGpx')
+    })
+    $('#showTotalPrize').click(() => {
+      socket.emit('showTotalPrize', prizes[prizeIdx] == -1 ? 0 : prizes[prizeIdx])
+    })
+    $('#hideTotalPrize').click(() => {
+      socket.emit('hideTotalPrize')
+    })
+
+    function randomIntFromInterval(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    $('#fifty').click(() => {
+      let ansArr = ['A', 'B', 'C', 'D']
+      ansArr.splice(ansArr.indexOf(qnas[quesNum].correct), 1)
+      ansArr.splice(randomIntFromInterval(0, ansArr.length - 1), 1)
+      socket.emit('fifty', ansArr)
+    })
+    $('#pafBed').click(() => {
+      socket.emit('pafBed')
+    })
+    $('#pafTime').click(() => {
+      socket.emit('pafTime')
+    })
+    $('#pafEnd').click(() => {
+      socket.emit('pafEnd')
+    })
+    $('#playAtaBed').click(() => {
+      socket.emit('playAtaBed')
+    })
+    let ataInterval
+    $('#ata').click(() => {
+      socket.emit('ata')
+      let correctAns = qnas[quesNum].correct
+      let correctAnsIdx = ['A', 'B', 'C', 'D'].indexOf(correctAns)
+      let howManyAns = [0, 0, 0, 0]
+      let ansPercentages = [0, 0, 0, 0]
+      let probabilities = [0, 0, 0, 0]
+      for (let i = 0; i < 4; i++) {
+        probabilities[i] = Math.round((1 - correctRate[quesNum]) / 3 * 100) / 100
+      }
+      probabilities[correctAnsIdx] = correctRate[quesNum]
+      console.log(probabilities)
+
+      let id = 1
+      ataInterval = setInterval(() => {
+        var num = Math.random();
+        if (num < probabilities[0]) howManyAns[0]++;
+        else if (num < probabilities[0] + probabilities[1]) howManyAns[1]++;
+        else if (num < probabilities[0] + probabilities[1] + probabilities[2]) howManyAns[2]++;
+        else howManyAns[3]++;
+        ansPercentages = howManyAns.map(x => Math.round((x / id) * 100))
+        socket.emit('ataUpdate', howManyAns, ansPercentages)
+        if (id == 100) {
+          clearInterval(ataInterval)
+          socket.emit('ataEnd', ansPercentages)
+        }
+        id++
+      }, 100)
+    })
+    $('#ataEnd').click(() => {
+      clearInterval(ataInterval)
+      socket.emit('ataEnd', [$('#aPercent').val(), $('#bPercent').val(), $('#cPercent').val(), $('#dPercent').val()])
+    })
+    $('#ataHide').click(() => {
+      socket.emit('ataHide')
+    })
+    $('#stqActivate').click(() => {
+      socket.emit('stqActivate')
+    })
+    $('#stq').click(() => {
+      socket.emit('stq')
+      setTimeout(() => {
+        $('#ansA, #ansB, #ansC, #ansD').css('background-color', 'gray')
+        $('#ques').css('background-color', 'white')
+        $('#showQ,#showB,#showC,#showD,#chooseA,#chooseB,#chooseC,#chooseD,#revealCorrect').prop('disabled', true)
+        $('#showA').prop('disabled', false)
+        socket.emit('stqQuestion', qnas[12])
+        $('#ques').text(qnas[12].ql1 + qnas[12].ql2)
+        $('#ansA').text(qnas[12].a)
+        $('#ansB').text(qnas[12].b)
+        $('#ansC').text(qnas[12].c)
+        $('#ansD').text(qnas[12].d)
+        $('#quesNum').text('Đổi')
+        qnas[quesNum].ql1 = qnas[12].ql1
+        qnas[quesNum].ql2 = qnas[12].ql2
+        qnas[quesNum].a = qnas[12].a
+        qnas[quesNum].b = qnas[12].b
+        qnas[quesNum].c = qnas[12].c
+        qnas[quesNum].d = qnas[12].d
+        qnas[quesNum].correct = qnas[12].correct
+        qnas[quesNum].explain = qnas[12].explain
+      }, 1000) //TD: walk away
+    })
+    $('#stqCorrect').click(() => {
+      socket.emit('revealCorrect', chosenAns, qnas[quesNum].correct, quesNum, prizes[quesNum], true)
+    })
+    let qnas = [
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+      { ql1: '', ql2: '', a: '', b: '', c: '', d: '', correct: '', explain: '' },
+    ]
+
+    let correctRate = [.9, .9, .75, .6, .45, .3, .3, .25, .25, .25, .25, .25]
+    let prizes = [500, 1000, 2000, 5000, 10000, 20000, 50000, 75000, 150000, 250000, 500000, 1000000]
+    $('#fileInput').on('change', async (e) => {
+      const file = e.target.files[0]
+      const data = await file.arrayBuffer()
+      const workbook = XLSX.read(data)
+      const sheet = workbook.Sheets[workbook.SheetNames[0]]
+      let row
+      // Helper function to safely get cell 
+      const getCellValue = (sheet, col, row) => {
+        const cell = sheet[XLSX.utils.encode_cell({ c: col, r: row })]
+        return cell ? cell.v : ''
+      }
+      for (let i = 2; i <= 26; i += 2) {
+        console.log(i, getCellValue(sheet, 1, i), getCellValue(sheet, 1, i + 1))
+
+        if ((i / 2) == 13) $(`#questionList div:nth-child(${i / 2})`).text(`Đổi. ${getCellValue(sheet, 1, i) + getCellValue(sheet, 1, i + 1)}`)
+        else $(`#questionList div:nth-child(${i / 2})`).text(`${getCellValue(sheet, 1, i) + getCellValue(sheet, 1, i + 1)}`)
+
+        if ((i / 2) == 1 || (i / 2) == 2) $(`#questionList div:nth-child(${(i / 2)})`).css('background-color', '#B6D7A8')
+        else if ((i / 2) >= 3 && (i / 2) <= 7 || (i / 2) == 13) $(`#questionList div:nth-child(${(i / 2)})`).css('background-color', '#FFE599')
+        else if ((i / 2) >= 8 && (i / 2) <= 12) $(`#questionList div:nth-child(${(i / 2)})`).css('background-color', '#EA9999')
+        else $(`#questionList div:nth-child(${(i / 2)})`).css('background-color', '#ff0000cc')
+
+        qnas[(i / 2) - 1].ql1 = getCellValue(sheet, 1, i)
+        qnas[(i / 2) - 1].ql2 = getCellValue(sheet, 1, i + 1)
+        qnas[(i / 2) - 1].a = getCellValue(sheet, 2, i)
+        qnas[(i / 2) - 1].b = getCellValue(sheet, 3, i)
+        qnas[(i / 2) - 1].c = getCellValue(sheet, 4, i)
+        qnas[(i / 2) - 1].d = getCellValue(sheet, 5, i)
+        qnas[(i / 2) - 1].correct = getCellValue(sheet, 6, i)
+        qnas[(i / 2) - 1].explain = getCellValue(sheet, 7, i)
+        $(`#questionList div:nth-child(${i / 2})`).click(() => {
+          $('#ques,#ansA, #ansB, #ansC, #ansD').css('background-color', 'gray')
+          $('#showQ').prop('disabled', false)
+          $('#showAllAns,#showA, #showB, #showC, #showD,#chooseA,#chooseB,#chooseC,#chooseD,#revealCorrect').prop('disabled', true)
+          $('#ques').text(qnas[(i / 2) - 1].ql1 + qnas[(i / 2) - 1].ql2)
+          $('#ansA').text(qnas[(i / 2) - 1].a)
+          $('#ansB').text(qnas[(i / 2) - 1].b)
+          $('#ansC').text(qnas[(i / 2) - 1].c)
+          $('#ansD').text(qnas[(i / 2) - 1].d)
+          $('#explain').text(qnas[(i / 2) - 1].explain)
+          $('#quesNum').text(i / 2)
+          if ((i / 2) == 13) $('#quesNum').text('Đổi')
+          quesNum = (i / 2) - 1
+          let prizeInfo = []
+          prizeInfo[0] = 12 - quesNum
+          prizeInfo[1] = prizes[quesNum - 1] == undefined ? 0 : prizes[quesNum - 1]
+          prizeInfo[2] = qnas[quesNum].correct
+          prizeInfo[3] = prizes[quesNum]
+          if (quesNum <= 1) prizeInfo[4] = 0
+          else if (quesNum >= 2 && quesNum <= 6) prizeInfo[4] = prizes[1]
+          else if (quesNum >= 7 && quesNum <= 11) prizeInfo[4] = prizes[6]
+          if (quesNum == 0) prizeInfo[5] = 0
+          else if (quesNum <= 1) prizeInfo[5] = prizes[quesNum - 1]
+          else if (quesNum >= 2 && quesNum <= 6) prizeInfo[5] = prizes[quesNum - 1] - prizes[1]
+          else if (quesNum >= 7 && quesNum <= 11) prizeInfo[5] = prizes[quesNum - 1] - prizes[6]
+
+          socket.emit('updatePrizeInfo', prizeInfo, quesNum)
+        })
+      }
+      console.log(qnas)
+    })
+
+    $('#intro').click(() => {
+      socket.emit('playSound', 'Rave_Intro.ogg')
+    })
+    $('#playerEntrance').click(() => {
+      socket.emit('playSound', 'Player_Entrance.ogg')
+    })
+    $('#explainRules').click(() => {
+      socket.emit('explainRules')
+    })
+    $('#letsPlay').click(() => {
+      socket.emit('letsPlay')
+    })
+    $('#commIn').click(() => {
+      socket.emit('playSound', 'Into_Commercial_(Rave).ogg')
+    })
+    $('#commOut').click(() => {
+      socket.emit('playSound', 'Out_of_Commercial_(Rave).ogg')
+    })
+    $('#stopBed').click(() => {
+      socket.emit('stopBed', quesNum)
+    })
+    $('#resumeBed').click(() => {
+      socket.emit('resumeBed', quesNum)
+    })
+    $('#klaxon').click(() => {
+      socket.emit('playSound', 'klaxon.ogg')
+    })
+    $('#preclosing').click(() => {
+      socket.emit('preclosing')
+    })
+    $('#outro').click(() => {
+      socket.emit('playSound', 'Closing_credits.ogg')
+    })
+
+    $('#playerInfoInput').on('change', () => {
+      socket.emit('playerInfo', $('#playerInfoInput').val())
+    })
+    $('#messageInput').on('change', () => {
+      socket.emit('message', $('#messageInput').val())
+    })
+
+    $('#fiftyCheck').on('change', function () {
+      if ($(this).is(':checked')) {
+        socket.emit('enableLifeline', '50:50')
+      } else {
+        socket.emit('disableLifeline', '50:50')
+      }
+    })
+    $('#pafCheck').on('change', function () {
+      if ($(this).is(':checked')) {
+        socket.emit('enableLifeline', 'phone')
+      } else {
+        socket.emit('disableLifeline', 'phone')
+      }
+    })
+    $('#ataCheck').on('change', function () {
+      if ($(this).is(':checked')) {
+        socket.emit('enableLifeline', 'ata')
+      } else {
+        socket.emit('disableLifeline', 'ata')
+      }
+    })
+    $('#stqCheck').on('change', function () {
+      if ($(this).is(':checked')) {
+        socket.emit('enableLifeline', 'swap')
+      } else {
+        socket.emit('disableLifeline', 'swap')
+      }
+    })
+  </script>
+</body>
+
+</html>
