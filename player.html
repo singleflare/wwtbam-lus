@@ -145,6 +145,18 @@
       justify-content: center;
       align-items: center;
     }
+
+    svg {
+      font-size: 33pt;
+      display: initial;
+    }
+
+    #qna>svg {
+      height: 138px;
+      left: 240px;
+      width: 1440px;
+      position: absolute;
+    }
   </style>
   <div id='qna'>
     <img src='ques lus.png' class='fullWidth' style='top:0;'>
@@ -249,7 +261,7 @@
       $('#time').css('opacity', 1)
       timeInterval = setInterval(() => {
         $('#time').text(--pafTime)
-        if (pafTime == 0) {
+        if (pafTime < 0) {
           clearInterval(timeInterval)
           $('#time').text('')
         }
@@ -259,14 +271,105 @@
       clearInterval(timeInterval)
       $('#time').text('')
     })
+    function countRenderedLines(element) { const range = document.createRange(); range.selectNodeContents(element); const rects = range.getClientRects(); return rects.length; }
     socket.on('showQ', qna => {
       $('#explainText').text('')
-      $('#quesText').css('opacity', 1)
-      $('#quesText').text(qna.ql1 + qna.ql2)
+      $('#quesText,svg').css('display', 'none')
+      //if only 1 line
+      let isHaveBr = false
+      $('#quesText').css({ 'display': 'flex', 'opacity': 1 })
+      $('#ansTextA,#ansTextB,#ansTextC,#ansTextD').css('display', 'initial')
+      if (qna.ql2 == '') {
+        $('#quesText').html(qna.ql1)
+      }
+      //if 2 lines
+      else {
+        isHaveBr = true
+        $('#quesText').html(`${qna.ql1}<br>${qna.ql2}`)
+      }
+      console.log(countRenderedLines(document.getElementById('quesText')))
+      if (isHaveBr == true) {
+        if (countRenderedLines(document.getElementById('quesText')) >= 4) {
+          console.log(countRenderedLines(document.getElementById('quesText')))
+          $('#quesText').css('display', 'none')
+          let ql1Length = qna.ql1.length
+          let ql2Length = qna.ql2.length
+          let line1GlyphLength = 1440 / ql1Length
+          let line2GlyphLength = 1440 / ql2Length
+          if (line1GlyphLength < line2GlyphLength) {
+            $('#qna').append(
+              `
+              <svg style='display:initial'>
+                <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="1440"
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql1}</text>
+                <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="${line1GlyphLength * ql2Length}"
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql2}</text>
+              </svg>
+              `
+            )
+          }
+          else {
+            $('#qna').append(
+              `
+              <svg style='display:initial'>
+                <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="${line2GlyphLength * ql1Length}"
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql1}</text>
+                <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="1440"
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql2}</text>
+              </svg>
+              `
+            )
+          }
+        }
+      }
       $('#ansTextA').text(qna.a)
       $('#ansTextB').text(qna.b)
       $('#ansTextC').text(qna.c)
       $('#ansTextD').text(qna.d)
+      if (countRenderedLines(document.getElementById('ansTextA')) >= 2) {
+        $('#ansTextA').css('display', 'none')
+        let glyphLength = 630 / qna.a.length
+        $('#qna').append(
+          `
+          <svg id='svgAText' style='display:initial;width: 630px;left: 280px;top: 140px;height:54px;position:absolute;opacity:0'>
+            <text textLength="630" y='43' lengthAdjust="spacingAndGlyphs" style='fill:white;font-family:Verdana'>${qna.a}</text>
+          </svg>
+          `
+        )
+      }
+      if (countRenderedLines(document.getElementById('ansTextB')) >= 2) {
+        $('#ansTextB').css('display', 'none')
+        let glyphLength = 630 / qna.b.length
+        $('#qna').append(
+          `
+          <svg id='svgBText' style='display:initial;width: 630px;left: 1060px;top: 140px;height:54px;position:absolute;opacity:0'>
+            <text textLength="630" y='43' lengthAdjust="spacingAndGlyphs" style='fill:white;font-family:Verdana'>${qna.b}</text>
+          </svg>
+          `
+        )
+      }
+      if (countRenderedLines(document.getElementById('ansTextC')) >= 2) {
+        $('#ansTextC').css('display', 'none')
+        let glyphLength = 630 / qna.c.length
+        $('#qna').append(
+          `
+          <svg id='svgCText' style='display:initial;width: 630px;left: 280px;top: 217px;height:54px;position:absolute;opacity:0'>
+            <text textLength="630" y='43' lengthAdjust="spacingAndGlyphs" style='fill:white;font-family:Verdana'>${qna.c}</text>
+          </svg>
+          `
+        )
+      }
+      if (countRenderedLines(document.getElementById('ansTextD')) >= 2) {
+        $('#ansTextD').css('display', 'none')
+        let glyphLength = 630 / qna.d.length
+        $('#qna').append(
+          `
+          <svg id='svgDText' style='display:initial;width: 630px;left: 1060px;top: 217px;height:54px;position:absolute;opacity:0'>
+            <text textLength="630" y='43' lengthAdjust="spacingAndGlyphs" style='fill:white;font-family:Verdana'>${qna.d}</text>
+          </svg>
+          `
+        )
+      }
     })
     socket.on('showAnsTier1', () => {
       $('#ansTextA,#ansTextB,#ansTextC,#ansTextD').css('opacity', 1)
@@ -274,7 +377,7 @@
       $('#time').text(time)
       timeInterval = setInterval(() => {
         $('#time').text(--time)
-        if (time == 0) {
+        if (time < 0) {
           clearInterval(timeInterval)
           $('#time').text('')
         }
@@ -286,7 +389,7 @@
       $('#time').text(time)
       timeInterval = setInterval(() => {
         $('#time').text(--time)
-        if (time == 0) {
+        if (time < 0) {
           clearInterval(timeInterval)
           $('#time').text('')
         }
@@ -334,7 +437,117 @@
     socket.on('updatePrizeInfo', (prizeInfo, quesNum) => {
       $('#highlight img').css('opacity', 0)
       $('#highlight' + (quesNum)).css('opacity', 1)
+      $('.copper').css('color', '#E49F12')
+      $('#num2,#num7,#num12,#prize2,#prize7,#prize12').css('color', 'white')
+      $('#num' + quesNum + ',#prize' + quesNum).css('color', 'black')
     })
+
+
+
+    socket.on('stqQuestion', qna => {
+      $('#ansTextA,#ansTextB,#ansTextC,#ansTextD,#redWrong,#greenCorrect,#quesText').css('opacity', 0)
+      $('#correctAns,#time,#explainText,#quesText').text('')
+      $('.chosen').removeClass('a b c d')
+      $('.correct').removeClass('a b c d')
+      $('#explainText').text('')
+      $('#quesText,svg').css('display', 'none')
+      //if only 1 line
+      let isHaveBr = false
+      $('#quesText').css({ 'display': 'flex', 'opacity': 1 })
+      $('#ansTextA,#ansTextB,#ansTextC,#ansTextD').css('display', 'initial')
+      if (qna.ql2 == '') {
+        $('#quesText').html(qna.ql1)
+      }
+      //if 2 lines
+      else {
+        isHaveBr = true
+        $('#quesText').html(`${qna.ql1}<br>${qna.ql2}`)
+      }
+      console.log(countRenderedLines(document.getElementById('quesText')))
+      if (isHaveBr == true) {
+        if (countRenderedLines(document.getElementById('quesText')) >= 4) {
+          console.log(countRenderedLines(document.getElementById('quesText')))
+          $('#quesText').css('display', 'none')
+          let ql1Length = qna.ql1.length
+          let ql2Length = qna.ql2.length
+          let line1GlyphLength = 1440 / ql1Length
+          let line2GlyphLength = 1440 / ql2Length
+          if (line1GlyphLength < line2GlyphLength) {
+            $('#qna').append(
+              `
+              <svg style='display:initial'>
+                <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="1440"
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql1}</text>
+                <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="${line1GlyphLength * ql2Length}"
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql2}</text>
+              </svg>
+              `
+            )
+          }
+          else {
+            $('#qna').append(
+              `
+              <svg style='display:initial'>
+                <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="${line2GlyphLength * ql1Length}"
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql1}</text>
+                <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="1440"
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql2}</text>
+              </svg>
+              `
+            )
+          }
+        }
+      }
+      $('#ansTextA').text(qna.a)
+      $('#ansTextB').text(qna.b)
+      $('#ansTextC').text(qna.c)
+      $('#ansTextD').text(qna.d)
+      if (countRenderedLines(document.getElementById('ansTextA')) >= 2) {
+        $('#ansTextA').css('display', 'none')
+        let glyphLength = 630 / qna.a.length
+        $('#qna').append(
+          `
+          <svg id='svgAText' style='display:initial;width: 630px;left: 280px;top: 140px;height:54px;position:absolute;opacity:0'>
+            <text textLength="630" y='43' lengthAdjust="spacingAndGlyphs" style='fill:white;font-family:Verdana'>${qna.a}</text>
+          </svg>
+          `
+        )
+      }
+      if (countRenderedLines(document.getElementById('ansTextB')) >= 2) {
+        $('#ansTextB').css('display', 'none')
+        let glyphLength = 630 / qna.b.length
+        $('#qna').append(
+          `
+          <svg id='svgBText' style='display:initial;width: 630px;left: 1060px;top: 140px;height:54px;position:absolute;opacity:0'>
+            <text textLength="630" y='43' lengthAdjust="spacingAndGlyphs" style='fill:white;font-family:Verdana'>${qna.b}</text>
+          </svg>
+          `
+        )
+      }
+      if (countRenderedLines(document.getElementById('ansTextC')) >= 2) {
+        $('#ansTextC').css('display', 'none')
+        let glyphLength = 630 / qna.c.length
+        $('#qna').append(
+          `
+          <svg id='svgCText' style='display:initial;width: 630px;left: 280px;top: 217px;height:54px;position:absolute;opacity:0'>
+            <text textLength="630" y='43' lengthAdjust="spacingAndGlyphs" style='fill:white;font-family:Verdana'>${qna.c}</text>
+          </svg>
+          `
+        )
+      }
+      if (countRenderedLines(document.getElementById('ansTextD')) >= 2) {
+        $('#ansTextD').css('display', 'none')
+        let glyphLength = 630 / qna.d.length
+        $('#qna').append(
+          `
+          <svg id='svgDText' style='display:initial;width: 630px;left: 1060px;top: 217px;height:54px;position:absolute;opacity:0'>
+            <text textLength="630" y='43' lengthAdjust="spacingAndGlyphs" style='fill:white;font-family:Verdana'>${qna.d}</text>
+          </svg>
+          `
+        )
+      }
+    })
+
     socket.on('disableLifeline', ll => {
       if (ll == '50:50') $('#fiftyUsed').css('opacity', 1)
       else if (ll == 'phone') $('#phoneUsed').css('opacity', 1)
@@ -354,7 +567,7 @@
       $('#time').text(time)
       timeInterval = setInterval(() => {
         $('#time').text(--time)
-        if (time == 0) {
+        if (time < 0) {
           clearInterval(timeInterval)
           $('#time').text('')
         }

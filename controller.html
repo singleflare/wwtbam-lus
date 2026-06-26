@@ -314,6 +314,8 @@
     <button id='klaxon'>Hết giờ</button>
     <button id='preclosing'>Tổng kết</button>
     <button id='outro'>Outro</button>
+    <br>
+    <button id='stopAllSounds'>Dừng tất cả âm thanh</button>
   </div>
   <!-- <div class='flexcon'>
     <div>
@@ -805,6 +807,9 @@
     })
     $('#outro').click(() => {
       socket.emit('playSound', 'Closing_credits.ogg')
+    })
+    $('#stopAllSounds').click(() => {
+      socket.emit('stopAllSounds')
     })
 
     $('#playerInfoInput').on('change', () => {

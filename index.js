@@ -287,6 +287,9 @@ cNs.on('connection',s=>{
   s.on('resumeBed',quesNum=>{
     vNs.emit('resumeBed',quesNum)
   })
+  s.on('stopAllSounds',()=>{
+    vNs.emit('stopAllSounds')
+  })
   s.on('explainRules',()=>{
     vNs.emit('explainRules')
   })

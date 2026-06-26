@@ -344,9 +344,9 @@
               `
               <svg style='display:initial'>
                 <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="1440"
-                  lengthAdjust="spacingAndGlyphs;font-family:Verdana">${qna.ql1}</text>
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql1}</text>
                 <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="${line1GlyphLength * ql2Length}"
-                  lengthAdjust="spacingAndGlyphs;font-family:Verdana">${qna.ql2}</text>
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql2}</text>
               </svg>
               `
             )
@@ -356,9 +356,9 @@
               `
               <svg style='display:initial'>
                 <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="${line2GlyphLength * ql1Length}"
-                  lengthAdjust="spacingAndGlyphs;font-family:Verdana">${qna.ql1}</text>
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql1}</text>
                 <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="1440"
-                  lengthAdjust="spacingAndGlyphs;font-family:Verdana">${qna.ql2}</text>
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql2}</text>
               </svg>
               `
             )
@@ -420,7 +420,7 @@
       $('#time').text(time)
       timeInterval = setInterval(() => {
         $('#time').text(--time)
-        if (time == 0) {
+        if (time < 0) {
           clearInterval(timeInterval)
           $('#time').text('')
         }
@@ -432,7 +432,7 @@
       $('#time').text(time)
       timeInterval = setInterval(() => {
         $('#time').text(--time)
-        if (time == 0) {
+        if (time < 0) {
           clearInterval(timeInterval)
           $('#time').text('')
         }
@@ -497,6 +497,9 @@
       $('#lblue').text(digitGroup(prizeInfo[5]) + ' GL' == 'n,ull GL' ? '0 GL' : digitGroup(prizeInfo[5]) + ' GL')
       $('#highlight img').css('opacity', 0)
       $('#highlight' + (quesNum)).css('opacity', 1)
+      $('.copper').css('color', '#E49F12')
+      $('#num2,#num7,#num12,#prize2,#prize7,#prize12').css('color', 'white')
+      $('#num' + quesNum + ',#prize' + quesNum).css('color', 'black')
       if (quesNum == 12) {
         $('#away').text('Còn: 0')
         $('#orange').text('1,000,000 GL')
@@ -526,7 +529,7 @@
       $('#time').css('opacity', 1)
       timeInterval = setInterval(() => {
         $('#time').text(--pafTime)
-        if (pafTime == 0) {
+        if (pafTime < 0) {
           clearInterval(timeInterval)
           $('#time').text('')
         }
@@ -570,9 +573,9 @@
               `
               <svg style='display:initial'>
                 <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="1440"
-                  lengthAdjust="spacingAndGlyphs;font-family:Verdana">${qna.ql1}</text>
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql1}</text>
                 <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="${line1GlyphLength * ql2Length}"
-                  lengthAdjust="spacingAndGlyphs;font-family:Verdana">${qna.ql2}</text>
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql2}</text>
               </svg>
               `
             )
@@ -582,9 +585,9 @@
               `
               <svg style='display:initial'>
                 <text id='quesTextTop' style='fill:white; text-anchor:middle' x='720' y='55' textLength="${line2GlyphLength * ql1Length}"
-                  lengthAdjust="spacingAndGlyphs;font-family:Verdana">${qna.ql1}</text>
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql1}</text>
                 <text id='quesTextBot' style='fill:white; text-anchor:middle' x='720' y='105' textLength="1440"
-                  lengthAdjust="spacingAndGlyphs;font-family:Verdana">${qna.ql2}</text>
+                  lengthAdjust="spacingAndGlyphs";font-family:Verdana">${qna.ql2}</text>
               </svg>
               `
             )
@@ -660,7 +663,7 @@
       $('#time').text(time)
       timeInterval = setInterval(() => {
         $('#time').text(--time)
-        if (time == 0) {
+        if (time < 0) {
           clearInterval(timeInterval)
           $('#time').text('')
         }
