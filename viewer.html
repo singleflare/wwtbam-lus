@@ -269,7 +269,7 @@
     <img src='answers_correct.png' class='correct' id='correctC' style='clip-path: inset(0 960px 0 0);'>
     <img src='answers_correct.png' class='correct' id='correctD' style='clip-path: inset(0 0 0 960px);'>
   </div>
-  <video id='stqMini' src='STQ.webm' style='width: 120px;top: 953px;left: 893px;z-index: 1;scale:0'></video>
+  <video id='stqMini' src='STQ.webm' style='width: 120px;top: 944px;left: 893px;z-index: 1;scale:0'></video>
   <img src='ata_graph.png' id='ata' style='width: 300px;left: 1450px;top: 100px;opacity: 0;'>
   <div id='aPercent' style='font-size: 18pt;top: 120px;left: 1468px;color:white;font-family: Verdana;'>
   </div>
@@ -494,6 +494,10 @@
         sound.stop()
         sound.currentTime = 0
       })
+      tempSounds.forEach(sound => {
+        sound.stop()
+        sound.currentTime = 0
+      })
     }
     function fadeAllSounds() {
       sounds.forEach(sound => {
@@ -609,6 +613,9 @@
           }, 500)
         })
       })
+    })
+    socket.on('hideLifeline4', () => {
+      $('.llVid#ll4').animate({ 'left': '1920px', 'opacity': '0' }, 500)
     })
     socket.on('showMoneyTree', quesNum => {
       moneyTreeVid.play()
@@ -1279,7 +1286,7 @@
     socket.on('stqQuestion', (qna) => {
       $('#prizeAfterQuestion,.chosen,.correct,.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter,.ansAText,.ansBText,.ansCText,.ansDText,.loz').css('opacity', 0)
       $('.ansALetter,.ansBLetter,.ansCLetter,.ansDLetter').css('color', '#E17C1E')
-      $('.ansAText,.ansBText,.ansCText,.ansDText').css('color', 'white')
+      $('.ansAText,.ansBText,.ansCText,.ansDText').css({ 'color': 'white', 'display': 'flex' })
       $('#quesText,svg').css('display', 'none')
       console.log(qna)
       //if only 1 line

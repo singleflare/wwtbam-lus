@@ -240,7 +240,7 @@
     left: 1650px;'>
     <img src='Lifeline_Swap_UK.png' style='width: 120px;
     top: 300px;
-    left: 1770px;'>
+    left: 1770px;opacity: 0;' id='lifeline4'>
     <img src='cross_for_used_lifelines.png' id='fiftyUsed' style='width: 70px;top: 304px;left: 1434px;opacity: 0;'>
     <img src='cross_for_used_lifelines.png' id='phoneUsed' style='width: 70px;top: 304px;left: 1554px;opacity: 0;'>
     <img src='cross_for_used_lifelines.png' id='ataUsed' style='width: 70px;top: 304px;left:1674px;opacity: 0;'>
@@ -256,7 +256,7 @@
       style='top:312px;width:360px;text-align: right;color:white;font-size:35pt;left:363px;font-family: CP31C01;letter-spacing: -3px;padding-right: 5px;'>
     </div>
     <img id='greenCorrect' src='green correct.png' style='top:287px;left:725px;opacity:0'>
-    <img id='redWrong' src='Red wrong.png' style='top:287px;left:725px;opacity:0'>
+    <img id='redWrong' src='red wrong.png' style='top:287px;left:725px;opacity:0'>
     <div id='correctAns'
       style='top:298px;width:360px;text-align: center;color:white;font-size:50pt;left:725px;font-family: CP31C01;letter-spacing: -3px;padding-right: 5px;'>
     </div>
@@ -440,15 +440,19 @@
     })
     socket.on('showA', () => {
       $('#ansTextA').css('opacity', 1)
+      $('#svgAText').css('opacity', 1)
     })
     socket.on('showB', () => {
       $('#ansTextB').css('opacity', 1)
+      $('#svgBText').css('opacity', 1)
     })
     socket.on('showC', () => {
       $('#ansTextC').css('opacity', 1)
+      $('#svgCText').css('opacity', 1)
     })
     socket.on('showD', () => {
       $('#ansTextD').css('opacity', 1)
+      $('#svgDText').css('opacity', 1)
     })
     socket.on('choose', (ans, correctAns, explain) => {
       clearInterval(timeInterval)
@@ -675,6 +679,12 @@
       $('#ataFrame p:nth-child(3)').text('C. ' + howManyAns[2] + ' (' + percentages[2] + '%)')
       $('#ataFrame p:nth-child(4)').text('D. ' + howManyAns[3] + ' (' + percentages[3] + '%)')
     })
+    socket.on('ataEnd', (howManyAns, percentages) => {
+      $('#ataFrame p:nth-child(1)').text('A. ' + howManyAns[0] + ' (' + percentages[0] + '%)')
+      $('#ataFrame p:nth-child(2)').text('B. ' + howManyAns[1] + ' (' + percentages[1] + '%)')
+      $('#ataFrame p:nth-child(3)').text('C. ' + howManyAns[2] + ' (' + percentages[2] + '%)')
+      $('#ataFrame p:nth-child(4)').text('D. ' + howManyAns[3] + ' (' + percentages[3] + '%)')
+    })
 
     socket.on('showTotalPrize', totalPrize => {
       $('#ansTextA,#ansTextB,#ansTextC,#ansTextD,#redWrong,#greenCorrect').css('opacity', 0)
@@ -690,17 +700,21 @@
       clearInterval(timeInterval)
     })
     socket.on('clearAnim', () => {
-      $('#ansTextA,#ansTextB,#ansTextC,#ansTextD,#redWrong,#greenCorrect').css('opacity', 0)
+      $('#ansTextA,#ansTextB,#ansTextC,#ansTextD,#redWrong,#greenCorrect,#svgAText,#svgBText,#svgCText,#svgDText').css('opacity', 0)
       $('#correctAns,#time,#explainText,#quesText').text('')
       $('.chosen').removeClass('a b c d')
       $('.correct').removeClass('a b c d')
-      $('#highlight img').css('opacity', 0)
       $('#away').text('')
       $('#orange').text('')
       $('#green').text('')
       $('#red').text('')
       $('#lblue').text('')
-      $('#highlight img').css('opacity', 0)
+    })
+    socket.on('introLifeline4', () => {
+      $('#lifeline4').css('opacity', 1)
+    })
+    socket.on('hideLifeline4', () => {
+      $('#lifeline4').css('opacity', 0)
     })
   </script>
 </body>

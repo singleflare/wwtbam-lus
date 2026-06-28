@@ -134,30 +134,33 @@
   <div id='questionArea' style='position: absolute;left:0;width: 1500px;height:500px;'>
     <div>
       <button id='showQ'>Hiện</button>
-      <textarea id='ques' style='width: 1400px;'></textarea>
+      <textarea disabled id='ques' style='width: 1400px;'></textarea>
     </div>
     <button id='showAllAns' style='position: absolute;top: 70px;width: 75px;height: 270px;'>Hiện 4 đáp án</button>
     <div style='left: 82px;position: relative;'>
       <button id='showA'>Hiện</button>
-      <textarea id='ansA'></textarea>
+      <textarea disabled id='ansA'></textarea>
       <button id='chooseA'>Chọn</button>
     </div>
     <div style='left: 82px;position: relative;'>
       <button id='showB'>Hiện</button>
-      <textarea id='ansB'></textarea>
+      <textarea disabled id='ansB'></textarea>
       <button id='chooseB'>Chọn</button>
     </div>
     <div style='left: 82px;position: relative;'>
       <button id='showC'>Hiện</button>
-      <textarea id='ansC'></textarea>
+      <textarea disabled id='ansC'></textarea>
       <button id='chooseC'>Chọn</button>
     </div>
     <div style='left: 82px;position: relative;'>
       <button id='showD'>Hiện</button>
-      <textarea id='ansD'></textarea>
+      <textarea disabled id='ansD'></textarea>
       <button id='chooseD'>Chọn</button>
     </div>
 
+    <button id='playCurrentBed'
+      style='position: absolute;top:70px;left: 894px;width: 80px;height: 130px;font-size: 20px;'>Nền câu hiện
+      tại</button>
     <button id='nextQuestion'
       style='position: absolute;top:70px;left: 984px;width: 80px;height: 130px;font-size: 20px;'>Câu tiếp theo &
       Lights down</button>
@@ -166,7 +169,8 @@
       lights down câu hiện tại</button>
     <button id='revealCorrect' style='position: absolute;top: 70px;left: 804px;width: 80px;height: 270px;'>Hiện đáp án
       đúng</button>
-    <textarea id='explain' style='position: absolute;top: 70px;width: 414px;left: 1071px;height: 270px;'></textarea>
+    <textarea disabled id='explain'
+      style='position: absolute;top: 70px;width: 414px;left: 1071px;height: 270px;'></textarea>
   </div>
   <div id='questionAndMoneyArea' style='position: absolute;left: 1500px;width:420px;'>
     <button id='showMoneyTree'>Hiện thang tiền</button>
@@ -180,8 +184,9 @@
     <button id='introLifeline1'>Trợ giúp 1</button>
     <button id='introLifeline2'>Trợ giúp 2</button>
     <button id='introLifeline3'>Trợ giúp 3</button>
-    <button id='introLifeline4'>Trợ giúp 4</button>
-    <div style='height: 420px;'>
+    <button id='introLifeline4'>Hiện & Ping trợ giúp 4</button>
+    <button id='hideLifeline4'>Ẩn trợ giúp 4</button>
+    <div style='height: 450px;'>
       <div id='questionNumList' style='width: 0;position: absolute;'>
         <div>1</div>
         <div>2</div>
@@ -195,6 +200,7 @@
         <div>10</div>
         <div>11</div>
         <div>12</div>
+        <div>Đổi</div>
       </div>
       <div id='moneyList' style='width: 0;position: absolute;left:50px'>
         <div>500</div>
@@ -209,8 +215,10 @@
         <div>250.000</div>
         <div>500.000</div>
         <div>1.000.000</div>
+        <div></div>
       </div>
       <div id='questionList' style='width: 0;left:200px;position: absolute;'>
+        <div>-</div>
         <div>-</div>
         <div>-</div>
         <div>-</div>
@@ -235,7 +243,7 @@
   </div>
   <div id='timeArea' style='top: 360px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
     <span style='position: absolute;top: -15px;background: black;'>Thời gian</span>
-    <span style='position: absolute;top: -15px;background: black;left:230px;'>15s</span>
+    <!-- <span style='position: absolute;top: -15px;background: black;left:230px;'>15s</span> -->
     <button id='stopClock'>Dừng</button>
     <button id='resumeClock'>Tiếp</button>
     <button id='reset'>Reset</button>
@@ -295,7 +303,8 @@
     <span style='position: absolute;top: -15px;background: black;'>Viewer</span>
     <button id='hideGpx'>Ẩn gpx</button>
     <button id='showGpx'>Hiện gpx</button>
-    <button id='clearAnim'>Ẩn giao diện & reset animation giao diện</button>
+    <button id='clearAnim'>Ẩn & reset animation</button>
+    <button id='showGpxAndPlayLockin'>Hiện và nhạc lockin</button>
     <button id='showTotalPrize'>Hiện tiền thắng cuộc</button>
     <button id='hideTotalPrize'>Ẩn tiền thắng cuộc</button>
   </div>
@@ -311,141 +320,11 @@
     <button id='stopBed'>Dừng nền</button>
     <button id='resumeBed'>Tiếp tục nền</button>
     <br>
-    <button id='klaxon'>Hết giờ</button>
     <button id='preclosing'>Tổng kết</button>
     <button id='outro'>Outro</button>
     <br>
     <button id='stopAllSounds'>Dừng tất cả âm thanh</button>
   </div>
-  <!-- <div class='flexcon'>
-    <div>
-      <div class='controlLabel'>Đề</div>
-      <label for="fileInput" class="customFileInput areaTitle">
-        Nhập đề
-      </label>
-        <button id='chooseA' style='height: 50px;vertical-align: top;'>Chọn</button>
-      </div>
-    </div>
-  </div>
-  <div class='flexcon'>
-    <div>
-      <div class='controlLabel'>Đề</div>
-      <label for="fileInput" class="customFileInput areaTitle">
-        Nhập đề
-      </label>
-      <input id="fileInput" type="file" class="fileInput" accept='.xlsx' />
-      <button class='singleLine' id='showQ'>Hiện câu hỏi</button>
-      <button id='showAllAns' style='width: 100%;'>Hiện 4 đáp án</button>
-      <div class='flexcon'>
-        <button id='showA'>Hiện A</button>
-        <button id='showB'>Hiện B</button>
-        <button id='showC'>Hiện C</button>
-        <button id='showD'>Hiện D</button>
-      </div>
-      <div class='flexcon'>
-        <div id='quesNum' style='width: 10%;border:1px solid white'>-</div>
-        <div id='ques' class='singleLine purple' style='border:1px solid white;'>-</div>
-      </div>
-      <div style='display: flex;'>
-        <button id='chooseA' style='width: 10%;'>A</button>
-        <div id='ansA' class='purple' style='width: 40%;border:1px solid white;'>-</div>
-        <button id='chooseB' style='width: 10%;'>B</button>
-        <div id='ansB' class='purple' style='width: 40%;border:1px solid white;'>-</div>
-      </div>
-      <div style='display: flex;'>
-        <button id='chooseC' style='width: 10%;'>C</button>
-        <div id='ansC' class='purple' style='width: 40%;border:1px solid white;'>-</div>
-        <button id='chooseD' style='width: 10%;'>D</button>
-        <div id='ansD' class='purple' style='width: 40%;border:1px solid white;'>-</div>
-      </div>
-      <div class='flexcon'>
-        <button id='revealCorrect'>Đáp án đúng</button>
-        <button id='nextQuestion'>Câu tiếp theo</button>
-      </div>
-      <div class='flexcon'>
-        <button id='stopClock'>Dừng thời gian</button>
-        <button id='resumeClock'>Tiếp thời gian</button>
-        <button id='hideGpx'>Ẩn giao diện (cho quảng cáo)</button>
-        <button id='showGpx'>Hiện giao diện</button>
-      </div>
-
-      <div class='flexcon'>
-        <button id='walkAway'>Dừng chơi</button>
-        <button id='clearAnim'>Ẩn giao diện & reset animation giao diện</button>
-        <button id='showTotalPrize'>Hiện tiền thắng cuộc</button>
-        <button id='hideTotalPrize'>Ẩn tiền thắng cuộc</button>
-      </div>
-      <div class='controlLabel'>Danh sách câu hỏi</div>
-      
-    </div>
-    <div>
-      <div class='controlLabel'>Thang tiền thưởng</div>
-      <div class='flexcon'>
-        <button id='showMoneyTree'>Hiện thang tiền thưởng</button>
-        <button id='hideMoneyTree'>Ẩn thang tiền thưởng</button>
-      </div>
-      <div class='flexcon'>
-        <button id='introMoneyTree'>Giới thiệu</button>
-        <button id='introSafe1'>Mốc 1</button>
-        <button id='introSafe2'>Mốc 2</button>
-        <button id='introSafe3'>Mốc 3</button>
-        <button id='introLifeline1'>Trợ giúp 1</button>
-        <button id='introLifeline2'>Trợ giúp 2</button>
-        <button id='introLifeline3'>Trợ giúp 3</button>
-        <button id='introLifeline4'>Trợ giúp 4</button>
-      </div>
-      <div class='controlLabel'>50:50</div>
-      <div class='flexcon'>
-        <button id='fifty'>50:50</button>
-        <button id='disable50'>Tắt</button>
-        <button id='enable50'>Bật</button>
-      </div>
-      <div class='controlLabel'>Gọi điện thoại</div>
-      <div class='flexcon'>
-        <button id='pafBed'>Nền</button>
-        <button id='pafTime'>30s</button>
-        <button id='pafEnd'>Kết thúc</button>
-        <button id='disablePaf'>Tắt</button>
-        <button id='enablePaf'>Bật</button>
-      </div>
-      <div class='controlLabel'>Khán giả</div>
-      <div class='flexcon'>
-        <button id='playAtaBed'>Nền</button>
-        <button id='ata'>Bắt đầu</button>
-        <button id='ataEnd'>Kết thúc</button>
-        <button id='ataHide'>Ẩn đồ họa</button>
-        <input type='number' placeholder='A' id='aPercent'>
-        <input type='number' placeholder='B' id='bPercent'>
-        <input type='number' placeholder='C' id='cPercent'>
-        <input type='number' placeholder='D' id='dPercent'>
-        <button id='disableAta'>Tắt</button>
-        <button id='enableAta'>Bật</button>
-      </div>
-      <div class='controlLabel'>Đổi câu hỏi</div>
-      <div class='flexcon'>
-        <button id='stqActivate'>Kích hoạt</button>
-        <button id='stqA'>A</button>
-        <button id='stqB'>B</button>
-        <button id='stqC'>C</button>
-        <button id='stqD'>D</button>
-        <button id='stqCorrect'>Đúng</button>
-        <button id='stq'>Đổi</button>
-        <button id='disableStq'>Tắt</button>
-        <button id='enableStq'>Bật</button>
-      </div>
-      <div class='controlLabel'>Nhạc</div>
-      <button id='explainRules'>Giải thích luật</button>
-      <button id='letsPlay'>Bắt đầu đi tìm</button>
-      <button id='commIn'>Commercial in</button>
-      <button id='commOut'>Commercial out</button>
-      <button id='stopBed'>Dừng nền</button>
-      <button id='resumeBed'>Tiếp tục nền</button>
-      <div class='flexcon'><input id='playerInfoInput' type='text' placeholder='Thông tin người chơi'></div>
-      <div class='flexcon'><input id='messageInput' type='text' placeholder='Tin nhắn đến MC'></div>
-    </div>
-    <div></div>
-  </div> -->
-
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
@@ -482,6 +361,9 @@
     })
     $('#introLifeline4').click(() => {
       socket.emit('introLifeline4')
+    })
+    $('#hideLifeline4').click(() => {
+      socket.emit('hideLifeline4')
     })
 
     $('#showMoneyTree').click(() => {
@@ -580,6 +462,40 @@
       $('#ansD').text(qnas[quesNum].d)
       $('#quesNum').text(quesNum + 1)
     })
+    $('#playCurrentBed').click(() => {
+      if (quesNum == 7) {
+        socket.emit('playSound', 'Q8 bed.ogg')
+      }
+      else if (quesNum == 8) {
+        socket.emit('playSound', 'Q9 bed.ogg')
+      }
+      else if (quesNum == 9) {
+        socket.emit('playSound', 'Q10 bed.ogg')
+      }
+      else if (quesNum == 10) {
+        socket.emit('playSound', 'Q11 bed.ogg')
+      }
+      else if (quesNum == 11) {
+        socket.emit('playSound', 'Q12 bed.ogg')
+      }
+    })
+    $('#playCurrentLightsDown').click(() => {
+      if (quesNum == 2 || quesNum == 7) {
+        socket.emit('playSound', 'Q38 Start.ogg')
+      }
+      else if (quesNum == 3 || quesNum == 8) {
+        socket.emit('playSound', 'Q49 Start.ogg')
+      }
+      else if (quesNum == 4 || quesNum == 9) {
+        socket.emit('playSound', 'Q510 Start.ogg')
+      }
+      else if (quesNum == 5 || quesNum == 10) {
+        socket.emit('playSound', 'Q611 Start.ogg')
+      }
+      else if (quesNum == 6 || quesNum == 11) {
+        socket.emit('playSound', 'Q712 Start.ogg')
+      }
+    })
     $('#stopClock').click(() => {
       socket.emit('stopClock', quesNum)
     })
@@ -591,6 +507,24 @@
     })
     $('#clearAnim').click(() => {
       socket.emit('clearAnim')
+    })
+    $('#showGpxAndPlayLockin').click(() => {
+      socket.emit('showGpx')
+      if (quesNum == 2 || quesNum == 7) {
+        socket.emit('playSound', 'Q38 Final.ogg')
+      }
+      else if (quesNum == 3 || quesNum == 8) {
+        socket.emit('playSound', 'Q49 Final.ogg')
+      }
+      else if (quesNum == 4 || quesNum == 9) {
+        socket.emit('playSound', 'Q510 Final.ogg')
+      }
+      else if (quesNum == 5 || quesNum == 10) {
+        socket.emit('playSound', 'Q611 Final.ogg')
+      }
+      else if (quesNum == 6 || quesNum == 11) {
+        socket.emit('playSound', 'Q712 Final.ogg')
+      }
     })
     $('#showGpx').click(() => {
       socket.emit('showGpx')
@@ -727,7 +661,7 @@
       for (let i = 2; i <= 26; i += 2) {
         console.log(i, getCellValue(sheet, 1, i), getCellValue(sheet, 1, i + 1))
 
-        if ((i / 2) == 13) $(`#questionList div:nth-child(${i / 2})`).text(`Đổi. ${getCellValue(sheet, 1, i) + getCellValue(sheet, 1, i + 1)}`)
+        if ((i / 2) == 13) $(`#questionList div:nth-child(${i / 2})`).text(`${getCellValue(sheet, 1, i) + getCellValue(sheet, 1, i + 1)}`)
         else $(`#questionList div:nth-child(${i / 2})`).text(`${getCellValue(sheet, 1, i) + getCellValue(sheet, 1, i + 1)}`)
 
         if ((i / 2) == 1 || (i / 2) == 2) $(`#questionList div:nth-child(${(i / 2)})`).css('background-color', '#B6D7A8')

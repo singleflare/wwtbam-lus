@@ -146,6 +146,13 @@ cNs.on('connection',s=>{
   })
   s.on('introLifeline4',() => {
     vNs.emit('introLifeline4')
+    hNs.emit('introLifeline4')
+    pNs.emit('introLifeline4')
+  })
+  s.on('hideLifeline4',() => {
+    vNs.emit('hideLifeline4')
+    hNs.emit('hideLifeline4')
+    pNs.emit('hideLifeline4')
   })
   s.on('showMoneyTree',(quesNum)=>{
     vNs.emit('showMoneyTree',quesNum)
@@ -261,6 +268,7 @@ cNs.on('connection',s=>{
     })
     console.log(intPercentage)
     vNs.emit('ataEnd',intPercentage)
+    hNs.emit('ataEnd',intPercentage)
   })
   s.on('ata',()=>{
     vNs.emit('ata')
