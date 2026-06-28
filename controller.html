@@ -428,6 +428,7 @@
       })
     })
     $('#revealCorrect').click(() => {
+      socket.emit('stopAllSounds')
       socket.emit('revealCorrect', chosenAns, qnas[quesNum].correct, quesNum, prizes[quesNum], false)
       if (qnas[quesNum].correct == chosenAns) {
         prizeIdx = quesNum
@@ -464,19 +465,19 @@
     })
     $('#playCurrentBed').click(() => {
       if (quesNum == 7) {
-        socket.emit('playSound', 'Q8 bed.ogg')
+        socket.emit('playSound', 'Q8 bed.mp3')
       }
       else if (quesNum == 8) {
-        socket.emit('playSound', 'Q9 bed.ogg')
+        socket.emit('playSound', 'Q9 bed.mp3')
       }
       else if (quesNum == 9) {
-        socket.emit('playSound', 'Q10 bed.ogg')
+        socket.emit('playSound', 'Q10 bed.mp3')
       }
       else if (quesNum == 10) {
-        socket.emit('playSound', 'Q11 bed.ogg')
+        socket.emit('playSound', 'Q11 bed.mp3')
       }
       else if (quesNum == 11) {
-        socket.emit('playSound', 'Q12 bed.ogg')
+        socket.emit('playSound', 'Q12 bed.mp3')
       }
     })
     $('#playCurrentLightsDown').click(() => {
