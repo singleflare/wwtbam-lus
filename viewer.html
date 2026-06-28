@@ -1188,7 +1188,7 @@
     socket.on('ata', () => {
       ataBed.stop()
       ataSound.play()
-      $('#ata').animate({ 'opacity': 1 }, 500)
+      $('#ata,#aPercent,#bPercent,#cPercent,#dPercent,#ataBarA,#ataBarB,#ataBarC,#ataBarD').animate({ 'opacity': 1 }, 500)
     })
     socket.on('ataEnd', percentages => {
       console.log(percentages)
@@ -1252,8 +1252,8 @@
       $('#ata,#aPercent,#bPercent,#cPercent,#dPercent,#ataBarA,#ataBarB,#ataBarC,#ataBarD').animate({ 'opacity': 0 }, 500)
       setTimeout(() => {
         $('#aPercent,#bPercent,#cPercent,#dPercent').text('')
-        $('#ataBarA,#ataBarB,#ataBarC,#ataBarD').css({ 'top': '318px' })
-      }, 500)
+        $('#ataBarA,#ataBarB,#ataBarC,#ataBarD').css({ 'top': '318px' }, 500)
+      }, 1000)
     })
     socket.on('stqActivate', () => {
       document.getElementById('stqMini').addEventListener('play', () => {
