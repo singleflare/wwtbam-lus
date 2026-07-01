@@ -269,7 +269,8 @@
     <img src='answers_correct.png' class='correct' id='correctC' style='clip-path: inset(0 960px 0 0);'>
     <img src='answers_correct.png' class='correct' id='correctD' style='clip-path: inset(0 0 0 960px);'>
   </div>
-  <video id='stqMini' src='STQ.webm' style='width: 120px;top: 944px;left: 893px;z-index: 1;scale:0'></video>
+  <video preload='auto' id='stqMini' src='STQ.webm'
+    style='width: 120px;top: 944px;left: 893px;z-index: 1;scale:0'></video>
   <img src='ata_graph.png' id='ata' style='width: 300px;left: 1450px;top: 100px;opacity: 0;'>
   <div id='aPercent' style='font-size: 18pt;top: 120px;left: 1468px;color:white;font-family: Verdana;'>
   </div>
@@ -309,17 +310,17 @@
       style='font-family: CP31C01;height: 131px;font-size: 75pt;color:#E49F12;top: 140px;width: 1920px;text-shadow: 2px 2px 10px black;'>
     </p>
     <img src='winning_value.png' id='tpmImg' style='width:1920px;width: 1920px;position: absolute;top: 140px;'>
-    <video src='Total Prize_1.mp4' id='tpmBg' style='position: absolute;top:0' loop muted></video>
+    <video preload='auto' src='Total Prize_1.mp4' id='tpmBg' style='position: absolute;top:0' loop muted></video>
     <img src='diamond.png'
       style='position: absolute;top: 193px;left: 460px;width: 30px;animation: pulse 2s forwards infinite;'>
     <img src='diamond.png'
       style='position: absolute;top: 193px;left: 1420px;width: 30px;animation: pulse 2s forwards infinite;'>
   </div>
   <div id='moneyTree' style='position: absolute;left:1080px'>
-    <video class='llVid' id='ll1' style='left: 1105px;' src='5050.webm' preload='auto'></video>
-    <video class='llVid' id='ll2' style='left: 1265px;' src='PAF.webm' preload='auto'></video>
-    <video class='llVid' id='ll3' style='left: 1425px;' src='ATA.webm' preload='auto'></video>
-    <video class='llVid' id='ll4' style='left: 1920px;opacity: 0;' src='STQ.webm' preload='auto'></video>
+    <video preload='auto' class='llVid' id='ll1' style='left: 1105px;' src='5050.webm' preload='auto'></video>
+    <video preload='auto' class='llVid' id='ll2' style='left: 1265px;' src='PAF.webm' preload='auto'></video>
+    <video preload='auto' class='llVid' id='ll3' style='left: 1425px;' src='ATA.webm' preload='auto'></video>
+    <video preload='auto' class='llVid' id='ll4' style='left: 1920px;opacity: 0;' src='STQ.webm' preload='auto'></video>
     <img class='cross' id='cross1' style='left: 1165px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
       src='cross_for_used_lifelines.png'>
     <img class='cross' id='cross2' style='left: 1325px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
@@ -328,7 +329,8 @@
       src='cross_for_used_lifelines.png'>
     <img class='cross' id='cross4' style='left: 1645px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
       src='cross_for_used_lifelines.png'>
-    <video id='moneyTreeVid' src='Gpx_MoneyTree_1.mp4' muted loop style='position: absolute;top:0;left:1080px'></video>
+    <video preload='auto' id='moneyTreeVid' src='Gpx_MoneyTree_1.mp4' muted loop
+      style='position: absolute;top:0;left:1080px'></video>
     <div id='highlight'>
       <img src='tree_level.png' id='highlight1'>
       <img src='tree_level.png' id='highlight2'>
@@ -386,9 +388,12 @@
       <div class='copper' id='prize12' style='color: white;'>1,000,000 GL</div>
     </div>
   </div>
-  <video src='Timer 15sec countdown.webm' id='15sCountdown' style='opacity: 0;top:130px;'></video>
-  <video src='Timer 30sec countdown.webm' id='30sCountdown' style='opacity: 0;top:130px;'></video>
-  <video src='PaF (webm).webm' id='paf' style='scale:0;left: 1100px;top: -200px;' preload='auto'></video>
+  <div id='lifelineArea' style='position:absolute'>
+
+  </div>
+  <video preload='auto' src='Timer 15sec countdown.webm' id='15sCountdown' style='opacity: 0;top:130px;'></video>
+  <video preload='auto' src='Timer 30sec countdown.webm' id='30sCountdown' style='opacity: 0;top:130px;'></video>
+  <video preload='auto' src='PaF (webm).webm' id='paf' style='scale:0;left: 1100px;top: -200px;'></video>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src='jquery.keyframes.min.js'></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"
@@ -1462,7 +1467,7 @@
       pafBed.stop()
       setTimeout(() => {
         $('#paf').animate({ scale: 0 }, 500)
-      }, 30000)
+      }, 31000)
     })
     socket.on('pafEnd', () => {
       pafTime.stop()
