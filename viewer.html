@@ -411,6 +411,22 @@
 
     let vol = 0.2
 
+    const mediaUrls = [
+      'Explain_the_Rules_1.mp3', 'Sfx_MillionaireUK2010_15s countdown.mp3', 'Sfx_MillionaireUK2010_30s countdown.mp3', 'Phone_a_Friend_Ready.ogg', 'Phone_a_Friend_Clock.ogg', 'Phone-a-Friend_End.ogg', 'Player_Entrance.ogg', 'Ask_the_Audience_Ready.ogg', 'Ask_the_Audience_Progress.ogg', 'Preclosing.ogg', 'Letsplay.ogg', 'Lifeline_1.ogg', 'Lifeline_2.ogg', 'Lifeline_3.ogg', 'Lifeline_low_pitch.ogg', 'Into_Commercial_(Rave).ogg', 'Out_of_Commercial_(Rave).ogg', 'Q1-2 bed.mp3', 'Q3 bed.mp3', 'Q4 bed.mp3', 'Q5 bed.mp3', 'Q6 bed.mp3', 'Q7 bed.mp3', 'Q8 bed.mp3', 'Q9 bed.mp3', 'Q10 bed.mp3', 'Q11 bed.mp3', 'Q12 bed.mp3', 'Q38 Final.ogg', 'Q49 Final.ogg', 'Q510 Final.ogg', 'Q611 Final.ogg', 'Q712 Final.ogg', 'Q1 Win.ogg', 'Q2 Win.ogg', 'Q3 Win.ogg', 'Q4 Win.ogg', 'Q5 Win.ogg', 'Q6 Win.ogg', 'Q7 Win.ogg', 'Q8 Win.ogg', 'Q9 Win.ogg', 'Q10 Win.ogg', 'Q11 Win.ogg', 'Q12 Win.ogg', 'Q38 Lose.ogg', 'Q49 Lose.ogg', 'Q510 Lose.ogg', 'Q611 Lose.ogg', 'Q712 Lose.ogg', 'Q12 Lose.ogg', 'Q38 Lose.ogg', 'Q49 Lose.ogg', 'Q510 Lose.ogg', 'Q611 Lose.ogg', 'Q712 Lose.ogg', 'Rave_Intro.ogg', 'stq.ogg'
+    ];
+
+    async function preloadMedia(urls) {
+      try {
+        const promises = urls.map(url => fetch(url, { mode: 'no-cors' })); // no-cors giúp tránh lỗi cross-origin
+        await Promise.all(promises);
+        console.log('Tất cả media đã được tải vào cache!');
+      } catch (error) {
+        console.error('Lỗi khi preload:', error);
+      }
+    }
+
+    preloadMedia(mediaUrls);
+
     let tier1Bed = new Howl({
       src: ['Q1-2 bed.mp3'], loop: true, volume: vol
     })

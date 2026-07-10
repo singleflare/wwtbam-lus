@@ -164,9 +164,9 @@
     <button id='nextQuestion'
       style='position: absolute;top:70px;left: 984px;width: 80px;height: 130px;font-size: 20px;'>Câu tiếp theo &
       Lights down</button>
-    <button id='playCurrentLightsDown'
+    <!-- <button id='playCurrentLightsDown'
       style='position: absolute;top:210px;left: 984px;width: 80px;height: 130px;font-size: 20px'>Nhạc
-      lights down câu hiện tại</button>
+      lights down câu hiện tại</button> -->
     <button id='revealCorrect' style='position: absolute;top: 70px;left: 804px;width: 80px;height: 270px;'>Hiện đáp án
       đúng</button>
     <textarea disabled id='explain'
@@ -293,7 +293,7 @@
   <div id='hostArea'
     style='top: 360px;position: absolute;padding: 40px 10px 10px 10px;border: 1px solid gray;left:1090px;width: 395px;'>
     <span style='position: absolute;top: -15px;background: black;'>Host</span>
-    <button id='break'>Giải lao</button>
+    <!-- <button id='break'>Giải lao</button> -->
     <button id='klaxon'>Hết giờ</button>
     <div class='flexcon' style='height: 60px;'><input id='playerInfoInput' type='text'
         placeholder='Thông tin người chơi'></div>
@@ -313,10 +313,11 @@
     <button id='intro'>Intro</button>
     <button id='playerEntrance'>Người chơi vào</button>
     <br>
-    <button id='explainRules'>Giải thích luật</button>
+    <button id='explainRules'>Luật</button>
     <button id='letsPlay'>Bắt đầu đi tìm</button>
-    <button id='commIn'>Commercial in</button>
-    <button id='commOut'>Commercial out</button>
+    <button id='commIn'>Comm in</button>
+    <button id='commOut'>Comm out</button>
+    <button id='playCurrentLightsDown'>Nhạc LD câu hiện tại</button>
     <button id='stopBed'>Dừng nền</button>
     <button id='resumeBed'>Tiếp tục nền</button>
     <br>
@@ -428,7 +429,7 @@
       })
     })
     $('#revealCorrect').click(() => {
-      socket.emit('stopAllSounds')
+      if (quesNum != 0) socket.emit('stopAllSounds')
       socket.emit('revealCorrect', chosenAns, qnas[quesNum].correct, quesNum, prizes[quesNum], false)
       if (qnas[quesNum].correct == chosenAns) {
         prizeIdx = quesNum
@@ -550,6 +551,7 @@
       socket.emit('fifty', ansArr)
     })
     $('#pafBed').click(() => {
+      socket.emit('stopAllSounds')
       socket.emit('pafBed')
     })
     $('#pafTime').click(() => {
@@ -559,6 +561,7 @@
       socket.emit('pafEnd')
     })
     $('#playAtaBed').click(() => {
+      socket.emit('stopAllSounds')
       socket.emit('playAtaBed')
     })
     let ataInterval
