@@ -186,6 +186,7 @@
     <button id='introLifeline3'>Trợ giúp 3</button>
     <button id='introLifeline4'>Hiện & Ping trợ giúp 4</button>
     <button id='hideLifeline4'>Ẩn trợ giúp 4</button>
+    <input type='text' id='camlinkInput' placeholder='Nhập link camera NC'>
     <div style='height: 450px;'>
       <div id='questionNumList' style='width: 0;position: absolute;'>
         <div>1</div>
@@ -784,6 +785,9 @@
       } else {
         socket.emit('disableLifeline', 'swap')
       }
+    })
+    $('#camlinkInput').on('change', function () {
+      socket.emit('camlink', $('#camlinkInput').val())
     })
   </script>
 </body>

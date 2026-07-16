@@ -267,6 +267,7 @@
     })
     let pafTime = 30
     socket.on('pafTime', () => {
+      pafTime = 30
       $('#time').text(pafTime)
       $('#time').css('opacity', 1)
       timeInterval = setInterval(() => {

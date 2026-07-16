@@ -120,6 +120,7 @@ let vNs=io.of('v')
 let cNs=io.of('c')
 let hNs=io.of('h')
 let pNs=io.of('p')
+let camNs=io.of('cam')
 
 cNs.on('connection',s=>{
   console.log('user connected')
@@ -156,9 +157,11 @@ cNs.on('connection',s=>{
   })
   s.on('showMoneyTree',(quesNum)=>{
     vNs.emit('showMoneyTree',quesNum)
+    camNs.emit('showMoneyTree')
   })
   s.on('hideMoneyTree',()=>{
     vNs.emit('hideMoneyTree')
+    camNs.emit('hideMoneyTree')
   })
   s.on('showQ',(qna,quesNum)=>{
     console.log(qna,quesNum)
@@ -341,6 +344,9 @@ cNs.on('connection',s=>{
     vNs.emit('enableLifeline',ll)
     hNs.emit('enableLifeline',ll)
     pNs.emit('enableLifeline',ll)
+  })
+  s.on('camlink',link=>{
+    camNs.emit('camlink',link)
   })
 })
 

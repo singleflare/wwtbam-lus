@@ -317,10 +317,10 @@
       style='position: absolute;top: 193px;left: 1420px;width: 30px;animation: pulse 2s forwards infinite;'>
   </div>
   <div id='moneyTree' style='position: absolute;left:1080px'>
-    <video preload='auto' class='llVid' id='ll1' style='left: 1105px;' src='5050.webm' preload='auto'></video>
-    <video preload='auto' class='llVid' id='ll2' style='left: 1265px;' src='PAF.webm' preload='auto'></video>
-    <video preload='auto' class='llVid' id='ll3' style='left: 1425px;' src='ATA.webm' preload='auto'></video>
-    <video preload='auto' class='llVid' id='ll4' style='left: 1920px;opacity: 0;' src='STQ.webm' preload='auto'></video>
+    <video preload='auto' class='llVid' id='ll1' style='left: 1105px;' src='5050.webm'></video>
+    <video preload='auto' class='llVid' id='ll2' style='left: 1265px;' src='PAF.webm'></video>
+    <video preload='auto' class='llVid' id='ll3' style='left: 1425px;' src='ATA.webm'></video>
+    <video preload='auto' class='llVid' id='ll4' style='left: 1920px;opacity: 0;' src='STQ.webm'></video>
     <img class='cross' id='cross1' style='left: 1165px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
       src='cross_for_used_lifelines.png'>
     <img class='cross' id='cross2' style='left: 1325px;width: 100px;top: 111px;z-index: 1;opacity: 0;'
@@ -426,6 +426,18 @@
     }
 
     preloadMedia(mediaUrls);
+
+    const videoUrls = [
+      'STQ.webm', '5050.webm', 'PAF.webm', 'ATA.webm', 'Gpx_MoneyTree_1.mp4', 'Timer 15sec countdown.webm', 'Timer 30sec countdown.webm', 'Total Prize_1.mp4'
+    ];
+    function preloadVideo(url) {
+      const video = document.createElement('video');
+      video.src = url;
+      video.preload = 'auto';
+      video.load();
+    }
+
+    videoUrls.forEach(preloadVideo);
 
     let tier1Bed = new Howl({
       src: ['Q1-2 bed.mp3'], loop: true, volume: vol
@@ -654,9 +666,11 @@
       }
     })
     socket.on('hideMoneyTree', () => {
-      moneyTreeVid.pause()
-      moneyTreeVid.currentTime = 0
       $('#moneyTree').animate({ left: '1080px' }, 1250)
+      setTimeout(() => {
+        moneyTreeVid.pause()
+        moneyTreeVid.currentTime = 0
+      }, 1250)
     })
     socket.on('showQ', (qna, quesNum) => {
       $('#quesText,svg').css('display', 'none')

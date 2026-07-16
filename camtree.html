@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viewer</title>
+</head>
+
+<body>
+  <iframe id="cam" src=""
+    style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; border: none;"></iframe>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src='jquery.keyframes.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"
+    integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('/cam')
+    socket.on('camlink', link => {
+      $('#cam').attr('src', link)
+    })
+    socket.on('showMoneyTree', quesNum => {
+      $('#cam').animate({ left: '-540px' }, 1250)
+    })
+    socket.on('hideMoneyTree', () => {
+      $('#cam').animate({ left: '0' }, 1250)
+    })
+  </script>
+</body>
+
+</html>
