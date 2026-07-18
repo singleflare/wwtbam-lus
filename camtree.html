@@ -23,11 +23,13 @@
     })
     socket.on('showMoneyTree', quesNum => {
       setTimeout(() => {
-        $('#cam').animate({ left: '-540px' }, 1750)
-      }, 250)
+        $('#cam').animate({ left: '-540px' }, 1000)
+      }, 225)
     })
     socket.on('hideMoneyTree', () => {
-      $('#cam').animate({ left: '0' }, 750)
+      setTimeout(() => {
+        $('#cam').animate({ left: '0' }, 1000)
+      }, 0)
     })
   </script>
 </body>

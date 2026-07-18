@@ -412,7 +412,7 @@
     let vol = 0.2
 
     const mediaUrls = [
-      'Explain_the_Rules_1.mp3', 'Sfx_MillionaireUK2010_15s countdown.mp3', 'Sfx_MillionaireUK2010_30s countdown.mp3', 'Phone_a_Friend_Ready.ogg', 'Phone_a_Friend_Clock.ogg', 'Phone-a-Friend_End.ogg', 'Player_Entrance.ogg', 'Ask_the_Audience_Ready.ogg', 'Ask_the_Audience_Progress.ogg', 'Preclosing.ogg', 'Letsplay.ogg', 'Lifeline_1.ogg', 'Lifeline_2.ogg', 'Lifeline_3.ogg', 'Lifeline_low_pitch.ogg', 'Into_Commercial_(Rave).ogg', 'Out_of_Commercial_(Rave).ogg', 'Q1-2 bed.mp3', 'Q3 bed.mp3', 'Q4 bed.mp3', 'Q5 bed.mp3', 'Q6 bed.mp3', 'Q7 bed.mp3', 'Q8 bed.mp3', 'Q9 bed.mp3', 'Q10 bed.mp3', 'Q11 bed.mp3', 'Q12 bed.mp3', 'Q38 Final.ogg', 'Q49 Final.ogg', 'Q510 Final.ogg', 'Q611 Final.ogg', 'Q712 Final.ogg', 'Q1 Win.ogg', 'Q2 Win.ogg', 'Q3 Win.ogg', 'Q4 Win.ogg', 'Q5 Win.ogg', 'Q6 Win.ogg', 'Q7 Win.ogg', 'Q8 Win.ogg', 'Q9 Win.ogg', 'Q10 Win.ogg', 'Q11 Win.ogg', 'Q12 Win.ogg', 'Q38 Lose.ogg', 'Q49 Lose.ogg', 'Q510 Lose.ogg', 'Q611 Lose.ogg', 'Q712 Lose.ogg', 'Q12 Lose.ogg', 'Q38 Lose.ogg', 'Q49 Lose.ogg', 'Q510 Lose.ogg', 'Q611 Lose.ogg', 'Q712 Lose.ogg', 'Rave_Intro.ogg', 'stq.ogg'
+      'Explain_the_Rules_1.mp3', 'Sfx_MillionaireUK2010_15s countdown.mp3', 'Sfx_MillionaireUK2010_30s countdown.mp3', 'Phone_a_Friend_Ready.ogg', 'Phone_a_Friend_Clock.ogg', 'Phone-a-Friend_End.ogg', 'Player_Entrance.ogg', 'Ask_the_Audience_Ready.ogg', 'Ask_the_Audience_Progress.ogg', 'Preclosing.ogg', 'Letsplay.ogg', 'Lifeline_1.ogg', 'Lifeline_2.ogg', 'Lifeline_3.ogg', 'Lifeline_low_pitch.ogg', 'Into_Commercial_(Rave).ogg', 'Out_of_Commercial_(Rave).ogg', 'Q1-2 bed.mp3', 'Q3 bed.mp3', 'Q4 bed.mp3', 'Q5 bed.mp3', 'Q6 bed.mp3', 'Q7 bed.mp3', 'Q8 bed.mp3', 'Q9 bed.mp3', 'Q10 bed.mp3', 'Q11 bed.mp3', 'Q12 bed.mp3', 'Q38 Final.ogg', 'Q49 Final.ogg', 'Q510 Final.ogg', 'Q611 Final.ogg', 'Q712 Final.ogg', 'Q1 Win.ogg', 'Q2 Win.ogg', 'Q3 Win.ogg', 'Q4 Win.ogg', 'Q5 Win.ogg', 'Q6 Win.ogg', 'Q7 Win.ogg', 'Q8 Win.ogg', 'Q9 Win.ogg', 'Q10 Win.ogg', 'Q11 Win.ogg', 'Q12 Win.mp3', 'Q38 Lose.ogg', 'Q49 Lose.ogg', 'Q510 Lose.ogg', 'Q611 Lose.ogg', 'Q12 Lose.ogg', 'Q38 Lose.ogg', 'Q49 Lose.ogg', 'Q510 Lose.ogg', 'Q611 Lose.ogg', 'Rave_Intro.ogg', 'stq.ogg'
     ];
 
     async function preloadMedia(urls) {
@@ -1290,6 +1290,16 @@
         }
       }, 150)
     })
+
+    pafVid.addEventListener('timeupdate', () => {
+      if (pafVid.currentTime >= 31) {
+        $('#paf').animate({ scale: 0 }, 500)
+      }
+    });
+    pafVid.addEventListener('canplaythrough', () => {
+      console.log('paf canplaythrough')
+    });
+
     socket.on('ataHide', () => {
       $('#ata,#aPercent,#bPercent,#cPercent,#dPercent,#ataBarA,#ataBarB,#ataBarC,#ataBarD').animate({ 'opacity': 0 }, 500)
       setTimeout(() => {
@@ -1306,6 +1316,10 @@
       })
       document.getElementById('stqMini').play()
     })
+    socket.on('stqHide', () => {
+      $('#stqMini').animate({ 'scale': 0 }, 500)
+      document.getElementById('stqMini').currentTime = 0
+    })
     socket.on('stq', () => {
       playSound('stq.ogg')
       $('#stqMini').animate({ 'scale': 0 }, 500)
@@ -1316,6 +1330,7 @@
         $('#ques').animate({ 'scale': 1, 'top': '780px' }, 400)
         setTimeout(() => { $('#ansUp').animate({ 'scale': 1, 'top': '910px' }, 400) }, 300)
         setTimeout(() => { $('#ansDown').animate({ 'scale': 1, 'top': '980px' }, 400) }, 500)
+        document.getElementById('stqMini').currentTime = 0
       }, 2000)
     })
     socket.on('stqQuestion', (qna) => {
@@ -1491,20 +1506,20 @@
       pafBed.play()
     })
     socket.on('pafTime', () => {
-      pafVid.play()
       $('#paf').animate({ scale: .35 }, 500)
+      pafVid.play()
       pafTime.play()
       pafBed.stop()
       setTimeout(() => {
-        $('#paf').animate({ scale: 0 }, 500)
-      }, 31000)
+        pafVid.currentTime = 1
+      }, 1000)
     })
     socket.on('pafEnd', () => {
       pafTime.stop()
       playSound('Phone-a-Friend_End.ogg')
-      $('#paf').animate({ scale: 0 }, 500, () => {
+      setTimeout(() => {
         pafVid.currentTime = 1
-      })
+      }, 1000)
     })
 
     socket.on('disableLifeline', ll => {

@@ -542,7 +542,7 @@
     })
     socket.on('pafEnd', () => {
       clearInterval(timeInterval)
-      $('#time').text('')
+      $('#time').text(time)
     })
 
     socket.on('stqQuestion', qna => {

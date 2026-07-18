@@ -253,6 +253,9 @@ cNs.on('connection',s=>{
   s.on('stqActivate',()=>{
     vNs.emit('stqActivate')
   })
+  s.on('stqHide',()=>{
+    vNs.emit('stqHide')
+  })
   s.on('stq',()=>{
     vNs.emit('stq')
   })

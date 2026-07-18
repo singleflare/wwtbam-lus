@@ -284,6 +284,7 @@
     <input id='stqCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 460px;'>
     <span class="checkmark" style='position: absolute;top: -16px;left: 460px;width: 30px;height: 30px;'></span>
     <button id='stqActivate'>Kích hoạt</button>
+    <button id='stqHide'>Ẩn</button>
     <button id='stqA'>A</button>
     <button id='stqB'>B</button>
     <button id='stqC'>C</button>
@@ -604,6 +605,9 @@
     })
     $('#stqActivate').click(() => {
       socket.emit('stqActivate')
+    })
+    $('#stqHide').click(() => {
+      socket.emit('stqHide')
     })
     $('#stq').click(() => {
       socket.emit('stq')

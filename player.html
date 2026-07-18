@@ -280,7 +280,7 @@
     })
     socket.on('pafEnd', () => {
       clearInterval(timeInterval)
-      $('#time').text('')
+      $('#time').text(time)
     })
     function countRenderedLines(element) { const range = document.createRange(); range.selectNodeContents(element); const rects = range.getClientRects(); return rects.length; }
     socket.on('showQ', qna => {
