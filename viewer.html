@@ -1296,9 +1296,6 @@
         $('#paf').animate({ scale: 0 }, 500)
       }
     });
-    pafVid.addEventListener('canplaythrough', () => {
-      console.log('paf canplaythrough')
-    });
 
     socket.on('ataHide', () => {
       $('#ata,#aPercent,#bPercent,#cPercent,#dPercent,#ataBarA,#ataBarB,#ataBarC,#ataBarD').animate({ 'opacity': 0 }, 500)
@@ -1516,7 +1513,9 @@
     })
     socket.on('pafEnd', () => {
       pafTime.stop()
+      pafVid.pause()
       playSound('Phone-a-Friend_End.ogg')
+      $('#paf').animate({ scale: 0 }, 500)
       setTimeout(() => {
         pafVid.currentTime = 1
       }, 1000)
