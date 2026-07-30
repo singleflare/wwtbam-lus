@@ -10,6 +10,7 @@
 <body>
   <style>
     * {
+      font-family: Arial;
       color: white;
       box-sizing: border-box;
       font-size: 30px;
@@ -31,7 +32,7 @@
     button {
       border: 1px solid white;
       background-color: black;
-      height: 60px;
+      height: 40px;
     }
 
     button:disabled {
@@ -79,13 +80,13 @@
     }
 
     #questionArea>* {
-      height: 70px;
+      height: 50px;
     }
 
     #questionArea textarea {
       color: black;
       font-size: 25px;
-      height: 60px;
+      height: 40px;
       resize: none;
       vertical-align: top;
       width: 539px;
@@ -131,12 +132,26 @@
       background-color: red;
     }
   </style>
+  <iframe src='./viewer.html' style='position: absolute;
+    top: 530px;
+    left: 490px;
+    width: 100%;
+    height: 100%;
+    scale: 0.25;
+    transform-origin: top left;'></iframe>
+  <iframe src='./host-xnxx.html' style='position: absolute;
+    top: 530px;
+    left: 980px;
+    width: 100%;
+    height: 100%;
+    scale: 0.25;
+    transform-origin: top left;'></iframe>
   <div id='questionArea' style='position: absolute;left:0;width: 1500px;height:500px;'>
     <div>
-      <button id='showQ'>Hiện</button>
+      <button id='showQ' style='width:75px'>Hiện</button>
       <textarea disabled id='ques' style='width: 1400px;'></textarea>
     </div>
-    <button id='showAllAns' style='position: absolute;top: 70px;width: 75px;height: 270px;'>Hiện 4 đáp án</button>
+    <button id='showAllAns' style='position: absolute;top: 50px;width: 75px;height: 190px;'>Hiện 4 đáp án</button>
     <div style='left: 82px;position: relative;'>
       <button id='showA'>Hiện</button>
       <textarea disabled id='ansA'></textarea>
@@ -158,23 +173,22 @@
       <button id='chooseD'>Chọn</button>
     </div>
 
-    <button id='playCurrentBed'
-      style='position: absolute;top:70px;left: 894px;width: 80px;height: 130px;font-size: 20px;'>Nền câu hiện
+    <button id='nextQuestion' style='position: absolute;top:50px;left: 900px;width: 80px;height: 190px;'>Câu tiếp &
+      LD</button>
+    <button id='playCurrentBed' style='position: absolute;top:50px;left: 990px;width: 80px;height: 190px;'>Nền câu hiện
       tại</button>
-    <button id='nextQuestion'
-      style='position: absolute;top:70px;left: 984px;width: 80px;height: 130px;font-size: 20px;'>Câu tiếp theo &
-      Lights down</button>
     <!-- <button id='playCurrentLightsDown'
       style='position: absolute;top:210px;left: 984px;width: 80px;height: 130px;font-size: 20px'>Nhạc
       lights down câu hiện tại</button> -->
-    <button id='revealCorrect' style='position: absolute;top: 70px;left: 804px;width: 80px;height: 270px;'>Hiện đáp án
+    <button id='revealCorrect' style='position: absolute;top: 50px;left: 810px;width: 80px;height: 190px;'>Hiện đáp án
       đúng</button>
     <textarea disabled id='explain'
-      style='position: absolute;top: 70px;width: 414px;left: 1071px;height: 270px;'></textarea>
+      style='position: absolute;top: 50px;width: 400px;left: 1080px;height: 190px;'></textarea>
   </div>
   <div id='questionAndMoneyArea' style='position: absolute;left: 1500px;width:420px;'>
-    <button id='showMoneyTree'>Hiện thang tiền</button>
-    <button id='hideMoneyTree'>Ẩn thang tiền</button>
+    <button id='explainRules'>Nhạc luật</button>
+    <button id='showMoneyTree'>Hiện thang</button>
+    <button id='hideMoneyTree'>Ẩn thang</button>
     <br>
     <button id='introMoneyTree'>Giới thiệu</button>
     <button id='introSafe1'>Mốc 1</button>
@@ -238,34 +252,16 @@
       Nhập đề
     </label>
     <input id="fileInput" type="file" class="fileInput" accept='.xlsx' />
-    <button id='prevQ'>Câu trước</button>
-    <div id='quesNum' style='display: inline-block;width: 50px;text-align: center;'>-</div>
-    <button id='nextQ'>Câu sau</button>
   </div>
-  <div id='timeArea' style='top: 360px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
+  <div id='timeArea' style='top: 260px;position: absolute;padding: 20px 10px 10px 10px;border: 1px solid gray;'>
     <span style='position: absolute;top: -15px;background: black;'>Thời gian</span>
     <!-- <span style='position: absolute;top: -15px;background: black;left:230px;'>15s</span> -->
     <button id='stopClock'>Dừng</button>
     <button id='resumeClock'>Tiếp</button>
     <button id='reset'>Reset</button>
   </div>
-  <div id='50Area' style='top: 490px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
-    <span style='position: absolute;top: -15px;background: black;'>50:50</span>
-    <input id='fiftyCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 90px;'>
-    <span class="checkmark" style='position: absolute;top: -16px;left: 90px;width: 30px;height: 30px;'></span>
-    <button id='fifty'>50:50</button>
-  </div>
-  <div id='pafArea'
-    style='top: 490px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;left:200px;'>
-    <span style='position: absolute;top: -15px;background: black;'>Gọi điện</span>
-    <input id='pafCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 250px;'>
-    <span class="checkmark" style='position: absolute;top: -16px;left: 250px;width: 30px;height: 30px;'></span>
-    <button id='pafBed'>Nền</button>
-    <button id='pafTime'>30s</button>
-    <button id='pafEnd'>Kết thúc</button>
-  </div>
   <div id='ataArea'
-    style='top: 360px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;left:320px;'>
+    style='top: 260px;position: absolute;padding: 20px 10px 10px 10px;border: 1px solid gray;left:300px;'>
     <span style='position: absolute;top: -15px;background: black;'>Khán giả</span>
     <input id='ataCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 700px;'>
     <span class="checkmark" style='position: absolute;top: -16px;left: 700px;width: 30px;height: 30px;'></span>
@@ -273,13 +269,28 @@
     <button id='ata'>Bắt đầu</button>
     <button id='ataEnd'>Kết thúc</button>
     <button id='ataHide'>Ẩn đồ họa</button>
-    <input type='number' placeholder='A' id='aPercent' style='width: 50px;height:60px;'>
-    <input type='number' placeholder='B' id='bPercent' style='width: 50px;height:60px;'>
-    <input type='number' placeholder='C' id='cPercent' style='width: 50px;height:60px;'>
-    <input type='number' placeholder='D' id='dPercent' style='width: 50px;height:60px;'>
+    <input type='number' placeholder='A' id='aPercent' style='width: 50px;height:40px;'>
+    <input type='number' placeholder='B' id='bPercent' style='width: 50px;height:40px;'>
+    <input type='number' placeholder='C' id='cPercent' style='width: 50px;height:40px;'>
+    <input type='number' placeholder='D' id='dPercent' style='width: 50px;height:40px;'>
+  </div>
+  <div id='50Area' style='top: 350px;position: absolute;padding: 20px 10px 10px 10px;border: 1px solid gray;'>
+    <span style='position: absolute;top: -15px;background: black;'>50:50</span>
+    <input id='fiftyCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 90px;'>
+    <span class="checkmark" style='position: absolute;top: -16px;left: 90px;width: 30px;height: 30px;'></span>
+    <button id='fifty'>50:50</button>
+  </div>
+  <div id='pafArea'
+    style='top: 350px;position: absolute;padding: 20px 10px 10px 10px;border: 1px solid gray;left:130px;'>
+    <span style='position: absolute;top: -15px;background: black;'>Gọi điện</span>
+    <input id='pafCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 250px;'>
+    <span class="checkmark" style='position: absolute;top: -16px;left: 250px;width: 30px;height: 30px;'></span>
+    <button id='pafBed'>Nền</button>
+    <button id='pafTime'>30s</button>
+    <button id='pafEnd'>Kết thúc</button>
   </div>
   <div id='stqArea'
-    style='top: 490px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;left:564px;'>
+    style='top: 350px;position: absolute;padding: 20px 10px 10px 10px;border: 1px solid gray;left:440px;'>
     <span style='position: absolute;top: -15px;background: black;'>Đổi</span>
     <input id='stqCheck' type='checkbox' checked style='position: absolute;top: -16px;background: black;left: 460px;'>
     <span class="checkmark" style='position: absolute;top: -16px;left: 460px;width: 30px;height: 30px;'></span>
@@ -293,33 +304,35 @@
     <button id='stq'>Đổi</button>
   </div>
   <div id='hostArea'
-    style='top: 360px;position: absolute;padding: 40px 10px 10px 10px;border: 1px solid gray;left:1090px;width: 395px;'>
+    style='top: 260px;position: absolute;padding: 20px 10px 10px 10px;border: 1px solid gray;left:1050px;width: 430px;'>
     <span style='position: absolute;top: -15px;background: black;'>Host</span>
     <!-- <button id='break'>Giải lao</button> -->
+    <button id='ping'>Ping</button>
     <button id='klaxon'>Hết giờ</button>
-    <div class='flexcon' style='height: 60px;'><input id='playerInfoInput' type='text'
+    <div class='flexcon' style='height: 40px;'><input id='playerInfoInput' type='text'
         placeholder='Thông tin người chơi'></div>
-    <div class='flexcon' style='height: 60px;'><input id='messageInput' type='text' placeholder='Tin nhắn đến MC'></div>
+    <div class='flexcon' style='height: 40px;'><input id='messageInput' type='text' placeholder='Tin nhắn đến MC'></div>
   </div>
-  <div id='viewerArea' style='top: 620px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
+  <div id='viewerArea' style='top: 440px;position: absolute;padding: 20px 10px 10px 10px;border: 1px solid gray;'>
     <span style='position: absolute;top: -15px;background: black;'>Viewer</span>
     <button id='hideGpx'>Ẩn gpx</button>
     <button id='showGpx'>Hiện gpx</button>
     <button id='clearAnim'>Ẩn & reset animation</button>
-    <button id='showGpxAndPlayLockin'>Hiện và nhạc lockin</button>
+    <button id='showGpxAndPlayLockin'>Hiện & nhạc lockin</button>
     <button id='showTotalPrize'>Hiện tiền thắng cuộc</button>
     <button id='hideTotalPrize'>Ẩn tiền thắng cuộc</button>
   </div>
-  <div id='soundArea' style='top: 750px;position: absolute;padding: 30px 10px 10px 10px;border: 1px solid gray;'>
+  <div id='soundArea' style='top: 530px;position: absolute;padding: 20px 10px 10px 10px;border: 1px solid gray;'>
     <span style='position: absolute;top: -15px;background: black;'>Âm thanh</span>
     <button id='intro'>Intro</button>
     <button id='playerEntrance'>Người chơi vào</button>
     <br>
-    <button id='explainRules'>Luật</button>
     <button id='letsPlay'>Bắt đầu đi tìm</button>
+    <br>
     <button id='commIn'>Comm in</button>
     <button id='commOut'>Comm out</button>
-    <button id='playCurrentLightsDown'>Nhạc LD câu hiện tại</button>
+    <button id='playCurrentLightsDown'>LD hiện tại</button>
+    <br>
     <button id='stopBed'>Dừng nền</button>
     <button id='resumeBed'>Tiếp tục nền</button>
     <br>
@@ -334,7 +347,7 @@
   <script>
     let quesNum = 0
     let chosenAns
-    let prizeIdx = 0
+    let prizeIdx = -1
     let prizeInfo = []
     document.getElementById('fileInput').onchange = function () {
       var fileName = this.value.split('\\').pop();
@@ -464,7 +477,6 @@
       $('#ansB').text(qnas[quesNum].b)
       $('#ansC').text(qnas[quesNum].c)
       $('#ansD').text(qnas[quesNum].d)
-      $('#quesNum').text(quesNum + 1)
     })
     $('#playCurrentBed').click(() => {
       if (quesNum == 7) {
@@ -537,7 +549,7 @@
       socket.emit('hideGpx')
     })
     $('#showTotalPrize').click(() => {
-      socket.emit('showTotalPrize', prizes[prizeIdx] == -1 ? 0 : prizes[prizeIdx])
+      socket.emit('showTotalPrize', prizeIdx == -1 ? 0 : prizes[prizeIdx])
     })
     $('#hideTotalPrize').click(() => {
       socket.emit('hideTotalPrize')
@@ -622,7 +634,6 @@
         $('#ansB').text(qnas[12].b)
         $('#ansC').text(qnas[12].c)
         $('#ansD').text(qnas[12].d)
-        $('#quesNum').text('Đổi')
         qnas[quesNum].ql1 = qnas[12].ql1
         qnas[quesNum].ql2 = qnas[12].ql2
         qnas[quesNum].a = qnas[12].a
@@ -696,8 +707,6 @@
           $('#ansC').text(qnas[(i / 2) - 1].c)
           $('#ansD').text(qnas[(i / 2) - 1].d)
           $('#explain').text(qnas[(i / 2) - 1].explain)
-          $('#quesNum').text(i / 2)
-          if ((i / 2) == 13) $('#quesNum').text('Đổi')
           quesNum = (i / 2) - 1
           let prizeInfo = []
           prizeInfo[0] = 12 - quesNum
@@ -741,6 +750,9 @@
     })
     $('#resumeBed').click(() => {
       socket.emit('resumeBed', quesNum)
+    })
+    $('#ping').click(() => {
+      socket.emit('playSound', 'Lifeline_1.ogg')
     })
     $('#klaxon').click(() => {
       socket.emit('playSound', 'klaxon.ogg')
