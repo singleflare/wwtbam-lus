@@ -1503,13 +1503,13 @@
       pafBed.play()
     })
     socket.on('pafTime', () => {
-      $('#paf').animate({ scale: .35 }, 500)
-      pafVid.play()
+      //$('#paf').animate({ scale: .35 }, 500)
+      //pafVid.play()
       pafTime.play()
       pafBed.stop()
-      setTimeout(() => {
+      /*setTimeout(() => {
         pafVid.currentTime = 1
-      }, 1000)
+      }, 1000)*/
     })
     socket.on('pafEnd', () => {
       pafTime.stop()
